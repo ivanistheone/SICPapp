@@ -1,0 +1,1907 @@
+<div class="navbar" align="center">
+<a class="link" onclick="window.displayManager.show('section_2_2.html')">previous section</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('chapter_2.html')">this chapter</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')">next section</a><hr>
+</div><h2><a name="section_2_3">2.3&nbsp;Symbolic Data</a></h2>
+    
+
+    <div class="subtoc">
+<strong>In this section</strong><p></p>
+<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#subsection_2_3_1">2.3.1&nbsp;
+        Strings
+      </a><br><a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#subsection_2_3_2">2.3.2&nbsp;
+        Example: Symbolic Differentiation
+      </a><br><a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#subsection_2_3_3">2.3.3&nbsp;
+        Example: Representing Sets
+      </a><br><a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#subsection_2_3_4">2.3.4&nbsp;
+        Example: Huffman Encoding Trees
+      </a><br>
+</div>
+
+    <a name="sec:symbolic-data"></a>
+    
+
+    
+    All the compound data objects we have used so far were constructed
+    ultimately from numbers.  In this section we extend the representational
+    capability of our language by introducing the ability to work with
+    strings of characters 
+    as data.
+
+    <h3><a name="subsection_2_3_1">2.3.1&nbsp;
+        Strings
+      </a></h3>
+      
+
+      
+      <a name="sec:strings"></a>
+      
+        
+
+      
+
+          <div class="normaltext">
+            If we can form compound data using strings, we can have lists such as
+
+                
+
+            <form name="form_669" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_669.png"></form>
+
+            Note that in order to distinguish strings from program variables, we surround them with
+            double quotation marks. For example, the JavaScript expression z
+            denotes the value of the program variable z, whereas the 
+            JavaScript expression "z" denotes a string that consists of
+            one single character, namely the last letter in the English alphabet in lower case.
+            JavaScript follows the
+            common practice in natural languages, where quotation marks
+            indicate that a word or a sentence is to be treated literally as a
+            string of characters.  For instance, the first letter of &#147;John&#148; is
+            clearly &#147;J.&#148;  If we tell somebody &#147;say your name aloud,&#148; we expect
+            to hear that person&#146;s name.  However, if we tell somebody &#147;say &#145;your name&#146; aloud,&#148; we expect to hear the words &#147;your name.&#148;  Note that
+            we are forced to nest quotation marks to describe what somebody else
+            might say.
+          </div>
+          <div class="normaltext">
+            
+            Via quotation marks, we can distinguish between strings and variables:
+
+            <div style="position:absolute;display:none;" id="javascript_670_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 1;\nvar b = 2;','javascript_670','',event,1.0);">var a = 1;
+var b = 2;</pre>
+
+            <div style="position:absolute;display:none;" id="javascript_671_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 1;\nvar b = 2;\n            \nlist(a,b)','javascript_671','',event,1.0);">list(a,b)</pre>
+
+            <div style="position:absolute;display:none;" id="javascript_672_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nlist(&quot;a&quot;,&quot;b&quot;)','javascript_672','',event,1.0);">list("a","b")</pre>
+
+            <div style="position:absolute;display:none;" id="javascript_673_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 1;\nvar b = 2;\n            \nlist(&quot;a&quot;,b)','javascript_673','',event,1.0);">list("a",b)</pre>
+          </div>
+          <div class="normaltext">
+            In order to test if two strings are equal, the operator <span class="javascriptinline">===</span>
+            can be applied to strings and returns <span class="javascriptinline">true</span> if the two strings
+            being compared have exactly the same characters in the exactly the same order.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_6"><a class="link" href="#footnote_6">6</a></a></span> Using 
+            <span class="javascriptinline">===</span>,
+            we can implement a useful
+            function
+            called <span class="javascriptinline">memq</span>.  This takes two
+            arguments, a string and a list.  If the string is not contained in the
+            list (i.e., is not <span class="javascriptinline">===</span> to any item in the list), 
+            then <span class="javascriptinline">memq</span> returns false.  Otherwise, it returns the sublist of
+            the list beginning with the first occurrence of the string:
+
+            <div style="position:absolute;display:none;" id="javascript_674_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n                \nfunction memq(item,x) {\n   if (is_empty_list(x))\n      return false;\n   else if (item === head(x))\n      return x;\n   else \n      return memq(item,tail(x));\n}\n\n// example\n\nmemq(&quot;apple&quot;,[&quot;pear&quot;,[&quot;banana&quot;,[&quot;prune&quot;,[]]]])','javascript_674','',event,1.0);">                
+function memq(item,x) {
+   if (is_empty_list(x))
+      return false;
+   else if (item === head(x))
+      return x;
+   else 
+      return memq(item,tail(x));
+}</pre>
+
+            For example, the value of
+
+            <div style="position:absolute;display:none;" id="javascript_675_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n                \nfunction memq(item,x) {\n   if (is_empty_list(x))\n      return false;\n   else if (item === head(x))\n      return x;\n   else \n      return memq(item,tail(x));\n}\n              \nmemq(&quot;apple&quot;,[&quot;pear&quot;,[&quot;banana&quot;,[&quot;prune&quot;,[]]]])','javascript_675','',event,1.0);">memq("apple",["pear",["banana",["prune",[]]]])</pre>
+
+            is false, whereas the value of
+
+            <div style="position:absolute;display:none;" id="javascript_676_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n                \nfunction memq(item,x) {\n   if (is_empty_list(x))\n      return false;\n   else if (item === head(x))\n      return x;\n   else \n      return memq(item,tail(x));\n}\n              \nmemq(&quot;apple&quot;,[&quot;x&quot;,[[&quot;apple&quot;,[&quot;sauce&quot;,[]]],[&quot;y&quot;,[&quot;apple&quot;,[&quot;pear&quot;,[]]]]]])','javascript_676','',event,1.0);">memq("apple",["x",[["apple",["sauce",[]]],["y",["apple",["pear",[]]]]]])</pre>
+
+            is <span class="javascriptinline">["apple",["pear",[]]]</span>.
+          </div>
+
+          <div class="exercise">
+<b>Exercise 2.57.</b>
+            What would the interpreter print in response to evaluating each of the
+            following expressions?
+            <div style="position:absolute;display:none;" id="javascript_677_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nlist(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;)','javascript_677','',event,1.0);">list("a","b","c")</pre>
+            <div style="position:absolute;display:none;" id="javascript_678_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nlist(list(&quot;george&quot;))','javascript_678','',event,1.0);">list(list("george"))</pre>
+            <div style="position:absolute;display:none;" id="javascript_679_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n                \nfunction memq(item,x) {\n   if (is_empty_list(x))\n      return false;\n   else if (item === head(x))\n      return x;\n   else \n      return memq(item,tail(x));\n}\n              \nmemq(&quot;red&quot;,[[&quot;red&quot;,[&quot;shoes&quot;,[]]],[[&quot;blue&quot;,[&quot;socks&quot;,[]]],[]]])','javascript_679','',event,1.0);">memq("red",[["red",["shoes",[]]],[["blue",["socks",[]]],[]]])</pre>
+            <div style="position:absolute;display:none;" id="javascript_680_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n                \nfunction memq(item,x) {\n   if (is_empty_list(x))\n      return false;\n   else if (item === head(x))\n      return x;\n   else \n      return memq(item,tail(x));\n}\n              \nmemq(&quot;red&quot;,[&quot;red&quot;,[&quot;shoes&quot;,[&quot;blue&quot;,[&quot;socks&quot;,[]]]]])','javascript_680','',event,1.0);">memq("red",["red",["shoes",["blue",["socks",[]]]]])</pre>
+          </div>
+
+          <div class="exercise">
+<b>Exercise 2.58.</b> 
+            We would like to define a function
+            
+            
+            
+            <span class="javascriptinline">is_equal</span> that checks whether two lists contain equal elements
+            arranged in the same order.  For example,
+
+            
+
+            <div style="position:absolute;display:none;" id="javascript_682_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n// function is_equal to be written by student\n            \nis_equal([&quot;this&quot;,[&quot;is&quot;,[&quot;a&quot;,[&quot;list&quot;,[]]]]],[&quot;this&quot;,[&quot;is&quot;,[&quot;a&quot;,[&quot;list&quot;,[]]]]])','javascript_682','',event,1.0);">is_equal(["this",["is",["a",["list",[]]]]],["this",["is",["a",["list",[]]]]])</pre>
+
+            is true, but
+
+            <div style="position:absolute;display:none;" id="javascript_683_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n// function is_equal to be written by student\n            \nis_equal([&quot;this&quot;,[&quot;is&quot;,[&quot;a&quot;,[&quot;list&quot;,[]]]]],[&quot;this&quot;,[[&quot;is&quot;,[&quot;a&quot;,[]]],[&quot;list&quot;,[]]]])','javascript_683','',event,1.0);">is_equal(["this",["is",["a",["list",[]]]]],["this",[["is",["a",[]]],["list",[]]]])</pre>
+
+            is false.  To be more precise, we can define <span class="javascriptinline">is_equal</span>
+            recursively in terms of the basic <span class="javascriptinline">===</span> equality of strings by
+            saying that <span class="javascriptinline">a</span> and <span class="javascriptinline">b</span> 
+            are equal with respect to <span class="javascriptinline">is_equal</span> if they are both
+            strings and the strings are equal with respect to <span class="javascriptinline">===</span>, 
+            or if they are both lists such
+            that <span class="javascriptinline">head(a)</span> is equal with respect to <span class="javascriptinline">is_equal</span> to <span class="javascriptinline">head(b)</span> and 
+            <span class="javascriptinline">tail(a)</span> is equal with respect to <span class="javascriptinline">is_equal</span> to <span class="javascriptinline">tail(b)</span>.  
+            Using this idea, implement
+            <span class="javascriptinline">is_equal</span> as a function.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_7"><a class="link" href="#footnote_7">7</a></a></span>
+            <a name="ex:equal?"></a>
+        <div style="position:absolute;display:none;" id="javascript_684_div"></div>
+          </div>
+
+        
+    
+
+    <h3><a name="subsection_2_3_2">2.3.2&nbsp;
+        Example: Symbolic Differentiation
+      </a></h3>
+      
+
+      <a name="sec:symbolic-differentiation"></a>
+      
+      
+      
+
+      <div class="normaltext">
+      As an illustration of symbol manipulation and a further illustration
+      of data abstraction, consider the design of a
+      function
+      that performs
+      symbolic differentiation of algebraic expressions.  We would like the
+      function
+      to take as arguments an algebraic expression and a variable
+      and to return the derivative of the expression with respect to the
+      variable.  For example, if the arguments to the
+      function
+      are <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_816.png"></span> and <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_817.png"></span>, the
+      function
+      should return <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_818.png"></span>.  Symbolic
+      differentiation is of special historical significance in Lisp.  It was
+      one of the motivating examples behind the development of a computer
+      language for symbol manipulation.  Furthermore, it marked the
+      beginning of the line of research that led to the development of
+      powerful systems for symbolic mathematical work, which are currently
+      being used by a growing number of applied mathematicians and
+      physicists.
+      </div>
+      <div class="normaltext">
+      In developing the symbolic-differentiation program, we will follow the
+      same strategy of data abstraction that we followed in developing the
+      rational-number system of section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#sec:rationals">2.1.1</a>.  That is, we will first
+      define a differentiation algorithm that operates on abstract
+      objects such as &#147;sums,&#148; &#147;products,&#148; and &#147;variables&#148; without
+      worrying about how these are to be represented.  Only afterward will
+      we address the representation problem.
+      </div>
+
+      <H4>The differentiation program with abstract data</H4>
+        
+      
+
+      
+      <div class="normaltext">
+      In order to keep things simple, we will consider a very simple
+      symbolic-differentiation program that handles expressions that are
+      built up using only the operations of addition and multiplication with
+      two arguments.  Differentiation of any such expression can be carried
+      out by applying the following reduction rules:
+
+      <P><img src="img_javascript/latex_56.png"></P>
+
+      <P><img src="img_javascript/latex_57.png"></P>
+
+      <P><img src="img_javascript/latex_58.png"></P>
+
+      <P><img src="img_javascript/latex_59.png"></P>
+      Observe that the latter two rules are recursive in nature.  That is,
+      to obtain the derivative of a sum we first find the derivatives of the
+      terms and add them.  Each of the terms may in turn be an
+      expression that needs to be decomposed.  Decomposing into smaller and
+      smaller pieces will eventually produce pieces that are either
+      constants or variables, whose derivatives will be either <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_819.png"></span> or <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_820.png"></span>.
+      </div>
+      <div class="normaltext">
+      To embody these rules in a
+      function
+      we indulge in a little 
+      
+      wishful
+      thinking, as we did in designing the rational-number implementation.
+      If we had a means for representing algebraic expressions, we should be
+      able to tell whether an expression is a sum, a product, a constant, or
+      a variable.  We should be able to extract the parts of an expression.
+      For a sum, for example we want to be able to extract the addend
+      (first term) and the augend (second term).  We should also be able to
+      construct expressions from parts.  Let us assume that we already have
+      functions
+      to implement the following selectors, constructors, and
+      predicates:
+      <TABLE>
+        <TR>
+          <TD>
+            <span class="javascriptinline">is_variable(e)</span>
+          </TD>
+          <TD>
+            Is <span class="javascriptinline">e</span> a variable?
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+          <span class="javascriptinline">is_same_variable(v1,v2)</span>
+          </TD>
+          <TD>
+            Are <span class="javascriptinline">v1</span> and <span class="javascriptinline">v2</span> the same variable?
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+            <span class="javascriptinline">is_sum(e)</span>
+          </TD>
+          <TD>
+            Is <span class="javascriptinline">e</span> a sum?
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+            <span class="javascriptinline">addend(e)</span>
+          </TD>
+          <TD>
+            Addend of the sum <span class="javascriptinline">e</span>.
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+            <span class="javascriptinline">augend(e)</span> 
+          </TD>
+          <TD>
+            Augend of the sum <span class="javascriptinline">e</span>.
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+            <span class="javascriptinline">make_sum(a1,a2)</span>
+          </TD>
+          <TD>
+            Construct the sum of <span class="javascriptinline">a1</span> and <span class="javascriptinline">a2</span>.
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+            <span class="javascriptinline">is_product(e)</span>
+          </TD>
+          <TD>
+            Is <span class="schemeinline">e</span> a product?
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+            <span class="javascriptinline">multiplier(e)</span>
+          </TD>
+          <TD>
+            Multiplier of the product <span class="javascriptinline">e</span>.
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+            <span class="javascriptinline">multiplicand(e)</span>
+          </TD>
+          <TD>
+            Multiplicand of the product <span class="javascriptinline">e</span>.
+          </TD>
+        </TR>
+        <TR>
+          <TD>
+            <span class="javascriptinline">make_product(m1,m2)</span>
+          </TD>
+          <TD>
+            Construct the product of <span class="javascriptinline">m1</span> and <span class="javascriptinline">m2</span>.
+          </TD>
+        </TR>
+      </TABLE>
+      </div>
+
+      <div class="normaltext">
+        Using these, and the primitive predicate <span class="javascriptinline">is_number</span>,
+      
+      
+      which identifies numbers,        we can express the differentiation rules as the        following
+      function:
+
+      <div style="position:absolute;display:none;" id="javascript_685_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n          \nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n            \nfunction is_sum(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;+&quot;;\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction addend(s) {\n   return head(tail(s));\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction augend(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction is_product(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;*&quot;;\n}\n            \nfunction multiplier(s) {\n   return head(tail(s));\n}\n            \nfunction multiplicand(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction deriv(exp,variable) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,variable)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),variable),\n                      deriv(augend(exp),variable));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}\n\n// example\n\nderiv(list(&quot;*&quot;,list(&quot;*&quot;,&quot;x&quot;,&quot;y&quot;),list(&quot;+&quot;,&quot;x&quot;,3)),&quot;x&quot;)','javascript_685','',event,1.0);">function deriv(exp,variable) {
+   if (is_number(exp))
+      return 0;
+   else if (is_variable(exp))
+      return (is_same_variable(exp,variable)) ? 1 : 0;
+   else if (is_sum(exp))
+      return make_sum(deriv(addend(exp),variable),
+                      deriv(augend(exp),variable));
+   else if (is_product(exp)) 
+      return make_sum(make_product(multiplier(exp),
+                                   deriv(multiplicand(exp),variable)),
+                      make_product(deriv(multiplier(exp),variable),
+                                   multiplicand(exp)));
+   else
+      return error("unknown expression type -- deriv",exp);
+}</pre>
+      </div>
+      <div class="normaltext">
+      This <span class="schemeinline">deriv</span>
+      function
+      incorporates the complete differentiation algorithm.
+      Since it is expressed in terms of abstract data, it will work no
+      matter how we choose to represent algebraic expressions, as long as we
+      design a proper set of selectors and constructors.  This is the issue
+      we must address next.
+      </div>
+
+      <H4>Representing algebraic expressions</H4>
+        
+      
+
+      
+      <div class="normaltext">
+      We can imagine many ways to use list structure to represent algebraic
+      expressions.  For example, we could use lists of symbols that mirror
+      the usual algebraic notation, representing 
+      <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_821.png"></span> as 
+      <span class="javascriptinline">list( "a","*","x","+","b")</span>.  
+      
+          However, it will be more convenient, if we reflect the mathematical structure of the expression in the JavaScript
+          value representing it; that is, to represent <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_823.png"></span> as <span class="javascriptinline">list("+",list("*","a","x"),"b")</span>.
+        
+      Then our data representation for the differentiation problem is as
+      follows:
+
+      <ul>
+        <li>The variables are strings.  
+          They are identified by the primitive predicate
+          
+          
+          <span class="javascriptinline">is_string</span>:
+          
+          <div style="position:absolute;display:none;" id="javascript_687_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n\n// example\n\nis_variable(&quot;xyz&quot;)','javascript_687','',event,1.0);">function is_variable(x) {
+   return is_string(x);
+}</pre>
+        </li>
+        <li>Two variables are the same if the 
+          strings representing them are equal:
+            
+          
+          <div style="position:absolute;display:none;" id="javascript_689_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n\n// example\n\nis_same_variable(&quot;xyz&quot;,&quot;xyz&quot;)','javascript_689','',event,1.0);">function is_same_variable(v1,v2) {
+   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;
+}              </pre>
+          </li>
+        <li>Sums and products are constructed as lists:
+          
+          <div style="position:absolute;display:none;" id="javascript_691_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n\n// example\n\nmake_sum(make_product(&quot;x&quot;,3),make_product(&quot;y&quot;,&quot;z&quot;))','javascript_691','',event,1.0);">function make_sum(a1,a2) {
+   return list("+",a1,a2);
+}
+function make_product(m1,m2) {
+   return list("*",m1,m2);
+}</pre>
+        </li>
+        <li>A sum is a list whose first element is the 
+          string <span class="javascriptinline">"+"</span>:
+
+          
+
+          <div style="position:absolute;display:none;" id="javascript_693_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_sum(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;+&quot;;\n}\n\n// example\n\nis_sum(make_sum(&quot;x&quot;,3))','javascript_693','',event,1.0);">function is_sum(x) {
+   return is_pair(x) &amp;&amp; head(x) === "+";
+}</pre>
+
+
+        </li>
+        <li>The addend is the second item of the sum list:
+
+          
+          <div style="position:absolute;display:none;" id="javascript_695_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction addend(s) {\n   return head(tail(s));\n}\n\n// example\n\naddend(make_sum(&quot;x&quot;,3))','javascript_695','',event,1.0);">function addend(s) {
+   return head(tail(s));
+}</pre>
+
+
+        </li>
+        <li>The augend is the third item of the sum list:
+
+          
+          <div style="position:absolute;display:none;" id="javascript_697_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction augend(s) {\n   return head(tail(tail(s)));\n}\n\n// example\n\naugend(make_sum(&quot;x&quot;,3))','javascript_697','',event,1.0);">function augend(s) {
+   return head(tail(tail(s)));
+}</pre>
+        </li>
+        <li>A product is a list whose first element is the 
+          string <span class="javascriptinline">"*"</span>:
+
+          
+
+          <div style="position:absolute;display:none;" id="javascript_699_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_product(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;*&quot;;\n}\n\n// example\n\nis_product(make_product(&quot;x&quot;,3))','javascript_699','',event,1.0);">function is_product(x) {
+   return is_pair(x) &amp;&amp; head(x) === "*";
+}</pre>
+        </li>
+        <li>The multiplier is the second item of the product list:
+
+          
+
+          <div style="position:absolute;display:none;" id="javascript_701_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction multiplier(s) {\n   return head(tail(s));\n}\n\n// example\n\nmultiplier(make_product(&quot;x&quot;,3))','javascript_701','',event,1.0);">function multiplier(s) {
+   return head(tail(s));
+}</pre>
+
+        </li>
+        <li>The multiplicand is the third item of the product list:
+
+          
+
+          <div style="position:absolute;display:none;" id="javascript_703_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction multiplicand(s) {\n   return head(tail(tail(s)));\n}\n\n// example\n\nmultiplicand(make_product(&quot;x&quot;,3))','javascript_703','',event,1.0);">function multiplicand(s) {
+   return head(tail(tail(s)));
+}</pre>
+        </li>
+
+      </ul>
+      </div>
+
+      <div class="normaltext">
+      Thus, we need only combine these with the algorithm as embodied by
+      <span class="javascriptinline">deriv</span> in order to have a working symbolic-differentiation
+      program.  Let us look at some examples of its behavior:
+
+      <div style="position:absolute;display:none;" id="javascript_704_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n          \nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n            \nfunction is_sum(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;+&quot;;\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction addend(s) {\n   return head(tail(s));\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction augend(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction is_product(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;*&quot;;\n}\n            \nfunction multiplier(s) {\n   return head(tail(s));\n}\n            \nfunction multiplicand(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction deriv(exp,variable) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,variable)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),variable),\n                      deriv(augend(exp),variable));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}\n      \nderiv(list(&quot;+&quot;,&quot;x&quot;,3),&quot;x&quot;)','javascript_704','',event,1.0);">deriv(list("+","x",3),"x")</pre>
+
+      <div style="position:absolute;display:none;" id="javascript_705_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n          \nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n            \nfunction is_sum(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;+&quot;;\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction addend(s) {\n   return head(tail(s));\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction augend(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction is_product(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;*&quot;;\n}\n            \nfunction multiplier(s) {\n   return head(tail(s));\n}\n            \nfunction multiplicand(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction deriv(exp,variable) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,variable)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),variable),\n                      deriv(augend(exp),variable));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}\n      \nderiv(list(&quot;*&quot;,&quot;x&quot;,&quot;y&quot;),&quot;x&quot;)','javascript_705','',event,1.0);">deriv(list("*","x","y"),"x")</pre>
+
+      <div style="position:absolute;display:none;" id="javascript_706_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n          \nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n            \nfunction is_sum(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;+&quot;;\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction addend(s) {\n   return head(tail(s));\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction augend(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction is_product(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;*&quot;;\n}\n            \nfunction multiplier(s) {\n   return head(tail(s));\n}\n            \nfunction multiplicand(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction deriv(exp,variable) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,variable)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),variable),\n                      deriv(augend(exp),variable));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}\n      \nderiv(list(&quot;*&quot;,list(&quot;*&quot;,&quot;x&quot;,&quot;y&quot;),list(&quot;+&quot;,&quot;x&quot;,3)),&quot;x&quot;)','javascript_706','',event,1.0);">deriv(list("*",list("*","x","y"),list("+","x",3)),"x")</pre>
+      </div>
+      <div class="normaltext">
+      The program produces answers that are correct; however, they are
+      unsimplified.  It is true that
+      <P><img src="img_javascript/latex_60.png"></P>
+      but we would like the program to know that <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_824.png"></span>, <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_825.png"></span>, and <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_826.png"></span>.  The answer for the second example should have been
+      simply&nbsp;<span class="javascriptinline">y</span>.  As the third example shows, this becomes a serious
+      issue when the expressions are complex.
+      </div>
+      <div class="normaltext">
+      
+      
+      Our difficulty is much like the one we encountered with the
+      rational-number implementation: we haven&#146;t reduced answers to simplest
+      form.  To accomplish the rational-number reduction, we needed to
+      change only the constructors and the selectors of the implementation.
+      We can adopt a similar strategy here.  We won&#146;t change <span class="javascriptinline">deriv</span> at
+      all.  Instead, we will change <span class="javascriptinline">make_sum</span> so that if both summands
+      are numbers, <span class="javascriptinline">make_sum</span> will add them and return their sum.  Also,
+      if one of the summands is 0, then <span class="javascriptinline">make_sum</span> will return the other
+      summand.
+
+          
+
+      <div style="position:absolute;display:none;" id="javascript_708_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n        \nfunction make_sum(a1,a2) {\n   if (is_number_equal(a1,0))\n      return a2;\n   else if (is_number_equal(a2,0))\n      return a1;\n   else if (is_number(a1) &amp;&amp; is_number(a2))\n      return a1 + a2;\n   else \n      return list(&quot;+&quot;,a1,a2);\n}\n\n// example\n\nmake_sum(2,3)','javascript_708','',event,1.0);">function make_sum(a1,a2) {
+   if (is_number_equal(a1,0))
+      return a2;
+   else if (is_number_equal(a2,0))
+      return a1;
+   else if (is_number(a1) &amp;&amp; is_number(a2))
+      return a1 + a2;
+   else 
+      return list("+",a1,a2);
+}</pre>
+
+      This uses the
+      function
+      <span class="javascriptinline">is_number_equal</span>, which checks whether an
+      expression is equal to a given number:
+
+          
+
+      <div style="position:absolute;display:none;" id="javascript_710_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n\n// example\n\nis_number_equal(3,3)','javascript_710','',event,1.0);">function is_number_equal(exp,num) {
+   return is_number(exp) &amp;&amp; exp === num;
+}</pre>
+
+        Similarly, we will change <span class="javascriptinline">make_product</span> to build in the rules that 0
+      times anything is 0 and 1 times anything is the thing itself:
+
+
+          
+
+      <div style="position:absolute;display:none;" id="javascript_712_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n        \nfunction make_product(m1,m2) {\n   if (is_number_equal(m1,0) || is_number_equal(m2,0))\n      return 0;\n   else if (is_number_equal(m1,1))\n      return m2;\n   else if (is_number_equal(m2,1))\n      return m1;\n   else if (is_number(m1) &amp;&amp; is_number(m2))\n      return m1 * m2;\n   else \n      return list(&quot;*&quot;,m1,m2);\n}\n\n// example\n\nmake_product(2,3)','javascript_712','',event,1.0);">function make_product(m1,m2) {
+   if (is_number_equal(m1,0) || is_number_equal(m2,0))
+      return 0;
+   else if (is_number_equal(m1,1))
+      return m2;
+   else if (is_number_equal(m2,1))
+      return m1;
+   else if (is_number(m1) &amp;&amp; is_number(m2))
+      return m1 * m2;
+   else 
+      return list("*",m1,m2);
+}</pre>
+
+      
+
+
+      <span style="color:black" title="">Try out</span><span style="color:black" title=""></span> how this version works on our three examples:
+
+      <div style="position:absolute;display:none;" id="javascript_714_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n          \nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n            \nfunction is_sum(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;+&quot;;\n}\n            \nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n        \nfunction make_sum(a1,a2) {\n   if (is_number_equal(a1,0))\n      return a2;\n   else if (is_number_equal(a2,0))\n      return a1;\n   else if (is_number(a1) &amp;&amp; is_number(a2))\n      return a1 + a2;\n   else \n      return list(&quot;+&quot;,a1,a2);\n}\n      \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction addend(s) {\n   return head(tail(s));\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction augend(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n        \nfunction make_product(m1,m2) {\n   if (is_number_equal(m1,0) || is_number_equal(m2,0))\n      return 0;\n   else if (is_number_equal(m1,1))\n      return m2;\n   else if (is_number_equal(m2,1))\n      return m1;\n   else if (is_number(m1) &amp;&amp; is_number(m2))\n      return m1 * m2;\n   else \n      return list(&quot;*&quot;,m1,m2);\n}\n        \nfunction is_product(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;*&quot;;\n}\n            \nfunction multiplier(s) {\n   return head(tail(s));\n}\n            \nfunction multiplicand(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction deriv(exp,variable) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,variable)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),variable),\n                      deriv(augend(exp),variable));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}\n      \nderiv(list(&quot;+&quot;,&quot;x&quot;,3),&quot;x&quot;)','javascript_714','',event,1.0);">deriv(list("+","x",3),"x")</pre>
+
+      <div style="position:absolute;display:none;" id="javascript_715_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n          \nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n            \nfunction is_sum(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;+&quot;;\n}\n            \nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n        \nfunction make_sum(a1,a2) {\n   if (is_number_equal(a1,0))\n      return a2;\n   else if (is_number_equal(a2,0))\n      return a1;\n   else if (is_number(a1) &amp;&amp; is_number(a2))\n      return a1 + a2;\n   else \n      return list(&quot;+&quot;,a1,a2);\n}\n      \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction addend(s) {\n   return head(tail(s));\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction augend(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n        \nfunction make_product(m1,m2) {\n   if (is_number_equal(m1,0) || is_number_equal(m2,0))\n      return 0;\n   else if (is_number_equal(m1,1))\n      return m2;\n   else if (is_number_equal(m2,1))\n      return m1;\n   else if (is_number(m1) &amp;&amp; is_number(m2))\n      return m1 * m2;\n   else \n      return list(&quot;*&quot;,m1,m2);\n}\n        \nfunction is_product(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;*&quot;;\n}\n            \nfunction multiplier(s) {\n   return head(tail(s));\n}\n            \nfunction multiplicand(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction deriv(exp,variable) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,variable)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),variable),\n                      deriv(augend(exp),variable));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}\n      \nderiv(list(&quot;*&quot;,&quot;x&quot;,&quot;y&quot;),&quot;x&quot;)','javascript_715','',event,1.0);">deriv(list("*","x","y"),"x")</pre>
+
+      <div style="position:absolute;display:none;" id="javascript_716_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n          \nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n            \nfunction is_sum(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;+&quot;;\n}\n            \nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n        \nfunction make_sum(a1,a2) {\n   if (is_number_equal(a1,0))\n      return a2;\n   else if (is_number_equal(a2,0))\n      return a1;\n   else if (is_number(a1) &amp;&amp; is_number(a2))\n      return a1 + a2;\n   else \n      return list(&quot;+&quot;,a1,a2);\n}\n      \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction addend(s) {\n   return head(tail(s));\n}\n            \nfunction make_sum(a1,a2) {\n   return list(&quot;+&quot;,a1,a2);\n}\nfunction make_product(m1,m2) {\n   return list(&quot;*&quot;,m1,m2);\n}\n            \nfunction augend(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction is_number_equal(exp,num) {\n   return is_number(exp) &amp;&amp; exp === num;\n}\n        \nfunction make_product(m1,m2) {\n   if (is_number_equal(m1,0) || is_number_equal(m2,0))\n      return 0;\n   else if (is_number_equal(m1,1))\n      return m2;\n   else if (is_number_equal(m2,1))\n      return m1;\n   else if (is_number(m1) &amp;&amp; is_number(m2))\n      return m1 * m2;\n   else \n      return list(&quot;*&quot;,m1,m2);\n}\n        \nfunction is_product(x) {\n   return is_pair(x) &amp;&amp; head(x) === &quot;*&quot;;\n}\n            \nfunction multiplier(s) {\n   return head(tail(s));\n}\n            \nfunction multiplicand(s) {\n   return head(tail(tail(s)));\n}\n            \nfunction deriv(exp,variable) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,variable)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),variable),\n                      deriv(augend(exp),variable));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}\n      \nderiv(list(&quot;*&quot;,list(&quot;*&quot;,&quot;x&quot;,&quot;y&quot;),list(&quot;+&quot;,&quot;x&quot;,3)),&quot;x&quot;)','javascript_716','',event,1.0);">deriv(list("*",list("*","x","y"),list("+","x",3)),"x")</pre>
+
+      Although this is quite an improvement, the third example shows that
+      there is still a long way to go before we get a program that puts
+      expressions into a form that we might agree is &#147;simplest.&#148;  The
+      problem of algebraic simplification is complex because, among other
+      reasons, a form that may be simplest for one purpose may not be for
+      another.
+      
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.59.</b> 
+        
+        Show how to extend the basic differentiator to handle more kinds of
+        expressions.  For instance, implement the differentiation rule
+
+        <P><img src="img_javascript/latex_61.png"></P>
+
+        by adding a new clause to the <span class="javascriptinline">deriv</span> program
+        and defining
+        appropriate
+        functions
+        <span class="javascriptinline">is_exponentiation</span>, <span class="javascriptinline">base</span>, <span class="javascriptinline">exponent</span>,
+        and <span class="javascriptinline">make_exponentiation</span>.  (You may use the string <span class="javascriptinline">"**"</span> to denote
+        exponentiation.)
+        Build in the rules that anything raised to the power 0 is 1 and
+        anything raised to the power 1 is the thing itself.
+        <a name="ex:deriv-exponentiation"></a>
+    <div style="position:absolute;display:none;" id="javascript_717_div"></div>
+    
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.60.</b>
+        Extend the differentiation program to handle sums and products of
+        arbitrary numbers of (two or more) terms.
+        Then the last example above could be expressed as
+      
+
+        <div style="position:absolute;display:none;" id="javascript_720_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_variable(x) {\n   return is_string(x);\n}\n          \nfunction is_same_variable(v1,v2) {\n   return is_variable(v1) &amp;&amp; is_variable(v2) &amp;&amp; v1 === v2;\n}              \n            \n// change the representation of terms\n// by defining make_sum, make_product, is_sum, is_product, etc\n\nfunction deriv(exp,variable) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,variable)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),variable),\n                      deriv(augend(exp),variable));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}\n      \nderiv(list(&quot;*&quot;,&quot;x&quot;,&quot;y&quot;,list(&quot;+&quot;,&quot;x&quot;,3)),&quot;x&quot;)','javascript_720','',event,1.0);">deriv(list("*","x","y",list("+","x",3)),"x")</pre>
+
+        Try to do this by changing only the
+          representation for sums and products, without changing the <span class="javascriptinline">deriv</span>
+        function
+        at all.  For example, the <span class="javascriptinline">addend</span> of a sum would
+        be the first term, and the <span class="javascriptinline">augend</span> would be the sum of the rest
+        of the terms.
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.61.</b>
+        
+        
+        Suppose we want to modify the differentiation program so that it works
+        with ordinary mathematical notation, in which <span class="javascriptinline">"+"</span> and <span class="javascriptinline">"*"</span> are
+        infix rather than prefix operators.  Since the differentiation program
+        is defined in terms of abstract data, we can modify it to work with
+        different representations of expressions solely by changing the
+        predicates, selectors, and constructors that define the representation
+        of the algebraic expressions on which the differentiator is to
+        operate.
+        <ol class="exercise">
+          <li>
+            Show how to do this in order to differentiate algebraic
+            expressions presented in infix form, such as <span class="javascriptinline">list("x","+",list(3,"*",list("x","+",list("y","+",2))))</span>.
+            To simplify the task, assume that <span class="javascriptinline">"+"</span> and <span class="javascriptinline">"*"</span> always
+            take two arguments and that expressions are fully parenthesized.
+          </li>
+          <li>
+            The problem becomes substantially harder if we 
+            allow 
+            
+            provide for avoiding unnecessary lists by assuming that multiplication is done before addition, as in
+            <span class="javascriptinline">list("x","+","3","*",list("x","+","y","+",2))</span>. 
+              
+            Can you design appropriate predicates, selectors, and
+            constructors for this notation such that our derivative 
+            program still works?
+          </li>
+        </ol>
+    <div style="position:absolute;display:none;" id="javascript_721_div"></div>
+    
+      </div>
+      
+      
+      
+      
+
+    
+
+    <h3><a name="subsection_2_3_3">2.3.3&nbsp;
+        Example: Representing Sets
+      </a></h3>
+      
+
+      <a name="sec:representing-sets"></a>
+      
+      <div class="normaltext">
+      In the previous examples we built representations for two kinds of
+      compound data objects: rational numbers and algebraic expressions.  In
+      one of these examples we had the choice of simplifying (reducing) the
+      expressions at either construction time or selection time, but other
+      than that the choice of a representation for these structures in terms
+      of lists was straightforward. When we turn to the representation of
+      sets, the choice of a representation is not so obvious.  Indeed, there
+      are a number of possible representations, and they differ
+      significantly from one another in several ways.
+      </div>
+      <div class="normaltext">
+      
+      Informally, a set is simply a collection of distinct objects.  To give
+      a more precise definition we can employ the method of data
+      abstraction.  That is, we define &#147;set&#148; by specifying the operations
+      that are to be used on sets.  These are <span class="javascriptinline">union_set</span>,
+      <span class="javascriptinline">intersection_set</span>, <span class="javascriptinline">is_element_of_set</span>, and <span class="javascriptinline">adjoin_set</span>.
+      
+      The function <span class="javascriptinline">is_element_of_set</span> is a predicate that determines whether a given
+      element is a member of a set.  
+      
+      The function <span class="javascriptinline">adjoin_set</span> takes an object and a
+      set as arguments and returns a set that contains the elements of the
+      original set and also the adjoined element.  
+      
+      The function <span class="javascriptinline">union_set</span> computes
+      the union of two sets, which is the set containing each element that
+      appears in either argument.  
+      
+      The function <span class="javascriptinline">intersection_set</span> computes the
+      intersection of two sets, which is the set containing only elements
+      that appear in both arguments.  From the viewpoint of data abstraction, we
+      are free to design any representation that implements these operations
+      in a way consistent with the interpretations given above.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_8"><a class="link" href="#footnote_8">8</a></a></span>
+      
+      </div>
+
+      <H4>Sets as unordered lists</H4>
+        
+      
+
+      
+      
+
+      <div class="normaltext">
+      One way to represent a set is as a list of its elements in which no
+      element appears more than once.  The empty set is represented by the
+      empty list.  In this representation, <span class="javascriptinline">is_element_of_set</span> is similar
+      to the
+      function
+      <span class="javascriptinline">memq</span> of section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#sec:quotation">2.3.1</a>.  It uses <span class="javascriptinline">is_equal</span>
+      instead of <span class="schemeinline">===</span> so that the set elements need not be primitive values:
+
+      <div style="position:absolute;display:none;" id="javascript_723_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction adjoin_set(x,set) {\n   if (is_element_of_set(x,set))\n      return set;\n   else return pair(x,set);\n}\n      \nfunction is_element_of_set(x,set) {\n   if (is_empty_list(set))\n      return false;\n   else if (is_equal(x,head(set)))\n      return true;\n   else \n      return is_element_of_set(x,tail(set));\n}\n\n// example\n\nis_element_of_set(15,adjoin_set(10,adjoin_set(15,adjoin_set(20,[]))))','javascript_723','',event,1.0);">function is_element_of_set(x,set) {
+   if (is_empty_list(set))
+      return false;
+   else if (is_equal(x,head(set)))
+      return true;
+   else 
+      return is_element_of_set(x,tail(set));
+}</pre>
+      
+      </div>
+      <div class="normaltext">
+        Using this, we can write <span class="javascriptinline">adjoin_set</span>.  If the object to be adjoined
+      is already in the set, we just return the set.  Otherwise, we use
+      <span class="javascriptinline">pair</span> to add the object to the list that represents the set:
+
+      <div style="position:absolute;display:none;" id="javascript_725_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction adjoin_set(x,set) {\n   if (is_element_of_set(x,set))\n      return set;\n   else return pair(x,set);\n}\n\n// example\n\nadjoin_set(10,adjoin_set(15,adjoin_set(20,[])))','javascript_725','',event,1.0);">function adjoin_set(x,set) {
+   if (is_element_of_set(x,set))
+      return set;
+   else return pair(x,set);
+}</pre>
+      
+      </div>
+      <div class="normaltext">
+        For <span class="javascriptinline">intersection_set</span> we can use a recursive strategy.  If we
+        know how to form the intersection of <span class="javascriptinline">set2</span> and the <span class="javascriptinline">tail</span>
+            of <span class="javascriptinline">set1</span>, we only need to decide whether to include
+            the <span class="javascriptinline">head</span> of <span class="javascriptinline">set1</span> in this.  But this depends on whether <span class="javascriptinline">head(set1)</span> is also in <span class="javascriptinline">set2</span>.  Here is the resulting
+      function:
+
+      <div style="position:absolute;display:none;" id="javascript_727_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction adjoin_set(x,set) {\n   if (is_element_of_set(x,set))\n      return set;\n   else return pair(x,set);\n}\n      \nfunction intersection_set(set1,set2) {\n   if (is_empty_list(set1) || is_empty_list(set2))\n      return [];\n   else if (is_element_of_set(head(set1),set2))\n      return pair(head(set1),\n                  intersection_set(tail(set1),set2));\n   else\n      return intersection_set(tail(set1),set2);\n}\n\n// example\n\nintersection_set(\n   adjoin_set(10,adjoin_set(20,adjoin_set(30,[])))\n   adjoin_set(10,adjoin_set(15,adjoin_set(20,[]))))','javascript_727','',event,1.0);">function intersection_set(set1,set2) {
+   if (is_empty_list(set1) || is_empty_list(set2))
+      return [];
+   else if (is_element_of_set(head(set1),set2))
+      return pair(head(set1),
+                  intersection_set(tail(set1),set2));
+   else
+      return intersection_set(tail(set1),set2);
+}</pre>
+      
+      </div>
+      <div class="normaltext">
+      In designing a representation, one of the issues we should be
+      concerned with is efficiency.  Consider the number of steps required by our set
+        operations.  Since they all use <span class="javascriptinline">is_element_of_set</span>, the speed
+      of this operation has a major impact on the efficiency of the set
+      implementation as a whole.  Now, in order to check whether an object
+        is a member of a set, <span class="javascriptinline">is_element_of_set</span> may have to scan the
+      entire set. (In the worst case, the object turns out not to be in the
+        set.)  Hence, if the set has <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_827.png"></span> elements, <span class="javascriptinline">is_element_of_set</span>
+      might take up to <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_828.png"></span> steps.  Thus, the number of steps
+      required grows as <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_829.png"></span>.
+      The number of steps required by <span class="schemeinline">adjoin-set</span>, which uses this operation,
+        also grows as <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_830.png"></span>.  For <span class="javascriptinline">intersection_set</span>, which does an <span class="javascriptinline">is_element_of_set</span> check for each element of <span class="javascriptinline">set1</span>, the number of steps
+      required grows as the product of the sizes of the sets involved, or
+        <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_831.png"></span> for two sets of size <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_832.png"></span>.  The same will be true of <span class="javascriptinline">union_set</span>.
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.62.</b> 
+        Implement the 
+        
+        <span class="javascriptinline">union_set</span> operation for the unordered-list
+        representation of sets.
+    <div style="position:absolute;display:none;" id="javascript_729_div"></div>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.63.</b>
+        We specified that a set would be represented as a list with no
+        duplicates.  Now suppose we allow duplicates.  For instance,
+        the set <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_833.png"></span> could be represented as the list <span class="javascriptinline">[2,[3,[2,[1,[3,[2,[2,[]]]]]]]]</span>.  Design
+        functions
+        <span class="javascriptinline">is_element_of_set</span>, <span class="javascriptinline">adjoin_set</span>, <span class="javascriptinline">union_set</span>, and <span class="javascriptinline">intersection_set</span> that operate on this
+        representation.  How does the efficiency of each compare with the
+        corresponding
+        function
+        for the non-duplicate representation?  Are
+        there applications for which you would use this representation in
+        preference to the non-duplicate one?
+    <div style="position:absolute;display:none;" id="javascript_730_div"></div>
+      </div>
+      
+      
+
+      <H4>Sets as ordered lists</H4>
+        
+      
+
+      
+      
+      <div class="normaltext">
+      One way to speed up our set operations is to change the representation
+      so that the set elements are listed in increasing order.  To do this,
+      we need some way to compare two objects so that we can say which is
+      bigger.  For example, we could compare symbols lexicographically, or
+      we could agree on some method for assigning a unique number to an
+      object and then compare the elements by comparing the corresponding
+      numbers.  To keep our discussion simple, we will consider only the
+      case where the set elements are numbers, so that we can compare
+      elements using <span class="schemeinline">&gt;</span> and <span class="schemeinline">&lt;</span>.  We will represent a set of
+      numbers by listing its elements in increasing order.  Whereas our
+      first representation above allowed us to represent the set
+      <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_834.png"></span> by listing the elements in any order, our new
+      representation allows only the list <span class="javascriptinline">[1,[3,[6,[10,[]]]]]</span>.
+      </div>
+      <div class="normaltext">
+      One advantage of ordering shows up in <span class="javascriptinline">is_element_of_set</span>: In
+      checking for the presence of an item, we no longer have to scan the
+      entire set.  If we reach a set element that is larger than the item we
+      are looking for, then we know that the item is not in the set:
+
+      <div style="position:absolute;display:none;" id="javascript_731_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_element_of_set(x,set) {\n   if (is_empty_list(set))\n      return false;\n   else if (x === head(set))\n      return true;\n   else if (x &lt; head(set))\n      return false;\n   else \n      return is_element_of_set(x,tail(set));\n}','javascript_731','',event,1.0);">function is_element_of_set(x,set) {
+   if (is_empty_list(set))
+      return false;
+   else if (x === head(set))
+      return true;
+   else if (x &lt; head(set))
+      return false;
+   else 
+      return is_element_of_set(x,tail(set));
+}</pre>
+      
+      </div>
+      <div class="normaltext">
+      How many steps does this save?  In the worst case, the item we are
+      looking for may be the largest one in the set, so the number of steps
+      is the same as for the unordered representation.  On the other hand,
+      if we search for items of many different sizes we can expect that
+      sometimes we will be able to stop searching at a point near the
+      beginning of the list and that other times we will still need to
+      examine most of the list.  On the average we should expect to have to
+      examine about half of the items in the set.  Thus, the average
+      number of steps required will be about <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_835.png"></span>.
+      This is still <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_836.png"></span> growth, but
+      it does save us, on the average, a factor of 2 in number of steps over the
+      previous implementation.
+      </div>
+      <div class="normaltext">
+      We obtain a more impressive speedup with <span class="javascriptinline">intersection_set</span>.  In
+      the unordered representation this operation required
+      <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_837.png"></span> steps, because we performed a complete scan of <span class="javascriptinline">set2</span> for
+      each element of <span class="javascriptinline">set1</span>.  But with the ordered representation, we
+      can use a more clever method.  Begin by comparing the initial
+      elements, <span class="javascriptinline">x1</span> and <span class="javascriptinline">x2</span>, of the two sets.  If <span class="javascriptinline">x1</span>
+      equals <span class="javascriptinline">x2</span>, then that gives an element of the intersection, and
+      the rest of the intersection is the intersection of the <span class="javascriptinline">tail</span>s of
+      the two sets.  Suppose, however, that <span class="javascriptinline">x1</span> is less than <span class="javascriptinline">x2</span>.
+      Since <span class="javascriptinline">x2</span> is the smallest element in <span class="javascriptinline">set2</span>, we can
+      immediately conclude that <span class="javascriptinline">x1</span> cannot appear anywhere in <span class="javascriptinline">set2</span> and hence is not in the intersection.  Hence, the intersection
+      is equal to the intersection of <span class="javascriptinline">set2</span> with the <span class="javascriptinline">tail</span> of <span class="javascriptinline">set1</span>.  Similarly, if <span class="javascriptinline">x2</span> is less than <span class="javascriptinline">x1</span>, then the
+      intersection is given by the intersection of <span class="javascriptinline">set1</span> with the <span class="javascriptinline">tail</span> of <span class="javascriptinline">set2</span>.  Here is the
+      function:
+
+      <div style="position:absolute;display:none;" id="javascript_733_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction intersection_set(set1,set2) {\n   if (is_empty_list(set1) || is_empty_list(set2))\n      return [];\n   else {\n      var x1 = head(set1);\n      var x2 = head(set2);\n      if (x1 === x2)\n         return pair(x1,intersection_set(tail(set1),\n                                         tail(set2)));\n      else if (x1 &lt; x2)\n         return intersection_set(tail(set1),\n                                 set2);\n      else if (x2 &lt; x1)\n         return intersection_set(set1,\n                                 tail(set2));\n   }\n}\n\n// example\n\nintersection_set(\n   list(10,20,30),\n   list(10,15,20))','javascript_733','',event,1.0);">function intersection_set(set1,set2) {
+   if (is_empty_list(set1) || is_empty_list(set2))
+      return [];
+   else {
+      var x1 = head(set1);
+      var x2 = head(set2);
+      if (x1 === x2)
+         return pair(x1,intersection_set(tail(set1),
+                                         tail(set2)));
+      else if (x1 &lt; x2)
+         return intersection_set(tail(set1),
+                                 set2);
+      else if (x2 &lt; x1)
+         return intersection_set(set1,
+                                 tail(set2));
+   }
+}</pre>
+      
+      </div>
+      <div class="normaltext">
+      To estimate the number of steps required by this process, observe that at each
+      step we reduce the intersection problem to computing intersections of
+      smaller sets—removing the first element from <span class="javascriptinline">set1</span> or <span class="javascriptinline">set2</span> or both.  Thus, the number of steps required is at most the sum
+      of the sizes of <span class="javascriptinline">set1</span> and <span class="javascriptinline">set2</span>, rather than the product of
+      the sizes as with the unordered representation.  This is <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_838.png"></span> growth
+      rather than <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_839.png"></span>—a considerable speedup, even for sets of
+      moderate size.
+      </div>
+      <div class="exercise">
+<b>Exercise 2.64.</b>
+        Give an implementation of 
+        
+        <span class="javascriptinline">adjoin_set</span> using the ordered
+        representation.  By analogy with <span class="javascriptinline">is_element_of_set</span> show how to
+        take advantage of the ordering to produce a
+        function
+        that requires on
+        the average about half as many steps as with the unordered
+        representation.
+        <a name="ex:adjoin-set"></a>
+    <div style="position:absolute;display:none;" id="javascript_735_div"></div>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.65.</b> 
+        <a name="union-set"></a>
+        Give a <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_840.png"></span> implementation of 
+        
+        <span class="javascriptinline">union_set</span> for sets
+        represented as ordered lists.
+    <div style="position:absolute;display:none;" id="javascript_736_div"></div>
+      </div>
+      
+      
+
+
+      <H4>Sets as binary trees</H4>
+        
+      
+
+      
+      
+      
+      
+      
+      
+      <div class="normaltext">
+      We can do better than the ordered-list representation by arranging the
+      set elements in the form of a tree.  Each node of the tree holds one
+      element of the set, called the &#147;entry&#148; at that node, and a link to
+      each of two other (possibly empty) nodes.  The &#147;left&#148; link points to
+      elements smaller than the one at the node, and the &#147;right&#148; link to
+
+      elements greater than the one at the node.
+      Figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#fig:binary-tree">2.16</a> shows some trees that represent the set
+      <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_841.png"></span>.  The same set may be represented by a tree in a
+      number of different ways.  The only thing we require for a valid
+      representation is that all elements in the left subtree be smaller
+      than the node entry and that all elements in the right subtree be
+      larger.
+
+        <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-51.gif" border="0">
+          
+          <a name="fig:binary-tree"></a>
+        </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  16</b>&nbsp;&nbsp;&nbsp;Various binary trees that represent the set <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_842.png"></span>.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+      </div>
+      <div class="normaltext">
+      The advantage of the tree representation is this: Suppose we want to
+      check whether a number <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_843.png"></span> is contained in a set.  We begin by
+      comparing <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_844.png"></span> with the entry in the top node.  If <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_845.png"></span> is less than
+      this, we know that we need only search the left subtree; if <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_846.png"></span> is
+      greater, we need only search the right subtree.  Now, if the tree is
+      &#147;balanced,&#148; each of these subtrees will be about half the size of
+      the original.  Thus, in one step we have reduced the problem of
+      searching a tree of size <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_847.png"></span> to searching a tree of size <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_848.png"></span>.  Since
+      the size of the tree is halved at each step, we should expect that the
+      number of steps needed to search a tree of size <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_849.png"></span> grows as <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_850.png"></span>.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_9"><a class="link" href="#footnote_9">9</a></a></span> For large sets, this will
+      be a significant speedup over the previous representations.
+      </div>
+      <div class="normaltext">
+      
+      We can represent trees by using lists.  Each node will be a list of
+      three items: the entry at the node, the left subtree, and the right
+      subtree.  A left or a right subtree of the empty list will indicate
+      that there is no subtree connected there.  We can describe this
+      representation by the following
+      functions:<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_10"><a class="link" href="#footnote_10">10</a></a></span>
+
+      <div style="position:absolute;display:none;" id="javascript_737_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction entry(tree) {\n   return head(tree);\n}\nfunction left_branch(tree) {\n   return head(tail(tree);\n}\nfunction right_branch(tree) {\n   return head(tail(tail(tree)));\n}\nfunction make_tree(entry,left,right) {\n   return list(entry,left,right);\n}\n\n// example\n\nentry(\n  left_branch(\n    right_branch(\n      make_tree(\n        10,\n        [],\n        make_tree(\n          30,\n          make_tree(20,[],[]),\n          [])))))','javascript_737','',event,1.0);">function entry(tree) {
+   return head(tree);
+}
+function left_branch(tree) {
+   return head(tail(tree);
+}
+function right_branch(tree) {
+   return head(tail(tail(tree)));
+}
+function make_tree(entry,left,right) {
+   return list(entry,left,right);
+}</pre>
+
+      <div style="position:absolute;display:none;" id="javascript_738_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nentry(\n  left_branch(\n    right_branch(\n      make_tree(\n        10,\n        [],\n        make_tree(\n          30,\n          make_tree(20,[],[]),\n          [])))))','javascript_738','',event,1.0);">entry(
+  left_branch(
+    right_branch(
+      make_tree(
+        10,
+        [],
+        make_tree(
+          30,
+          make_tree(20,[],[]),
+          [])))))</pre>
+
+      </div>
+      <div class="normaltext">
+        Now we can write the <span class="javascriptinline">is_element_of_set</span>
+      function
+      using the strategy
+      described above:
+
+      <div style="position:absolute;display:none;" id="javascript_739_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction adjoin_set(x,set) {\n   if (is_empty_list(set))\n      return make_tree(x,[],[]);\n   else if (x === entry(set))\n      return set;\n   else if (x &lt; entry(set))\n      return make_tree(entry(set),\n                       adjoin_set(x,left_branch(set)),\n                       right_branch(set));\n   else if (x &gt; entry(set))\n      return make_tree(entry(set),\n                       left_branch(set),\n                       adjoin_set(x,right_branch(set)));\n}\n        \nfunction is_element_of_set(x,set) {\n   if (is_empty_list(set)) \n      return false;\n   else if (x === entry(set)) \n      return true;\n   else if (x &lt; entry(set))\n      return is_element_of_set(x,left_branch(set));\n   else if (x &gt; entry(set))\n      return is_element_of_set(x,right_branch(set));\n\n// example\n\n','javascript_739','',event,1.0);">function is_element_of_set(x,set) {
+   if (is_empty_list(set)) 
+      return false;
+   else if (x === entry(set)) 
+      return true;
+   else if (x &lt; entry(set))
+      return is_element_of_set(x,left_branch(set));
+   else if (x &gt; entry(set))
+      return is_element_of_set(x,right_branch(set));</pre>
+      </div>
+      <div class="normaltext">
+      Adjoining an item to a set is implemented similarly and also requires
+      <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_851.png"></span> steps.  To adjoin an item <span class="javascriptinline">x</span>, we compare <span class="javascriptinline">x</span> with
+      the node entry to determine whether <span class="javascriptinline">x</span> should be added to the
+      right or to the left branch, and having adjoined <span class="javascriptinline">x</span> to the
+      appropriate branch we piece this newly constructed branch together
+      with the original entry and the other branch.  If <span class="javascriptinline">x</span> is equal to
+      the entry, we just return the node.  If we are asked to adjoin
+      <span class="javascriptinline">x</span> to an empty tree, we generate a tree that has <span class="javascriptinline">x</span> as the
+      entry and empty right and left branches.  Here is the
+      function:
+
+      <div style="position:absolute;display:none;" id="javascript_740_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction adjoin_set(x,set) {\n   if (is_empty_list(set))\n      return make_tree(x,[],[]);\n   else if (x === entry(set))\n      return set;\n   else if (x &lt; entry(set))\n      return make_tree(entry(set),\n                       adjoin_set(x,left_branch(set)),\n                       right_branch(set));\n   else if (x &gt; entry(set))\n      return make_tree(entry(set),\n                       left_branch(set),\n                       adjoin_set(x,right_branch(set)));\n}\n\n// example\n\nadjoin_set(10,adjoin_set(15,adjoin_set(20,[])))','javascript_740','',event,1.0);">function adjoin_set(x,set) {
+   if (is_empty_list(set))
+      return make_tree(x,[],[]);
+   else if (x === entry(set))
+      return set;
+   else if (x &lt; entry(set))
+      return make_tree(entry(set),
+                       adjoin_set(x,left_branch(set)),
+                       right_branch(set));
+   else if (x &gt; entry(set))
+      return make_tree(entry(set),
+                       left_branch(set),
+                       adjoin_set(x,right_branch(set)));
+}</pre>
+      </div>
+      <div class="normaltext">
+      The above claim that searching the tree can be performed in a logarithmic
+      number of steps
+      rests on the assumption that the tree is 
+      
+      
+      &#147;balanced,&#148; i.e., that the
+      left and the right subtree of every tree have approximately the same
+      number of elements, so that each subtree contains about half the
+      elements of its parent.  But how can we be certain that the trees we
+      construct will be balanced?  Even if we start with a balanced tree,
+      adding elements with <span class="javascriptinline">adjoin_set</span> may produce an unbalanced
+      result.  Since the position of a newly adjoined element depends on how
+      the element compares with the items already in the set, we can expect
+      that if we add elements &#147;randomly&#148; the tree will tend to be balanced
+      on the average.  But this is not a guarantee.  For example, if we
+      start with an empty set and adjoin the numbers 1 through 7 in sequence
+      we end up with the highly unbalanced tree shown in
+      figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#fig:unbalanced-tree">2.17</a>.  In this tree all the left subtrees
+      are empty, so it has no advantage over a simple ordered list.  One
+      way to solve this problem is to define an operation that transforms an
+      arbitrary tree into a balanced tree with the same elements.  Then we
+      can perform this transformation after every few <span class="javascriptinline">adjoin_set</span>
+      operations to keep our set in balance.  There are also other ways to
+      solve this problem, most of which involve designing new data
+      structures for which searching and insertion both can be done in
+      <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_852.png"></span> steps.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_11"><a class="link" href="#footnote_11">11</a></a></span>
+
+        <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-52.gif" border="0">
+          
+          <a name="fig:unbalanced-tree"></a>
+        </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  17</b>&nbsp;&nbsp;&nbsp;Unbalanced tree produced by adjoining 1 through 7 in sequence.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+      </div>
+      <div class="exercise">
+<b>Exercise 2.66.</b>
+        <a name="ex:tree-to-list"></a>
+        Each of the following two
+        functions
+        converts a 
+        
+        
+        binary tree to a list.
+        
+        <div style="position:absolute;display:none;" id="javascript_741_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction tree_to_list_1(tree) {\n   if (is_empty_list(tree))\n      return [];\n   else \n      return append(tree_to_list_1(left_branch(tree)),\n                    pair(entry(tree),\n                         tree_to_list_1(right_branch(tree))));\n}\nfunction tree_to_list_2(tree) {\n   function copy_to_list(tree,result_list) {\n      if (is_empty_list(tree))\n         return result_list;\n      else\n         return copy_to_list(left_branch(tree),\n                             pair(entry(tree),\n                                  copy_to_list(right_branch(tree),\n                                               result_list)));\n   }\n   return copy_to_list(tree,[]);\n}','javascript_741','',event,1.0);">function tree_to_list_1(tree) {
+   if (is_empty_list(tree))
+      return [];
+   else 
+      return append(tree_to_list_1(left_branch(tree)),
+                    pair(entry(tree),
+                         tree_to_list_1(right_branch(tree))));
+}
+function tree_to_list_2(tree) {
+   function copy_to_list(tree,result_list) {
+      if (is_empty_list(tree))
+         return result_list;
+      else
+         return copy_to_list(left_branch(tree),
+                             pair(entry(tree),
+                                  copy_to_list(right_branch(tree),
+                                               result_list)));
+   }
+   return copy_to_list(tree,[]);
+}</pre>
+        <ol class="exercise">
+          <li>
+            Do the two
+            functions
+            produce the same result for every tree?  If
+            not, how do the results differ?  What lists do the two
+            functions
+            produce for the trees in figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#fig:binary-tree">2.16</a>?
+            
+          </li>
+          <li>
+            Do the two
+            functions
+            have the same order of growth in the number
+            of steps required to convert a balanced tree with <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_853.png"></span> elements to a list?
+            If not, which one grows more slowly?
+          </li>
+        </ol>
+    <div style="position:absolute;display:none;" id="javascript_742_div"></div>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.67.</b>
+        <a name="ex:list-to-tree"></a>
+        
+        
+        The following
+        function
+        <span class="javascriptinline">list_to_tree</span> converts an ordered list to a
+        balanced binary tree.  The helper
+        function
+        <span class="javascriptinline">partial_tree</span> takes
+        as arguments an integer <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_854.png"></span> and list of at least <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_855.png"></span> elements and
+        constructs a balanced tree containing the first <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_856.png"></span> elements of the
+        list.  The result returned by <span class="javascriptinline">partial_tree</span> is a pair (formed
+        with <span class="javascriptinline">pair</span>) whose <span class="javascriptinline">head</span> is the constructed tree and whose
+        <span class="javascriptinline">tail</span> is the list of elements not included in the tree.
+
+        <div style="position:absolute;display:none;" id="javascript_743_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction list_to_tree(elements) {\n   return head(partial_tree(elements,length(elements)));\n}\nfunction partial_tree(elts,n) {\n   if (n === 0)\n      return pair([],elts);\n   else {\n     var left_size = quotient(n - 1,2);\n     var left_result = partial_tree(elts,left_size);\n     var left_tree = head(left_result);\n     var non_left_elts = tail(left_result);\n     var right_size = n - (left_size + 1);\n     var this_entry = head(non_left_elts);\n     var right_result = partial_tree(tail(non_left_elts),\n                                     right_size);\n     var right_tree = head(right_result);\n     var remaining_elts = tail(right_result);\n     return pair(make_tree(this_entry,left_tree,right_tree),\n                 remaining_elts);','javascript_743','',event,1.0);">function list_to_tree(elements) {
+   return head(partial_tree(elements,length(elements)));
+}
+function partial_tree(elts,n) {
+   if (n === 0)
+      return pair([],elts);
+   else {
+     var left_size = quotient(n - 1,2);
+     var left_result = partial_tree(elts,left_size);
+     var left_tree = head(left_result);
+     var non_left_elts = tail(left_result);
+     var right_size = n - (left_size + 1);
+     var this_entry = head(non_left_elts);
+     var right_result = partial_tree(tail(non_left_elts),
+                                     right_size);
+     var right_tree = head(right_result);
+     var remaining_elts = tail(right_result);
+     return pair(make_tree(this_entry,left_tree,right_tree),
+                 remaining_elts);</pre>
+        <ol class="exercise">
+          <li>
+            Write a short paragraph explaining as clearly as you can how <span class="javascriptinline">partial_tree</span> works.  Draw the tree produced by <span class="javascriptinline">list_to_tree</span> for
+            the list <span class="javascriptinline">[1,[3,[5,[7,[9,[11,[]]]]]]]</span>.
+            
+          </li>
+          <li>
+            What is the order of growth in the number of steps required by <span class="javascriptinline">list_to_tree</span> to convert a list of <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_857.png"></span> elements?
+          </li>
+        </ol>
+    <div style="position:absolute;display:none;" id="javascript_744_div"></div>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.68.</b>
+        
+        
+        Use the results of exercises&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:tree-to-list">2.66</a> and
+        &nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:list-to-tree">2.67</a> to give <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_858.png"></span> implementations of <span class="javascriptinline">union_set</span> and <span class="javascriptinline">intersection_set</span> for sets implemented as
+        (balanced) binary trees.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_12"><a class="link" href="#footnote_12">12</a></a></span>
+        <a name="ex:tree-ops"></a>
+    <div style="position:absolute;display:none;" id="javascript_745_div"></div>
+      </div>
+      
+      
+
+      <H4>Sets and information retrieval</H4>
+        
+      
+
+      
+
+      <div class="normaltext">
+      We have examined options for using lists to represent sets and have
+      seen how the choice of representation for a data object can have a
+      large impact on the performance of the programs that use the data.
+      Another reason for concentrating on sets is that the techniques
+      discussed here appear again and again in applications involving
+      information retrieval.
+      </div>
+      <div class="normaltext">
+      
+      Consider a data base containing a large number of individual records,
+      
+      such as the personnel files for a company or the transactions in an
+      accounting system.  A typical data-management system spends a large
+      amount of time accessing or modifying the data in the records and
+      therefore requires an efficient method for accessing records.  This is
+      done by identifying a part of each record to serve as an identifying
+      
+      <em>key</em>.  A key can be anything that uniquely identifies the
+      record.  For a personnel file, it might be an employee&#146;s ID number.
+      For an accounting system, it might be a transaction number.  Whatever
+      the key is, when we define the record as a data structure we should
+      include a 
+      
+      <span class="javascriptinline">key</span> selector
+      function
+      that retrieves the key
+      associated with a given record.
+      </div>
+      <div class="normaltext">
+      Now we represent the data base as a set of records. To locate the
+      record with a given key we use a
+      function
+      <span class="javascriptinline">lookup</span>, which takes
+      as arguments a key and a data base and which returns the record that
+      has that key, or false if there is no such record.  The function <span class="javascriptinline">lookup</span>
+      is implemented in almost the same way as <span class="javascriptinline">is_element_of_set</span>.  For
+      example, if the set of records is implemented as an unordered list, we
+      could use
+      <div style="position:absolute;display:none;" id="javascript_746_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction lookup(given_key,set_of_records) {\n   if (is_empty_list(set_of_records))\n      return false;\n   else if (is_equal(given_key,key(head(set_of_records))))\n      return head(set_of_records);\n   else \n      return lookup(given_key,tail(set_of_records));\n}','javascript_746','',event,1.0);">function lookup(given_key,set_of_records) {
+   if (is_empty_list(set_of_records))
+      return false;
+   else if (is_equal(given_key,key(head(set_of_records))))
+      return head(set_of_records);
+   else 
+      return lookup(given_key,tail(set_of_records));
+}</pre>
+      </div>
+      <div class="normaltext">
+      Of course, there are better ways to represent large sets than as
+      unordered lists.  Information-retrieval systems in which records have
+      to be &#147;randomly accessed&#148; are typically implemented by a tree-based
+      method, such as the binary-tree representation discussed previously.
+      In designing such a system the methodology of data abstraction
+      can be a great help.  The designer can create an initial
+      implementation using a simple, straightforward representation such as
+      unordered lists.  This will be unsuitable for the eventual system, but
+      it can be useful in providing a &#147;quick and dirty&#148; data base with
+      which to test the rest of the system.  Later on, the data
+      representation can be modified to be more sophisticated.  If the data
+      base is accessed in terms of abstract selectors and constructors, this
+      change in representation will not require any changes to the rest of
+      the system.
+      </div>
+      <div class="exercise">
+<b>Exercise 2.69.</b> 
+        Implement the <span class="javascriptinline">lookup</span>
+        function
+        for the case
+        where the set of records is structured as a binary tree, ordered by
+        the numerical values of the keys.
+        <a name="ex:set-lookup-binary-tree"></a>
+    <div style="position:absolute;display:none;" id="javascript_747_div"></div>
+      </div>
+
+    
+
+    <h3><a name="subsection_2_3_4">2.3.4&nbsp;
+        Example: Huffman Encoding Trees
+      </a></h3>
+      
+
+      <a name="sec:huffman"></a>
+      
+
+      <div class="normaltext">
+      This section provides practice in the use of list structure and data
+      abstraction to manipulate sets and trees.  The application is to
+      methods for representing data as sequences of ones and zeros (bits).
+      For example, the 
+      
+      
+      ASCII standard code used to represent text in
+      computers encodes each 
+      
+      character as a sequence of seven bits.  Using
+      seven bits allows us to distinguish <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_859.png"></span>, or 128, possible different
+      characters.  In general, if we want to distinguish <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_860.png"></span> different
+      symbols, we will need to use <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_861.png"></span> bits per symbol.  If all our
+      messages are made up of the eight symbols A, B, C, D, E, F, G, and H,
+      we can choose a code with three bits per character, for example
+      <P><img src="img_javascript/latex_62.png"></P>
+      With this code, the message
+      <blockquote>
+BACADAEAFABBAAAGAH
+      </blockquote>
+      is encoded as the string of 54 bits
+      <blockquote>
+001000010000011000100000101000001001000000000110000111
+      </blockquote>
+      Codes such as ASCII and the A-through-H code above are known as 
+      
+      
+      <em>fixed-length</em> codes, because they represent each symbol in the message
+      with the same number of bits.  It is sometimes advantageous to use
+      
+      
+      <em>variable-length</em> codes, in which different symbols may be
+      represented by different numbers of bits.  For example, 
+      
+      
+      Morse code
+      does not use the same number of dots and dashes for each letter of the
+      alphabet.  In particular, E, the most frequent letter, is represented
+      by a single dot.  In general, if our messages are such that some
+      symbols appear very frequently and some very rarely, we can encode
+      data more efficiently (i.e., using fewer bits per message) if we
+      assign shorter codes to the frequent symbols.  Consider the following
+      alternative code for the letters A through H:
+      <P><img src="img_javascript/latex_63.png"></P>
+      With this code, the same message as above is encoded as the string
+      <blockquote>
+100010100101101100011010100100000111001111
+      </blockquote>
+      This string contains 42 bits, so it saves more than 20% in space in
+      comparison with the fixed-length code shown above.
+      </div>
+      <div class="normaltext">
+      One of the difficulties of using a variable-length code is knowing
+      when you have reached the end of a symbol in reading a sequence of
+      zeros and ones.  Morse code solves this problem by using a special
+      
+      <em>separator code</em> (in this case, a pause) after the sequence of
+      dots and dashes for each letter.  Another solution is to design the
+      code in such a way that no complete code for any symbol is the
+      beginning (or <em>prefix</em>) of the code for another symbol.  Such a
+      code is called a 
+      
+      
+      <em>prefix code</em>.  In the example above, A is
+      encoded by 0 and B is encoded by 100, so no other symbol can have a
+      code that begins with 0 or with 100.
+      </div>
+      <div class="normaltext">
+      In general, we can attain significant savings if we use
+      variable-length prefix codes that take advantage of the relative
+      frequencies of the symbols in the messages to be encoded.  One
+      particular scheme for doing this is called the Huffman encoding
+      method, after its discoverer, 
+      
+      David Huffman.  A Huffman code can be
+      represented as a 
+      
+      
+      binary tree whose leaves are the symbols that are
+      encoded.  At each non-leaf node of the tree there is a set containing
+      all the symbols in the leaves that lie below the node.  In addition,
+      each symbol at a leaf is assigned a weight (which is its
+      relative frequency), and each non-leaf
+      node contains a weight that is the sum of all the weights of the
+      leaves lying below it.  The weights are not used in the encoding or
+      the decoding process.  We will see below how they are used to help
+      construct the tree.
+      </div>
+      <div class="normaltext">
+      <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-53.gif" border="0">
+        
+        <a name="fig:huffman"></a>
+      </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  18</b>&nbsp;&nbsp;&nbsp;A Huffman encoding tree.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+      Figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#fig:huffman">2.18</a> shows the Huffman tree for the A-through-H 
+      code given above.  The weights at the leaves
+      indicate that the tree was designed for messages in which A appears
+      with relative frequency 8, B with relative frequency 3, and the
+      other letters each with relative frequency 1.
+      </div>
+      <div class="normaltext">
+      Given a Huffman tree, we can find the encoding of any symbol by
+      starting at the root and moving down until we reach the leaf that
+      holds the symbol.  Each time we move down a left branch we add a 0 to
+      the code, and each time we move down a right branch we add a 1.  (We
+      decide which branch to follow by testing to see which branch either is
+      the leaf node for the symbol or contains the symbol in its set.)  For
+      example, starting from the root of the tree in
+      figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#fig:huffman">2.18</a>, we arrive at the leaf for D by following a
+      right branch, then a left branch, then a right branch, then a right
+      branch; hence, the code for D is 1011.
+      </div>
+      <div class="normaltext">
+      To decode a bit sequence using a Huffman tree, we begin at the root
+      and use the successive zeros and ones of the bit sequence to determine
+      whether to move down the left or the right branch.  Each time we come
+      to a leaf, we have generated a new symbol in the message, at which
+      point we start over from the root of the tree to find the next symbol.
+      For example, suppose we are given the tree above and the sequence
+      10001010.  Starting at the root, we move down the right branch, (since
+      the first bit of the string is&nbsp;1), then down the left branch (since
+      the second bit is&nbsp;0), then down the left branch (since the third bit
+      is also&nbsp;0).  This brings us to the leaf for&nbsp;B, so the first symbol of
+      the decoded message is&nbsp;B.  Now we start again at the root, and we make
+      a left move because the next bit in the string is&nbsp;0.  This brings us
+      to the leaf for&nbsp;A.  Then we start again at the root with the rest of
+      the string 1010, so we move right, left, right, left and reach&nbsp;C.
+      Thus, the entire message is BAC.
+      </div>
+
+      <H4>Generating Huffman trees</H4>
+        
+      
+      
+      <div class="normaltext">
+      Given an &#147;alphabet&#148; of symbols and their relative frequencies, how
+      do we construct the &#147;best&#148; code?  (In other words, which tree will
+      encode messages with the fewest bits?)  Huffman gave an algorithm for
+      doing this and showed that the resulting code is indeed the best
+      variable-length code for messages where the relative frequency of the
+      symbols matches the frequencies with which the code was constructed.
+      
+      
+      We will not prove this optimality of Huffman codes here, but we will
+      show how Huffman trees are constructed.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_13"><a class="link" href="#footnote_13">13</a></a></span>
+      </div>
+      <div class="normaltext">
+      The algorithm for generating a Huffman tree is very simple. The idea
+      is to arrange the tree so that the symbols with the lowest frequency
+      appear farthest away from the root. Begin with the set of leaf nodes,
+      containing symbols and their frequencies, as determined by the initial data
+      from which the code is to be constructed. Now find two leaves with
+      the lowest weights and merge them to produce a node that has these
+      two nodes as its left and right branches. The weight of the new node
+      is the sum of the two weights. Remove the two leaves from the
+      original set and replace them by this new node. Now continue this
+      process. At each step, merge two nodes with the smallest weights,
+      removing them from the set and replacing them with a node that has
+      these two as its left and right branches. The process stops when
+      there is only one node left, which is the root of the entire tree.
+      Here is how the Huffman tree of figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#fig:huffman">2.18</a> was generated:
+      
+
+      <P><img src="img_javascript/latex_65.png"></P>
+        
+      The algorithm does not always specify a unique tree, because there may
+      not be unique smallest-weight nodes at each step.  Also, the choice of
+      the order in which the two nodes are merged (i.e., which will be the
+      right branch and which will be the left branch) is arbitrary.
+      </div>
+
+      <H4>Representing Huffman trees</H4>
+        
+      
+
+      <div class="normaltext">
+      In the exercises below we will work with a system that uses
+      Huffman trees to encode and decode messages and generates Huffman
+      trees according to the algorithm outlined above.  We will begin by
+      discussing how trees are represented.
+      </div>
+      <div class="normaltext">
+      Leaves of the tree are represented by a list consisting of the
+      symbol <span class="javascriptinline">leaf</span>, the symbol at the leaf, and the weight:
+
+      <div style="position:absolute;display:none;" id="javascript_748_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_leaf(symbol,weight) {\n   return list(&quot;leaf&quot;,symbol,weight);\n}\nfunction is_leaf(object) {\n   return head(object) === &quot;leaf&quot;;\n}\nfunction weight_leaf(x) {\n   return head(tail(tail(x)));\n}','javascript_748','',event,1.0);">function make_leaf(symbol,weight) {
+   return list("leaf",symbol,weight);
+}
+function is_leaf(object) {
+   return head(object) === "leaf";
+}
+function weight_leaf(x) {
+   return head(tail(tail(x)));
+}</pre>
+      </div>
+      <div class="normaltext">
+      A general tree will be a list of a left branch, a right branch, a set
+      of symbols, and a weight.  The set of symbols will be simply a list of
+      the symbols, rather than some more sophisticated set representation.
+      When we make a tree by merging two nodes, we obtain the weight of the
+      tree as the sum of the weights of the nodes, and the set of symbols as
+      the union of the sets of symbols for the nodes.  Since our symbol sets are
+      represented as lists, we can form the union by using the <span class="javascriptinline">append</span>
+      function
+      we defined in section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_2.html')" href="#sec:sequences">2.2.1</a>:
+
+      <div style="position:absolute;display:none;" id="javascript_749_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_code_tree(left,right) {\n   return list(left,\n               append(symbols(left),symbols(right)),\n               weight(left) + weight(right));\n}','javascript_749','',event,1.0);">function make_code_tree(left,right) {
+   return list(left,
+               append(symbols(left),symbols(right)),
+               weight(left) + weight(right));
+}</pre>
+
+      If we make a tree in this way, we have the following selectors:
+
+      <div style="position:absolute;display:none;" id="javascript_750_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction left_branch(tree) {\n   return head(tree);\n}\nfunction right_branch(tree) {\n   return head(tail(tree));\n}\nfunction symbols(tree) {\n   if (is_leaf(tree)) \n      return list(symbol_leaf(tree));\n   else \n      return head(tail(tail(tree)));\n}\nfunction weight(tree) {\n   if (is_leaf(tree)) \n      return weight_leaf(tree);\n   else\n      head(tail(tail(tail(tree))));\n}','javascript_750','',event,1.0);">function left_branch(tree) {
+   return head(tree);
+}
+function right_branch(tree) {
+   return head(tail(tree));
+}
+function symbols(tree) {
+   if (is_leaf(tree)) 
+      return list(symbol_leaf(tree));
+   else 
+      return head(tail(tail(tree)));
+}
+function weight(tree) {
+   if (is_leaf(tree)) 
+      return weight_leaf(tree);
+   else
+      head(tail(tail(tail(tree))));
+}</pre>
+      </div>
+      <div class="normaltext">
+      The
+      functions
+      <span class="javascriptinline">symbols</span> and <span class="javascriptinline">weight</span> must do something
+      slightly different depending on whether they are called with a leaf or
+      a general tree.  These are simple examples of 
+      
+      
+      <em>generic
+        functions</em> (functions
+      that can handle more than one kind of data),
+      which we will have much more to say about in
+      sections&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')">2.4</a> and&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')">2.5</a>.
+      </div>
+
+      <H4>The decoding
+          function</H4>
+        
+      
+
+      <div class="normaltext">
+      The following
+      function
+      implements the decoding algorithm.
+      It takes as arguments a list of zeros and ones, together with
+      a Huffman tree.
+
+      <div style="position:absolute;display:none;" id="javascript_751_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction decode(bits,tree) {\n   function decode_1(bits,current_branch) {\n      if (is_empty_list(bits)) \n         return [];\n      else\n         var next_branch = choose_branch(head(bits),\n                                         current_branch);\n         if (is_leaf(next_branch))\n            return pair(symbol_leaf(next_branch),\n                        decode_1(tail(bits),tree));\n         else\n            return decode_1(tail(bits),next_branch);\n   }\n   return decode_1(bits,tree);\n}\nfunction choose_branch(bit,branch) {\n   if (bit === 0) \n      return left_branch(branch);\n   else if (bit === 1)\n      return right_branch(branch);\n   else\n      return error(&quot;bad bit -- choose_branch&quot;,bit);\n}','javascript_751','',event,1.0);">function decode(bits,tree) {
+   function decode_1(bits,current_branch) {
+      if (is_empty_list(bits)) 
+         return [];
+      else
+         var next_branch = choose_branch(head(bits),
+                                         current_branch);
+         if (is_leaf(next_branch))
+            return pair(symbol_leaf(next_branch),
+                        decode_1(tail(bits),tree));
+         else
+            return decode_1(tail(bits),next_branch);
+   }
+   return decode_1(bits,tree);
+}
+function choose_branch(bit,branch) {
+   if (bit === 0) 
+      return left_branch(branch);
+   else if (bit === 1)
+      return right_branch(branch);
+   else
+      return error("bad bit -- choose_branch",bit);
+}</pre>
+      </div>
+      <div class="normaltext">
+      The
+      function
+      <span class="javascriptinline">decode_1</span> takes two arguments: the list of remaining bits
+      and the current position in the tree.  It keeps moving
+      &#147;down&#148; the tree, choosing a left or a right branch according to
+      whether the next bit in the list is a zero or a one.  (This is done
+      with the
+      function
+      <span class="javascriptinline">choose_branch</span>.)  When it reaches a leaf, it
+      returns the symbol at that leaf as the next symbol in the message by
+      <span class="javascriptinline">pair</span>ing it onto the result of decoding
+      the rest of the message, starting at the root of the tree.
+      Note the error check in the final clause of <span class="javascriptinline">choose_branch</span>, which
+      complains if the
+      function
+      finds something other than a zero or a one in the
+      input data.
+      </div>
+
+      <H4>Sets of weighted elements</H4>
+        
+      
+
+      <div class="normaltext">
+      In our representation of trees, each non-leaf node contains a set of
+      symbols, which we have represented as a simple list.  However, the
+      tree-generating algorithm discussed above requires that we also work
+      with sets of leaves and trees, successively merging the two smallest
+      items.  Since we will be required to repeatedly find the smallest item
+      in a set, it is convenient to use an ordered representation for this
+      kind of set.
+      </div>
+      <div class="normaltext">
+      We will represent a set of leaves and trees as a list of elements,
+      arranged in increasing order of weight.  The following <span class="schemeinline">adjoin-set</span>
+      function
+      for constructing sets is similar to the one
+      described in exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:adjoin-set">2.64</a>; however, items are compared
+      by their weights, and the element being added to the set is
+      never already in it.
+
+      <div style="position:absolute;display:none;" id="javascript_752_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction adjoin_set(x,set) {\n   if (is_empty_list(set))\n      return list(x);\n   else if (weight(x) &lt; weight(head(set)))\n      return pair(x,set);\n   else \n      return pair(head(set),\n                  adjoin_set(x,tail(set)));\n}','javascript_752','',event,1.0);">function adjoin_set(x,set) {
+   if (is_empty_list(set))
+      return list(x);
+   else if (weight(x) &lt; weight(head(set)))
+      return pair(x,set);
+   else 
+      return pair(head(set),
+                  adjoin_set(x,tail(set)));
+}</pre>
+      </div>
+      <div class="normaltext">
+      The following
+      function
+      takes a list of
+      symbol-frequency pairs such as <span class="javascriptinline">[["A",[4,[]]],[["B",[2,[]]],[["C",[1,[]]],[["D",[1,[]]]]]]]</span> and
+      constructs an initial ordered set of leaves, ready to be merged
+      according to the Huffman algorithm:
+
+      <div style="position:absolute;display:none;" id="javascript_753_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_leaf_set(pairs) {\n   if (is_empty_list(pairs)) \n      return [];\n   else {\n      var first_pair = head(pairs);\n      return adjoin_set(make_leaf(head(first_pair),        // symbol\n                                  head(tail(first_pair))), // frequency\n                        make_leaf_set(tail(pairs)));\n   }\n}','javascript_753','',event,1.0);">function make_leaf_set(pairs) {
+   if (is_empty_list(pairs)) 
+      return [];
+   else {
+      var first_pair = head(pairs);
+      return adjoin_set(make_leaf(head(first_pair),        // symbol
+                                  head(tail(first_pair))), // frequency
+                        make_leaf_set(tail(pairs)));
+   }
+}</pre>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.70.</b>
+        Define an encoding tree and a sample message:
+
+        <div style="position:absolute;display:none;" id="javascript_754_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar sample_tree =\n    make_code_tree(make_leaf(&quot;A&quot;,4),\n                   make_code_tree(make_leaf(&quot;B&quot;,2),\n                                  make_code_tree(make_leaf(&quot;D&quot;,1),\n                                                 make_leaf(&quot;C&quot;,1))));','javascript_754','',event,1.0);">var sample_tree =
+    make_code_tree(make_leaf("A",4),
+                   make_code_tree(make_leaf("B",2),
+                                  make_code_tree(make_leaf("D",1),
+                                                 make_leaf("C",1))));</pre>
+
+        Use the <span class="javascriptinline">decode</span>
+        function
+        to decode the
+        message, and give the result.
+        <a name="ex:sample-tree"></a>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.71.</b><a name="ex:encode-symbol"></a> 
+        The <span class="javascriptinline">encode</span>
+        function
+        takes as arguments a message and a tree and
+        produces the list of bits that gives the encoded message.
+
+        <div style="position:absolute;display:none;" id="javascript_755_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction encode(message,tree) {\n   if (is_empty_list(message))\n      return [];\n   else \n      return append(encode_symbol(head(message),tree),\n                    encode_symbol(tail(message),tree));\n}','javascript_755','',event,1.0);">function encode(message,tree) {
+   if (is_empty_list(message))
+      return [];
+   else 
+      return append(encode_symbol(head(message),tree),
+                    encode_symbol(tail(message),tree));
+}</pre>
+
+        Write the function <span class="javascriptinline">encode_symbol</span>
+            that returns the list of bits that encodes a given symbol according to a given tree.
+          
+        You should design <span class="javascriptinline">encode_symbol</span> so that it signals an
+        error if the symbol is not in the tree at all.  Test your
+        function
+        by
+        encoding the result you obtained in exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:sample-tree">2.70</a> with
+        the sample tree and seeing whether it is the same as the original
+        sample message.
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.72.</b> 
+        The following
+        function
+        takes as its argument a list of
+        symbol-frequency pairs (where no symbol appears in more than one pair)
+        and generates a Huffman encoding tree according to the Huffman
+        algorithm.
+
+        <div style="position:absolute;display:none;" id="javascript_756_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction generate_huffman_tree(pairs) {\n   return successive_merge(make_leaf_set(pairs));\n}','javascript_756','',event,1.0);">function generate_huffman_tree(pairs) {
+   return successive_merge(make_leaf_set(pairs));
+}</pre>
+
+        
+            The function <span class="javascriptinline">make_leaf_set</span> 
+            that transforms the
+            list of pairs into an ordered set of leaves is given above.  
+            Write the function <span class="javascriptinline">successive_merge</span>
+            using <span class="javascriptinline">make_code_tree</span> to
+            successively merge the smallest-weight elements of the set until there
+            is only one element left, which is the desired Huffman tree.  
+          
+        (This
+        function
+        is slightly tricky, but not really complicated.  If you find
+        yourself designing a complex
+        function, then you are almost certainly
+        doing something wrong.  You can take significant advantage of the fact
+        that we are using an ordered set representation.)
+        <a name="ex:generate-huffman-tree"></a>
+    <div style="position:absolute;display:none;" id="javascript_757_div"></div>
+      </div>
+
+
+      <div class="exercise">
+<b>Exercise 2.73.</b> 
+        
+        The following eight-symbol alphabet with associated relative
+        frequencies was designed to efficiently encode the lyrics of 1950s
+        rock songs.  (Note that the &#147;symbols&#148; of an &#147;alphabet&#148; need not be
+        individual letters.)
+        <P><img src="img_javascript/latex_66.png"></P>
+        Use <span class="javascriptinline">generate_huffman_tree</span> (exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:generate-huffman-tree">2.72</a>)
+        to generate a corresponding Huffman tree, and use
+        <span class="javascriptinline">encode</span> (exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:encode-symbol">2.71</a>)
+        to encode the following message:
+
+        
+        <pre>
+Get a job
+
+Sha na na na na na na na na
+
+Get a job
+
+Sha na na na na na na na na
+
+Wah yip yip yip yip yip yip yip yip yip
+
+Sha boom
+        </pre>
+        How many bits are required for the encoding?  What is the smallest
+        number of bits that would be needed to encode this song if we 
+        used a fixed-length code for the eight-symbol alphabet?
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.74.</b> 
+        Suppose we have a Huffman tree for an alphabet of <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_862.png"></span> symbols, and
+        that the relative frequencies of the symbols are 1, 2, 4, &#8230;,
+        <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_863.png"></span>.  Sketch the tree for <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_864.png"></span>=5; for <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_865.png"></span>=10.  In such a tree
+        (for general <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_866.png"></span>) how may bits are required to encode the most
+        frequent symbol?  the least frequent symbol?
+        <a name="ex:huffman-count"></a>
+    <div style="position:absolute;display:none;" id="javascript_758_div"></div>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.75.</b> 
+        
+        Consider the encoding
+        function
+        that you designed in
+        exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:encode-symbol">2.71</a>.  What is the order of growth in the
+        number of steps needed to encode a symbol?  Be sure to include the
+        number of steps needed to search the symbol list at each node
+        encountered.  To answer this question in general is difficult.
+        Consider the special case where the relative frequencies of the <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_867.png"></span>
+        symbols are as described in exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:huffman-count">2.74</a>, and give
+        the order of growth (as a function of <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_868.png"></span>) of the number of steps
+        needed to encode the most frequent and least frequent symbols in the
+        alphabet.
+    <div style="position:absolute;display:none;" id="javascript_759_div"></div>
+      </div>
+      
+
+    
+
+  <div class="navbar" align="center">
+<hr>
+<a class="link" onclick="window.displayManager.show('section_2_2.html')">previous section</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('chapter_2.html')">this chapter</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')">next section</a><hr>
+</div><strong class="footnote">Footnotes</strong><div class="footnote">
+<a name="footnote_6"><sup><a class="link" href="#footnote_origin_6">6</a></sup></a>This definition
+              skirts a deep issue that we are not yet ready to address: the meaning
+              of &#147;sameness&#148; in a programming language.  We will return to this in
+              chapter&nbsp;3 (section&nbsp;).</div><div class="footnote">
+<a name="footnote_7"><sup><a class="link" href="#footnote_origin_7">7</a></sup></a>In practice, programmers
+              use <span class="javascriptinline">is_equal</span> to compare lists that contain numbers as well as
+              symbols.  Numbers are not considered to be strings.  A better definition
+              of <span class="javascriptinline">is_equal</span> 
+              would also stipulate that if <span class="javascriptinline">a</span> and <span class="javascriptinline">b</span> are
+              both numbers, then <span class="javascriptinline">a</span> and <span class="javascriptinline">b</span> are equal with respect to <span class="javascriptinline">is_equal</span> if they are equal with respect to ===.</div><div class="footnote">
+<a name="footnote_8"><sup><a class="link" href="#footnote_origin_8">8</a></sup></a>If
+        we want to be more formal, we can specify &#147;consistent with the
+          interpretations given above&#148; to mean that the operations satisfy a
+        collection of rules such as these:
+
+        <ul>
+          <li>For any set <span class="javascriptinline">S</span> and any object <span class="javascriptinline">x</span>,
+            <span class="javascriptinline">is_element_of_set(x,S)</span>
+            is true (informally: &#147;Adjoining an object to a set produces a set that contains the object&#148;).
+
+          </li>
+          <li>
+            For any sets <span class="javascriptinline">S</span> and <span class="javascriptinline">T</span> and any object <span class="javascriptinline">x</span>,
+            <span class="javascriptinline">is_element_of_set(x,union_set(S,T))</span>
+            is equal to
+            <span class="javascriptinline">is_element_of_set(x,S) || is_element_of_set(x,T)</span>
+            (informally: &#147;The elements of <span class="javascriptinline">union(S,T)</span> are the elements that
+              are in <span class="javascriptinline">S</span> or in <span class="javascriptinline">T</span>&#148;).
+
+          </li>
+          <li>
+            For any object <span class="javascriptinline">x</span>,
+            <span class="javascriptinline">is_element_of_set(x,[])</span>
+            is false (informally: &#147;No object is an element of the empty set&#148;).
+
+          </li>
+        </ul>
+      </div><div class="footnote">
+<a name="footnote_9"><sup><a class="link" href="#footnote_origin_9">9</a></sup></a>Halving the size of the problem at each step is the
+        distinguishing characteristic of 
+        
+        logarithmic growth, as we saw with
+        the fast-exponentiation algorithm of section&nbsp;<a class="link" onclick="window.displayManager.show('section_1_2.html')" href="#sec:exponentiation">1.2.4</a>
+        and the half-interval search method of
+        section&nbsp;<a class="link" onclick="window.displayManager.show('section_1_3.html')" href="#sec:proc-general-methods">1.3.3</a>.</div><div class="footnote">
+<a name="footnote_10"><sup><a class="link" href="#footnote_origin_10">10</a></sup></a>We are
+        representing sets in terms of trees, and trees in terms of lists—in
+        effect, a data abstraction built upon a data abstraction.  We can
+        regard the
+        functions
+        <span class="javascriptinline">entry</span>, <span class="javascriptinline">left_branch</span>, <span class="javascriptinline">right_branch</span>, and <span class="javascriptinline">make_tree</span> as a way of isolating the
+        abstraction of a &#147;binary tree&#148; from the particular way we might wish
+        to represent such a tree in terms of list structure.</div><div class="footnote">
+<a name="footnote_11"><sup><a class="link" href="#footnote_origin_11">11</a></sup></a>Examples of such structures include
+        
+        
+        
+        
+        <em>B-trees</em> and <em>red-black trees</em>.  There is a large literature on
+        data structures devoted to this problem.  See Cormen,
+        
+        
+        
+        Leiserson, and Rivest 1990.</div><div class="footnote">
+<a name="footnote_12"><sup><a class="link" href="#footnote_origin_12">12</a></sup></a>Exercises&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:tree-to-list">2.66</a>–<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:tree-ops">2.68</a>
+          
+          are due to Paul Hilfinger.</div><div class="footnote">
+<a name="footnote_13"><sup><a class="link" href="#footnote_origin_13">13</a></sup></a>See 
+        Hamming 1980
+        
+        for a discussion of the mathematical properties of Huffman codes.</div>

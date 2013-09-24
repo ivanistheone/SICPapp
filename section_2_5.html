@@ -1,0 +1,974 @@
+<div class="navbar" align="center">
+<a class="link" onclick="window.displayManager.show('section_2_4.html')">previous section</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('chapter_2.html')">this chapter</a>&nbsp;&nbsp;&nbsp;<hr>
+</div><h2><a name="section_2_5">2.5&nbsp;Systems with Generic Operations</a></h2>
+    
+
+    <div class="subtoc">
+<strong>In this section</strong><p></p>
+<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#subsection_2_5_1">2.5.1&nbsp;
+        Generic Arithmetic Operations
+      </a><br><a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#subsection_2_5_2">2.5.2&nbsp;
+        Combining Data of Different Types
+      </a><br>
+</div>
+
+    <a name="sec:generic-operators"></a>
+    <div class="normaltext">
+    
+    In the previous section, we saw how to design systems in which data
+    objects can be represented in more than one way.  The key idea is to
+    link the code that specifies the data operations to the several
+    representations by means of generic interface
+    functions.  Now we will
+    see how to use this same idea not only to define operations that are
+    generic over different representations but also to define operations
+    that are generic over different kinds of arguments.  We have already
+    seen several different packages of arithmetic operations: the primitive
+    arithmetic (<span class="javascriptinline">+</span>, <span class="javascriptinline">-</span>, <span class="javascriptinline">*</span>, <span class="javascriptinline">/</span>) built into our
+    language, the rational-number arithmetic (<span class="javascriptinline">add_rat</span>, <span class="javascriptinline">sub_rat</span>, <span class="javascriptinline">mul_rat</span>, <span class="javascriptinline">div_rat</span>) of
+    section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#sec:rationals">2.1.1</a>, and the complex-number arithmetic that we
+    implemented in section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:data-directed">2.4.3</a>.  We will now use
+    data-directed techniques to construct a package of arithmetic
+    operations that incorporates all the arithmetic packages we have already
+    constructed.
+    </div>
+    <div class="normaltext">
+    Figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#fig:generic-system">2.23</a> shows the structure of the system we
+    shall build.  Notice the 
+    
+    abstraction barriers.  From the perspective
+    of someone using &#147;numbers,&#148; there is a single
+    function
+    <span class="javascriptinline">add</span>
+    that operates on whatever numbers are supplied.  The function <span class="javascriptinline">add</span> is part of
+    a generic interface that allows the separate ordinary-arithmetic,
+    rational-arithmetic, and complex-arithmetic packages to be accessed
+    uniformly by programs that use numbers.  Any individual arithmetic
+    package (such as the complex package) may itself be accessed through
+    generic
+    functions
+    (such as <span class="javascriptinline">add_complex</span>) that combine packages
+    designed for different representations (such as rectangular and
+    polar).  Moreover, the structure of the system is additive, so
+    that one can design the individual arithmetic packages separately and
+    combine them to produce a generic arithmetic system.
+    
+
+      <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-64.gif" border="0">
+        
+        <a name="fig:generic-system"></a>
+      </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  23</b>&nbsp;&nbsp;&nbsp;Generic arithmetic system.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+    </div>
+
+    <h3><a name="subsection_2_5_1">2.5.1&nbsp;
+        Generic Arithmetic Operations
+      </a></h3>
+      
+
+      <a name="sec:generic-arithmetic-operators"></a>
+      
+      <div class="normaltext">
+      The task of designing generic arithmetic operations is analogous to
+      that of designing the generic complex-number operations.  We would
+      like, for instance, to have a generic addition
+      function
+      <span class="javascriptinline">add</span> that
+      acts like ordinary primitive addition <span class="javascriptinline">+</span> on ordinary numbers,
+      like <span class="javascriptinline">add_rat</span> on rational numbers, and like <span class="javascriptinline">add_complex</span> on
+      complex numbers.  We can implement <span class="javascriptinline">add</span>, and the other generic
+      arithmetic operations, by following the same strategy we used in
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:data-directed">2.4.3</a> to implement the generic selectors for
+      complex numbers.  We will attach a type tag to each kind of
+      number and cause the generic
+      function
+      to dispatch to an appropriate
+      package according to the data type of its arguments.
+      </div>
+      <div class="normaltext">
+      The generic arithmetic
+      functions
+      are defined as follows:
+
+      <div style="position:absolute;display:none;" id="javascript_783_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction add(x,y) {\n   return apply_generic(&quot;add&quot;,list(x,y));\n}\nfunction sub(x,y) {\n   return apply_generic(&quot;sub&quot;,list(x,y));\n}\nfunction mul(x,y) {\n   return apply_generic(&quot;mul&quot;,list(x,y));\n}\nfunction div(x,y) {\n   return apply_generic(&quot;div&quot;,list(x,y));\n}','javascript_783','',event,1.0);">function add(x,y) {
+   return apply_generic("add",list(x,y));
+}
+function sub(x,y) {
+   return apply_generic("sub",list(x,y));
+}
+function mul(x,y) {
+   return apply_generic("mul",list(x,y));
+}
+function div(x,y) {
+   return apply_generic("div",list(x,y));
+}</pre>
+
+      
+      
+      We begin by installing a package for handling <em>ordinary</em> numbers,
+      that is, the primitive numbers of our language.  We will tag these
+      with the symbol <span class="javascriptinline">javascript_number</span>.  The arithmetic operations in this
+      package are the primitive arithmetic
+      functions
+      (so there is no need to
+      define extra
+      functions
+      to handle the untagged numbers).  Since
+      these operations each take two arguments, they are installed in the
+      table keyed by the list <span class="javascriptinline">list("javascript_number","javascript_number")</span>:
+      
+      
+
+      <div style="position:absolute;display:none;" id="javascript_784_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction install_javascript_number_package() {\n    function tag(x) {\n        return attach_tag(&quot;javascript_number&quot;,x);\n    }\n    function make_number(x) { return tag(x); }\n    function add(as)     { return tag(head(as) + head(tail(as))); }\n    function sub(as)     { return tag(head(as) - head(tail(as))); }\n    function mul(as)     { return tag(head(as) * head(tail(as))); }\n    function div(as)     { return tag(head(as) / head(tail(as))); }\n    put(&quot;make&quot;, &quot;javascript_number&quot;, make_number);\n    put(&quot;add&quot;, list(&quot;javascript_number&quot;, &quot;javascript_number&quot;), add);\n    put(&quot;sub&quot;, list(&quot;javascript_number&quot;, &quot;javascript_number&quot;), sub);\n    put(&quot;mul&quot;, list(&quot;javascript_number&quot;, &quot;javascript_number&quot;), mul);\n    put(&quot;div&quot;, list(&quot;javascript_number&quot;, &quot;javascript_number&quot;), div);\n}','javascript_784','',event,1.0);">function install_javascript_number_package() {
+    function tag(x) {
+        return attach_tag("javascript_number",x);
+    }
+    function make_number(x) { return tag(x); }
+    function add(as)     { return tag(head(as) + head(tail(as))); }
+    function sub(as)     { return tag(head(as) - head(tail(as))); }
+    function mul(as)     { return tag(head(as) * head(tail(as))); }
+    function div(as)     { return tag(head(as) / head(tail(as))); }
+    put("make", "javascript_number", make_number);
+    put("add", list("javascript_number", "javascript_number"), add);
+    put("sub", list("javascript_number", "javascript_number"), sub);
+    put("mul", list("javascript_number", "javascript_number"), mul);
+    put("div", list("javascript_number", "javascript_number"), div);
+}</pre>
+
+      Users of the JavaScript-number package
+      will create (tagged) ordinary numbers by means of the
+      function:
+
+      <div style="position:absolute;display:none;" id="javascript_785_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_javascript_number(n) {\n   return get(&quot;make&quot;,&quot;javascript_number&quot;)(n);\n}','javascript_785','',event,1.0);">function make_javascript_number(n) {
+   return get("make","javascript_number")(n);
+}</pre>
+      </div>
+      <div class="normaltext">
+      Now that the framework of the generic arithmetic system is in place,
+      we can readily include new kinds of numbers.  Here is a package that
+      performs rational arithmetic.  Notice that, as a benefit of
+      additivity, we can use without modification the rational-number code
+      from section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#sec:rationals">2.1.1</a> as the internal
+      functions
+      in the
+      package:
+      
+      
+      
+
+      <div style="position:absolute;display:none;" id="javascript_786_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction install_rational_package() {\n    function make_rat(n, d) { \n        return pair(n, d); \n    }\n    function numer(x) { \n        return head(x); \n    }\n    function denom(x) {\n        return tail(x);\n    }\n    function add_rat(x, y) {\n        return make_rat(add(mul(numer(x), denom(y)),\n                            mul(denom(x), numer(y))),\n                        mul(denom(x), denom(y)));\n    }\n    function sub_rat(x, y) {\n        return make_rat(sub(mul(numer(x), denom(y)),\n                            mul(denom(x), numer(y))),\n                        mul(denom(x), denom(y)));\n    }\n    function mul_rat(x, y) {\n        return make_rat(mul(numer(x), numer(y)),\n                        mul(denom(x), denom(y)));\n    }\n    function div_rat(x, y) {\n        return make_rat(mul(numer(x), denom(y)),\n                        mul(denom(x), numer(y)));\n    }\n    function tag(x) {\n        return attach_tag(&quot;rational&quot;, x);\n    }\n    function make_rational(x, y) {\n        return tag(make_rat(x, y));\n    }\n    function add_rational(as) {\n        return tag(add_rat(head(as), head(tail(as))));\n    }\n    function sub_rational(as) {\n        return tag(sub_rat(head(as), head(tail(as))));\n    }\n    function mul_rational(as) {\n        return tag(mul_rat(head(as), head(tail(as))));\n    }\n    function div_rational(as) {\n        return tag(div_rat(head(as), head(tail(as))));\n    }\n\n    put(&quot;make&quot;, &quot;rational&quot;, make_rational);\n    put(&quot;add&quot;, list(&quot;rational&quot;, &quot;rational&quot;), add_rational);\n    put(&quot;sub&quot;, list(&quot;rational&quot;, &quot;rational&quot;), sub_rational);\n    put(&quot;mul&quot;, list(&quot;rational&quot;, &quot;rational&quot;), mul_rational);\n    put(&quot;div&quot;, list(&quot;rational&quot;, &quot;rational&quot;), div_rational);\n}\n\nfunction make_rational(n, d) {\n    return (get(&quot;make&quot;, &quot;rational&quot;))(n, d);\n}','javascript_786','',event,1.0);">function install_rational_package() {
+    function make_rat(n, d) { 
+        return pair(n, d); 
+    }
+    function numer(x) { 
+        return head(x); 
+    }
+    function denom(x) {
+        return tail(x);
+    }
+    function add_rat(x, y) {
+        return make_rat(add(mul(numer(x), denom(y)),
+                            mul(denom(x), numer(y))),
+                        mul(denom(x), denom(y)));
+    }
+    function sub_rat(x, y) {
+        return make_rat(sub(mul(numer(x), denom(y)),
+                            mul(denom(x), numer(y))),
+                        mul(denom(x), denom(y)));
+    }
+    function mul_rat(x, y) {
+        return make_rat(mul(numer(x), numer(y)),
+                        mul(denom(x), denom(y)));
+    }
+    function div_rat(x, y) {
+        return make_rat(mul(numer(x), denom(y)),
+                        mul(denom(x), numer(y)));
+    }
+    function tag(x) {
+        return attach_tag("rational", x);
+    }
+    function make_rational(x, y) {
+        return tag(make_rat(x, y));
+    }
+    function add_rational(as) {
+        return tag(add_rat(head(as), head(tail(as))));
+    }
+    function sub_rational(as) {
+        return tag(sub_rat(head(as), head(tail(as))));
+    }
+    function mul_rational(as) {
+        return tag(mul_rat(head(as), head(tail(as))));
+    }
+    function div_rational(as) {
+        return tag(div_rat(head(as), head(tail(as))));
+    }
+
+    put("make", "rational", make_rational);
+    put("add", list("rational", "rational"), add_rational);
+    put("sub", list("rational", "rational"), sub_rational);
+    put("mul", list("rational", "rational"), mul_rational);
+    put("div", list("rational", "rational"), div_rational);
+}
+
+function make_rational(n, d) {
+    return (get("make", "rational"))(n, d);
+}</pre>
+      </div>
+      <div class="normaltext">
+      We can install a similar package to handle complex numbers, using the
+      tag <span class="javascriptinline">"complex"</span>.  In creating the package, we extract from the table
+      the operations <span class="javascriptinline">make_from_real_imag</span> and <span class="javascriptinline">make_from_mag_ang</span>
+      that were defined by the rectangular and polar packages.  
+      
+      Additivity
+      permits us to use, as the internal operations, the same <span class="javascriptinline">add_complex</span>, <span class="javascriptinline">sub_complex</span>, <span class="javascriptinline">mul_complex</span>, and <span class="javascriptinline">div_complex</span>
+      functions
+      from
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:representations-complex-numbers">2.4.1</a>.
+      
+      
+      
+
+      <div style="position:absolute;display:none;" id="javascript_787_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction install_complex_package() {\n    function make_from_real_imag(x, y) {\n        return get(&quot;make_from_real_imag&quot;, &quot;rectangular&quot;)(x, y);\n    }\n    function make_from_mag_ang(r, a) {\n        return get(&quot;make_from_mag_ang&quot;, &quot;polar&quot;)(r, a);\n    }\n    function add_com(x, y) {\n        return make_from_real_imag(add(real(x), real(y)),\n                                   add(imag(x), imag(y)));\n    }\n    function sub_com(x, y) {\n        return make_from_real_imag(sub(real(x), real(y)),\n	                           sub(imag(x), imag(y)));\n    }\n    function mul_com(x, y) {\n        return make_from_mag_ang(mul(mag(x), mag(y)),\n                                 add(ang(x), ang(y)));\n    }\n    function div_com(x, y) {\n        return make_from_mag_ang(div(mag(x), mag(y)),\n                                 sub(ang(x), ang(y)));\n    }\n    function tag(x) {\n        return attach_tag(&quot;complex&quot;, x);\n    }\n    function make_complex_from_real_imag(x, y) { \n        return tag(make_from_real_imag(x, y)); \n    }\n    function make_complex_from_mag_ang(r, a) { \n        return tag(make_from_mag_ang(r, a)); \n    }\n    function add_complex(as)  { return tag(add_com(head(as),head(tail(as)))); }\n    function sub_complex(as)  { return tag(sub_com(head(as),head(tail(as)))); }\n    function mul_complex(as)  { return tag(mul_com(head(as),head(tail(as)))); }\n    function div_complex(as)  { return tag(div_com(head(as),head(tail(as)))); }\n    \n    put(&quot;make_from_real_imag&quot;, &quot;complex&quot;, make_complex_from_real_imag);\n    put(&quot;make_from_mag_ang&quot;, &quot;complex&quot;, make_complex_from_mag_ang);\n    put(&quot;add&quot;, list(&quot;complex&quot;, &quot;complex&quot;), add_complex);\n    put(&quot;sub&quot;, list(&quot;complex&quot;, &quot;complex&quot;), sub_complex);\n    put(&quot;mul&quot;, list(&quot;complex&quot;, &quot;complex&quot;), mul_complex);\n    put(&quot;div&quot;, list(&quot;complex&quot;, &quot;complex&quot;), div_complex);\n}','javascript_787','',event,1.0);">function install_complex_package() {
+    function make_from_real_imag(x, y) {
+        return get("make_from_real_imag", "rectangular")(x, y);
+    }
+    function make_from_mag_ang(r, a) {
+        return get("make_from_mag_ang", "polar")(r, a);
+    }
+    function add_com(x, y) {
+        return make_from_real_imag(add(real(x), real(y)),
+                                   add(imag(x), imag(y)));
+    }
+    function sub_com(x, y) {
+        return make_from_real_imag(sub(real(x), real(y)),
+	                           sub(imag(x), imag(y)));
+    }
+    function mul_com(x, y) {
+        return make_from_mag_ang(mul(mag(x), mag(y)),
+                                 add(ang(x), ang(y)));
+    }
+    function div_com(x, y) {
+        return make_from_mag_ang(div(mag(x), mag(y)),
+                                 sub(ang(x), ang(y)));
+    }
+    function tag(x) {
+        return attach_tag("complex", x);
+    }
+    function make_complex_from_real_imag(x, y) { 
+        return tag(make_from_real_imag(x, y)); 
+    }
+    function make_complex_from_mag_ang(r, a) { 
+        return tag(make_from_mag_ang(r, a)); 
+    }
+    function add_complex(as)  { return tag(add_com(head(as),head(tail(as)))); }
+    function sub_complex(as)  { return tag(sub_com(head(as),head(tail(as)))); }
+    function mul_complex(as)  { return tag(mul_com(head(as),head(tail(as)))); }
+    function div_complex(as)  { return tag(div_com(head(as),head(tail(as)))); }
+    
+    put("make_from_real_imag", "complex", make_complex_from_real_imag);
+    put("make_from_mag_ang", "complex", make_complex_from_mag_ang);
+    put("add", list("complex", "complex"), add_complex);
+    put("sub", list("complex", "complex"), sub_complex);
+    put("mul", list("complex", "complex"), mul_complex);
+    put("div", list("complex", "complex"), div_complex);
+}</pre>
+      </div>
+      <div class="normaltext">
+      Programs outside the complex-number package can construct complex
+      numbers either from real and imaginary parts or from magnitudes and
+      angles.  Notice how the underlying
+      functions, originally defined in
+      the rectangular and polar packages, are exported to the complex
+      package, and exported from there to the outside world.
+
+      <div style="position:absolute;display:none;" id="javascript_788_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_complex_from_real_imag(x,y){\n   return get(&quot;make_from_real_imag&quot;,&quot;complex&quot;)(x,y);\n}\nfunction make_complex_from_mag_ang(r,a){\n   return get(&quot;make_from_mag_ang&quot;,&quot;complex&quot;)(r,a);\n}','javascript_788','',event,1.0);">function make_complex_from_real_imag(x,y){
+   return get("make_from_real_imag","complex")(x,y);
+}
+function make_complex_from_mag_ang(r,a){
+   return get("make_from_mag_ang","complex")(r,a);
+}</pre>
+
+      
+      What we have here is a two-level tag system.  A typical complex number,
+      such as <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_892.png"></span> in rectangular form, would be
+      represented as shown in figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#fig:complex-number-structure">2.24</a>.
+      The outer tag (<span class="javascriptinline">"complex"</span>) is used to direct the number to the
+      complex package.  Once within the complex package, the next tag (<span class="javascriptinline">"rectangular"</span>) is used to direct the number to the rectangular package.
+      In a large and complicated system there might be many levels, each
+      interfaced with the next by means of generic operations.  As a data
+      object is passed &#147;downward,&#148; the outer tag that is used to direct
+      it to the appropriate package is stripped off (by applying <span class="javascriptinline">contents</span>) and the next level of tag (if any) becomes visible to be used for
+      further dispatching.
+
+      <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-65.gif" border="0">
+        
+        <a name="fig:complex-number-structure"></a>
+      </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  24</b>&nbsp;&nbsp;&nbsp;Representation of <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_893.png"></span> in rectangular form.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+      </div>
+      <div class="normaltext">
+        In the above packages, we used <span class="javascriptinline">add_rat</span>, <span class="javascriptinline">add_complex</span>, and
+      the other arithmetic
+      functions
+      exactly as originally written.
+      Once these definitions are internal to different installation
+      functions,
+      however, they no longer need names that are distinct from each other:
+      we could simply name them <span class="javascriptinline">add</span>, <span class="javascriptinline">sub</span>, <span class="javascriptinline">mul</span>, and <span class="javascriptinline">div</span>
+      in both packages.
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.80.</b> 
+        Louis Reasoner tries to evaluate the
+        expression <span class="javascriptinline">magnitude(z)</span> where <span class="javascriptinline">z</span> is the object
+        shown in figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#fig:complex-number-structure">2.24</a>.  To his
+        surprise, instead of the answer <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_894.png"></span>
+        he gets an error message from <span class="javascriptinline">apply_generic</span>,
+        saying there is no method for the operation <span class="javascriptinline">magnitude</span>
+        on the types <span class="javascriptinline">["complex",[]]</span>.
+        He shows this interaction to Alyssa P. Hacker, who says
+        &#147;The problem is that the complex-number selectors were never
+          defined for <span class="javascriptinline">"complex"</span> numbers, just for <span class="javascriptinline">"polar"</span> and <span class="javascriptinline">"rectangular"</span>
+          numbers.  All you have to do to make this work is add the following
+          to the <span class="schemeinline">complex</span> package:&#148;
+
+        <div style="position:absolute;display:none;" id="javascript_789_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nput(&quot;real_part&quot;,list(&quot;complex&quot;),real_part);\nput(&quot;imag_part&quot;,list(&quot;complex&quot;),imag_part);\nput(&quot;magnitude&quot;,list(&quot;complex&quot;),magnitude);\nput(&quot;angle&quot;,list(&quot;complex&quot;),angle);','javascript_789','',event,1.0);">put("real_part",list("complex"),real_part);
+put("imag_part",list("complex"),imag_part);
+put("magnitude",list("complex"),magnitude);
+put("angle",list("complex"),angle);</pre>
+
+        Describe in detail why this works.  As an example, trace through all
+        the
+        functions
+        called in evaluating the expression <span class="javascriptinline">magnitude(z)</span>
+        where <span class="javascriptinline">z</span> is the object shown in
+        figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#fig:complex-number-structure">2.24</a>.  In particular, how many
+        times is <span class="javascriptinline">apply_generic</span> invoked?  What
+        function
+        is dispatched to
+        in each case?
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.81.</b> 
+        
+        
+        
+        
+        
+        
+        
+        The internal
+        functions
+        in the <span class="javascriptinline">javascript_number</span> package are essentially
+        nothing more than calls to the primitive
+        functions
+        <span class="javascriptinline">+</span>, <span class="javascriptinline">-</span>,
+        etc.  It was not possible to use the primitives of the language
+        directly because our type-tag system requires that each data
+        object have a type attached to it.  In fact, however, all JavaScript
+        implementations do have a type system, which they use internally.
+        Primitive predicates such as <span class="javascriptinline">is_string</span> and <span class="javascriptinline">is_number</span>
+        determine whether data objects have particular types.  Modify the
+        definitions of <span class="javascriptinline">type_tag</span>, <span class="javascriptinline">contents</span>, and <span class="javascriptinline">attach_tag</span>
+        from section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:manifest-types">2.4.2</a> so that our generic system takes
+        advantage of JavaScript&#146;s internal type system.  That is to say, the system
+        should work as before except that ordinary numbers should be
+        represented simply as JavaScript numbers rather than as pairs whose <span class="javascriptinline">head</span> is
+        the string <span class="javascriptinline">"javascript_number"</span>.
+        <a name="ex:internal-type-system"></a>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.82.</b> 
+        
+        
+        Define a generic equality predicate <span class="javascriptinline">is_equ</span> that tests the equality
+        of two numbers, and install it in the generic arithmetic
+        package.  This operation should work for ordinary numbers, rational numbers, and
+        complex numbers.
+        <a name="ex:equ?"></a>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.83.</b>
+        
+        
+        Define a generic
+        predicate <span class="javascriptinline">is_equal_to_zero</span> that tests if its argument is zero,
+        and install it in the generic arithmetic package.  This
+        operation should work for ordinary numbers, rational numbers, and
+        complex numbers.
+        <a name="ex:=zero?"></a>
+      </div>
+      
+
+    
+
+    <h3><a name="subsection_2_5_2">2.5.2&nbsp;
+        Combining Data of Different Types
+      </a></h3>
+      
+
+      <a name="sec:combining-data-of-different-types"></a>
+
+      <div class="normaltext">
+      We have seen how to define a unified arithmetic system that
+      encompasses ordinary numbers, complex numbers, rational numbers, and
+      any other type of number we might decide to invent, but we have
+      ignored an important issue.  The operations we have defined so far
+      treat the different data types as being completely independent.  Thus,
+      there are separate packages for adding, say, two ordinary numbers, or
+      two complex numbers.  What we have not yet considered is the fact that
+      it is meaningful to define operations that cross the type boundaries,
+      such as the addition of a complex number to an ordinary number.  We
+      have gone to great pains to introduce barriers between parts of our
+      programs so that they can be developed and understood separately.  We
+      would like to introduce the cross-type operations in some carefully
+      controlled way, so that we can support them
+      without seriously violating our module boundaries.
+      </div>
+      <div class="normaltext">
+      
+      
+      
+      One way to handle cross-type operations is to design a different
+      function
+      for each possible combination of types for which the
+      operation is valid.  For example, we could extend the complex-number
+      package so that it provides a
+      function
+      for adding complex numbers to
+      ordinary numbers and installs this in the table using the tag <span class="javascriptinline">list("complex","javascript_number")</span>:<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_1"><a class="link" href="#footnote_1">1</a></a></span>
+      <div style="position:absolute;display:none;" id="javascript_790_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction add_complex_to_javascript_num(z,x) {\n   return make_from_real_imag(add(real_part(z), x),\n                              imag_part(z));\n}\nput(&quot;add&quot;,list(&quot;complex&quot;,&quot;javascript_number&quot;),\n    function(z,x) { return tag(add_complex_to_javascript_num(z,x)); })','javascript_790','',event,1.0);">function add_complex_to_javascript_num(z,x) {
+   return make_from_real_imag(add(real_part(z), x),
+                              imag_part(z));
+}
+put("add",list("complex","javascript_number"),
+    function(z,x) { return tag(add_complex_to_javascript_num(z,x)); })</pre>
+      </div>
+      <div class="normaltext">
+      This technique works, but it is cumbersome.  With such a system, the
+      cost of introducing a new type is not just the construction of the
+      package of
+      functions
+      for that type but also the construction and
+      installation of the
+      functions
+      that implement the cross-type
+      operations.  This can easily be much more code than is needed to
+      define the operations on the type itself.  The method also undermines
+      our ability to combine separate packages additively, or
+      least to limit the extent to which the implementors of the individual
+      packages need to take account of other packages.  For instance, in the
+      example above, it seems reasonable that handling mixed operations on
+      complex numbers and ordinary numbers should be the responsibility of
+      the complex-number package.  Combining rational numbers and complex
+      numbers, however, might be done by the complex package, by the
+      rational package, or by some third package that uses operations
+      extracted from these two packages.  Formulating coherent policies on the
+      division of responsibility among packages can be an overwhelming task
+      in designing systems with many packages and many cross-type
+      operations.
+      </div>
+
+      <H4>Coercion</H4>
+        
+      
+
+      
+      <div class="normaltext">
+      In the general situation of completely unrelated operations acting on
+      completely unrelated types, implementing explicit cross-type
+      operations, cumbersome though it may be, is the best that one can hope
+      for.  Fortunately, we can usually do better by taking advantage of
+      additional structure that may be latent in our type system.  Often the
+      different data types are not completely independent, and there may be
+      ways by which objects of one type may be viewed as being of another
+      type.  This process is called <em>coercion</em>.  For example, if we are
+      asked to arithmetically combine an ordinary number with a complex
+      number, we can view the ordinary number as a complex number whose
+      imaginary part is zero.  This transforms the problem to that of
+      combining two complex numbers, which can be handled in the ordinary
+      way by the complex-arithmetic package.
+      </div>
+      <div class="normaltext">
+      
+      In general, we can implement this idea by designing coercion
+      functions
+      that transform an object of one type into an equivalent
+      object of another type.  Here is a typical coercion
+      function, which
+      transforms a given ordinary number to a complex number with that real
+      part and zero imaginary part:
+
+      <div style="position:absolute;display:none;" id="javascript_791_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction javascript_number_to_complex(n) {\n   return make_complex_from_real_imag(contents(n),0);\n}','javascript_791','',event,1.0);">function javascript_number_to_complex(n) {
+   return make_complex_from_real_imag(contents(n),0);
+}</pre>
+
+      
+      
+      We install these coercion
+      functions
+      in a special coercion table,
+      indexed under the names of the two types:
+
+      <div style="position:absolute;display:none;" id="javascript_792_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nput_coercion(&quot;javascipt_number&quot;,&quot;complex&quot;,javascript_number_to_complex)','javascript_792','',event,1.0);">put_coercion("javascipt_number","complex",javascript_number_to_complex)</pre>
+
+        (We assume that there are <span class="javascriptinline">put_coercion</span> and <span class="javascriptinline">get_coercion</span>
+      functions
+      available for manipulating this table.)  Generally some of
+      the slots in the table will be empty, because it is not generally
+      possible to coerce an arbitrary data object of each type into all
+      other types.  For example, there is no way to coerce an arbitrary
+      complex number to an ordinary number, so there will be no general <span class="javascriptinline">complex_to_javascript_number</span>
+      function
+      included in the table.
+      </div>
+      <div class="normaltext">
+      Once the coercion table has been set up, we can handle coercion in a
+      uniform manner by modifying the <span class="javascriptinline">apply_generic</span>
+      function
+      of
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:data-directed">2.4.3</a>.  When asked to apply an operation, we
+      first check whether the operation is defined for the arguments&#146; types,
+      just as before.  If so, we dispatch to the
+      function
+      found in the
+      operation-and-type table.
+      Otherwise, we try coercion.  For simplicity, we consider only the case
+      where there are two arguments.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_2"><a class="link" href="#footnote_2">2</a></a></span>  We
+      check the coercion table to see if objects of the first type can
+      be coerced to the second type.  If so, we coerce the first argument and try the
+      operation again.  If objects of the first type cannot in general be coerced to
+      the second type, we try the coercion the other way around to see if there is a
+      way to coerce the second argument to the type of the first argument.
+      Finally, if there
+      is no known way to coerce either type to the other type, we give up.
+      Here is the
+      function:
+
+      
+      <div style="position:absolute;display:none;" id="javascript_793_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction apply_generic(op,args) {\n   var type_tags = map(type_tag,args);\n   var fun = get(op,type_tags);\n   if (fun != false)\n      return fun(map(contents,args));\n   else\n      if (length(args) === 2) {\n         var type1 = head(type_tags);\n         var type2 = head(tail(type_tags));\n         var a1 = head(args);\n         var a2 = head(tail(args));\n         var t1_to_t2 = get_coercion(type1,type2);\n         var t2_to_t1 = get_coercion(type2,type1);\n         if (t1_to_t2 != false)\n            return apply_generic(op,list(t1_to_t2(a1),a2));\n         else if (t2_to_t1 != false)\n            return apply_generic(op,list(a1,t2_to_t1(a2)));\n         else \n            return error(&quot;No method for these types&quot;,\n                         list(op,type_tags));\n      } else\n           return error(&quot;No method for these types&quot;,\n                        list(op,type_tags));\n}','javascript_793','',event,1.0);">function apply_generic(op,args) {
+   var type_tags = map(type_tag,args);
+   var fun = get(op,type_tags);
+   if (fun != false)
+      return fun(map(contents,args));
+   else
+      if (length(args) === 2) {
+         var type1 = head(type_tags);
+         var type2 = head(tail(type_tags));
+         var a1 = head(args);
+         var a2 = head(tail(args));
+         var t1_to_t2 = get_coercion(type1,type2);
+         var t2_to_t1 = get_coercion(type2,type1);
+         if (t1_to_t2 != false)
+            return apply_generic(op,list(t1_to_t2(a1),a2));
+         else if (t2_to_t1 != false)
+            return apply_generic(op,list(a1,t2_to_t1(a2)));
+         else 
+            return error("No method for these types",
+                         list(op,type_tags));
+      } else
+           return error("No method for these types",
+                        list(op,type_tags));
+}</pre>
+      </div>
+      <div class="normaltext">
+      This coercion scheme has many advantages over the method of defining
+      explicit cross-type operations, as outlined above.  Although we still
+      need to write coercion
+      functions
+      to relate the types (possibly <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_895.png"></span>
+      functions
+      for a system with <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_896.png"></span> types), we need to write only one
+      function
+      for each pair of types rather than a different
+      function
+      for
+      each collection of types and each generic operation.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_3"><a class="link" href="#footnote_3">3</a></a></span>  What we are counting on here is the fact that the
+      appropriate transformation between types depends only on the types
+      themselves, not on the operation to be applied.
+      </div>
+      <div class="normaltext">
+      On the other hand, there may be applications for which our coercion
+      scheme is not general enough.  Even when neither of the objects to be
+      combined can be converted to the type of the other it may still be
+      possible to perform the operation by converting both objects to a
+      third type.  In order to deal with such complexity and still preserve
+      modularity in our programs, it is usually necessary to build systems
+      that take advantage of still further structure in the relations among
+      types, as we discuss next.
+      </div>
+
+      <H4>Hierarchies of types</H4>
+        
+      
+
+      
+      
+      <div class="normaltext">
+      The coercion scheme presented above relied on the existence of natural
+      relations between pairs of types.  Often there is more &#147;global&#148;
+      structure in how the different types relate to each other.  For
+      instance, suppose we are building a generic arithmetic system to
+      handle integers, rational numbers, real numbers, and complex numbers.
+      In such a system, it is quite natural to regard an integer as a
+      special kind of rational number, which is in turn a special kind of
+      real number, which is in turn a special kind of complex number.  What
+      we actually have is a so-called <em>hierarchy of types</em>, in which,
+      for example, integers are a 
+      
+      
+      <em>subtype</em> of rational numbers (i.e.,
+      any operation that can be applied to a rational number can
+      automatically be applied to an integer).  Conversely, we say that
+      rational numbers form a 
+      
+      
+      <em>supertype</em> of integers.  The particular
+      hierarchy we have here is of a very simple kind, in which each type
+      has at most one supertype and at most one subtype.  Such a structure,
+      called a <em>tower</em>, is illustrated in figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#fig:tower">2.25</a>.
+
+      <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-66.gif" border="0">
+        
+        <a name="fig:tower"></a>
+      </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  25</b>&nbsp;&nbsp;&nbsp;A tower of types.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+      
+      
+      </div>
+      <div class="normaltext">
+      If we have a tower structure, then we can greatly simplify the problem
+      of adding a new type to the hierarchy, for we need only specify how
+      the new type is embedded in the next supertype above it and how it is
+      the supertype of the type below it.  For example, if we want to add an
+      integer to a complex number, we need not explicitly define a special
+      coercion
+      function
+      <span class="javascriptinline">integer_to_complex</span>.  Instead, we define how an
+      integer can be transformed into a rational number, how a rational
+      number is transformed into a real number, and how a real number is
+      transformed into a complex number.  We then allow the system to
+      transform the integer into a complex number through these steps and
+      then add the two complex numbers.
+      </div>
+      <div class="normaltext">
+      
+      
+      We can redesign our <span class="javascriptinline">apply_generic</span>
+      function
+      in the following
+      way: For each type, we need to supply a <span class="javascriptinline">raise</span>
+      function, which
+      &#147;raises&#148; objects of that type one level in the tower.  Then when the
+      system is required to operate on objects of different types it can
+      successively raise the lower types until all the objects are at
+      the same level in the tower.  (Exercises&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#ex:raise">2.86</a>
+      and &nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#ex:apply-with-raise">2.87</a>
+      concern the details of implementing such a strategy.)
+      </div>
+      <div class="normaltext">
+      Another advantage of a tower is that we can easily implement the
+      notion that every type &#147;inherits&#148; all operations defined on a
+      supertype.  For instance, if we do not supply a special
+      function
+      for
+      finding the real part of an integer, we should nevertheless expect
+      that <span class="javascriptinline">real_part</span> will be defined for integers by virtue of the
+      fact that integers are a subtype of complex numbers.  In a tower, we
+      can arrange for this to happen in a uniform way by modifying <span class="javascriptinline">apply_generic</span>.  If the required operation is not directly defined for
+      the type of the object given, we raise the object to its supertype and
+      try again.  We thus crawl up the tower, transforming our argument as we
+      go, until we either find a level at which the desired operation can be
+      performed or hit the top (in which case we give up).
+      </div>
+      <div class="normaltext">
+      
+      Yet another advantage of a tower over a more general hierarchy is that
+      it gives us a simple way to &#147;lower&#148; a data object to the simplest
+      representation.  For example, if we add <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_898.png"></span> to <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_899.png"></span>, it would be
+      nice to obtain the answer as the integer 6 rather than as the complex
+      number <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_900.png"></span>.  Exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#ex:simplify">2.88</a> discusses a way to implement
+      such a lowering operation.  (The trick is that we need a general way
+      to distinguish those objects that can be lowered, such as <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_901.png"></span>, from
+      those that cannot, such as <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_902.png"></span>.)
+
+      <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-67.gif" border="0">
+        
+        <a name="fig:relations-among-figures"></a>
+      </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  26</b>&nbsp;&nbsp;&nbsp;Relations among types of geometric figures.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+
+      </div>
+
+      <H4>Inadequacies of hierarchies</H4>
+        
+      
+
+      
+      <div class="normaltext">
+      If the data types in our system can be naturally arranged in a tower,
+      this greatly simplifies the problems of dealing with generic operations
+      on different types, as we have seen.  Unfortunately, this is usually
+      not the case.  Figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#fig:relations-among-figures">2.26</a> illustrates a
+      more complex arrangement of mixed types, this one showing relations
+      among different types of geometric figures.  We see that, in general,
+      
+      
+      
+      a type may have more than one subtype.  Triangles and quadrilaterals,
+      for instance, are both subtypes of polygons.  In addition, a type may
+      have more than one supertype.  For example, an isosceles right
+      triangle may be regarded either as an isosceles triangle or as a right
+      triangle.  This multiple-supertypes issue is particularly thorny,
+      since it means that there is no unique way to &#147;raise&#148; a type in the
+      hierarchy.  Finding the &#147;correct&#148; supertype in which to apply an
+      operation to an object may involve considerable searching through the
+      entire type network on the part of a
+      function
+      such as <span class="javascriptinline">apply_generic</span>.  Since there generally are multiple subtypes for a
+      type, there is a similar problem in coercing a value &#147;down&#148; the type
+      hierarchy.  Dealing with large numbers of interrelated types while
+      still preserving modularity in the design of large systems is very
+      difficult, and is an area of much current research.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_4"><a class="link" href="#footnote_4">4</a></a></span>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.84.</b>
+        
+        Louis Reasoner has noticed that <span class="javascriptinline">apply_generic</span> may try to
+        coerce the arguments to each other&#146;s type even if they already have
+        the same type.  Therefore, he reasons, we need to put
+        functions
+        in the coercion table to &#147;coerce&#148; arguments of each type to their
+        own type.  For example, in addition to the <span class="javascriptinline">javascript_number_to_complex</span>
+        coercion shown above, he would do:
+
+        <div style="position:absolute;display:none;" id="javascript_794_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction javascript_number_to_javascript_number(n){ return n; }\nfunction complex_number_to_complex_number(n){ return n; }\nput_coercion(&quot;javascript_number&quot;,&quot;javascript_number&quot;,\n             javascript_number_to_javascript_number);\nput_coercion(&quot;complex_number&quot;,&quot;complex_number&quot;,\n             complex_number_to_complex_number);','javascript_794','',event,1.0);">function javascript_number_to_javascript_number(n){ return n; }
+function complex_number_to_complex_number(n){ return n; }
+put_coercion("javascript_number","javascript_number",
+             javascript_number_to_javascript_number);
+put_coercion("complex_number","complex_number",
+             complex_number_to_complex_number);</pre>
+
+        <ol class="exercise">
+          <li>
+            With Louis&#146;s coercion
+            functions
+            installed, what happens if <span class="javascriptinline">apply_generic</span>
+            is called with two arguments of type <span class="javascriptinline">"javascript_number"</span> or two arguments of
+            type <span class="javascriptinline">"complex"</span> for an operation that is not found in the table for those
+            types?  For example, assume that we&#146;ve defined a generic exponentiation
+            operation:
+
+            <div style="position:absolute;display:none;" id="javascript_795_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction exp(x,y) { return apply_generic(&quot;exp&quot;,list(x,y)); }','javascript_795','',event,1.0);">function exp(x,y) { return apply_generic("exp",list(x,y)); }</pre>
+
+            and have put a
+            function
+            for exponentiation in the 
+JavaScript-number
+            package but not in any other package:
+
+            <div style="position:absolute;display:none;" id="javascript_796_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n// following added to JavaScript-number package\nput(&quot;exp&quot;,list(&quot;javascript_number&quot;,&quot;javascript_number&quot;),\n    function(x,y) { return tag(Math.exp(x,y)); }) // using primitive Math.exp','javascript_796','',event,1.0);">// following added to JavaScript-number package
+put("exp",list("javascript_number","javascript_number"),
+    function(x,y) { return tag(Math.exp(x,y)); }) // using primitive Math.exp</pre>
+
+            What happens if we call <span class="javascriptinline">exp</span> with two complex numbers as arguments?
+          </li>
+          <li>
+            Is Louis correct that something had to be done about
+            coercion with arguments of the same type, or does <span class="javascriptinline">apply_generic</span>
+            work correctly as is?
+          </li>
+          <li>
+            Modify <span class="javascriptinline">apply_generic</span> so that it doesn&#146;t try coercion if
+            the two arguments have the same type.
+          </li>
+        </ol>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.85.</b>
+        
+        Show how to generalize <span class="javascriptinline">apply_generic</span> to handle
+        coercion in the general case of multiple arguments.  One strategy is
+        to attempt to coerce all the arguments to the type of the first argument, then
+        to the type of the second argument, and so on.  Give an example of a situation
+        where this strategy (and likewise the two-argument version given
+        above) is not sufficiently general.  (Hint: Consider the case where
+        there are some suitable mixed-type operations present in the table
+        that will not be tried.)
+        <a name="ex:multi-coercion"></a>
+      </div>
+
+
+      <div class="exercise">
+<b>Exercise 2.86.</b> 
+        
+        Suppose you are designing a generic arithmetic system for dealing with
+        the tower of types shown in figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#fig:tower">2.25</a>:
+        integer, rational, real, complex.  For
+        each type (except complex), design a
+        function
+        that raises objects of
+        that type one level in the tower.  Show how to install a generic <span class="javascriptinline">raise</span> operation that will work for each type (except complex).
+        <a name="ex:raise"></a>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.87.</b>
+        
+        Using the <span class="javascriptinline">raise</span> operation of exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#ex:raise">2.86</a>, modify the <span class="javascriptinline">apply_generic</span>
+        function
+        so that it coerces its arguments to have the
+        same type by the method of successive raising, as discussed in this
+        section.  You will need to devise a way to test which of two types is
+        higher in the tower.  Do this in a manner that is &#147;compatible&#148; with
+        the rest of the system and will not lead to problems in adding new
+        levels to the tower.
+        <a name="ex:apply-with-raise"></a>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.88.</b> 
+        
+        
+        This section mentioned a method for &#147;simplifying&#148; a data object
+        by lowering it in the tower of types as far as possible.  Design
+        a
+        function
+        <span class="javascriptinline">drop</span> that accomplishes this for the tower described
+        in exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#ex:raise">2.86</a>.  The key is to decide, in some general way, whether
+        an object can be lowered.  For example, the complex number <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_903.png"></span>
+        can be lowered as far as <span class="javascriptinline">"real"</span>, the complex number <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_904.png"></span> can be
+        lowered as far as <span class="javascriptinline">"integer"</span>, and the complex number <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_905.png"></span> cannot
+        be lowered at all.  Here is a plan for determining whether an object
+        can be lowered: Begin by defining a generic operation <span class="javascriptinline">project</span>
+        that &#147;pushes&#148; an object down in the tower.  For example, projecting
+        a complex number would involve throwing away the imaginary part.  Then
+        a number can be dropped if, when we <span class="javascriptinline">project</span> it and <span class="javascriptinline">raise</span>
+        the result back to the type we started with, we end up with something
+        equal to what we started with.  Show how to implement this idea in
+        detail, by writing a <span class="javascriptinline">drop</span>
+        function
+        that drops an object as far
+        as possible.  You will need to design the various projection
+        operations<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_5"><a class="link" href="#footnote_5">5</a></a></span> and install <span class="javascriptinline">project</span> as a generic operation in
+        the system.  You will also need to make use of a generic equality
+        predicate, such as described in exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#ex:equ?">2.82</a>.  Finally, use <span class="javascriptinline">drop</span>
+        to rewrite <span class="javascriptinline">apply_generic</span> from exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#ex:apply-with-raise">2.87</a> so that it
+        &#147;simplifies&#148; its answers.
+        <a name="ex:simplify"></a>
+      </div> 
+
+      <div class="exercise">
+<b>Exercise 2.89.</b>
+        Suppose we want to handle complex numbers whose real
+        parts, imaginary parts, magnitudes, and angles can be either ordinary
+        numbers, rational numbers, or other numbers we might wish to add to
+        the system.  Describe and implement the changes to the system needed
+        to accommodate this.  You will have to define operations such as <span class="javascriptinline">sine</span> and <span class="javascriptinline">cosine</span> that are generic over ordinary numbers and
+        rational numbers.
+      </div> 
+      
+      
+      
+
+    
+
+
+
+  <div class="navbar" align="center">
+<hr>
+<a class="link" onclick="window.displayManager.show('section_2_4.html')">previous section</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('chapter_2.html')">this chapter</a>&nbsp;&nbsp;&nbsp;<hr>
+</div><strong class="footnote">Footnotes</strong><div class="footnote">
+<a name="footnote_1"><sup><a class="link" href="#footnote_origin_1">1</a></sup></a>We also have to supply an almost identical
+        function
+        to handle the types <span class="javascriptinline">list("javascript_number","complex")</span>.</div><div class="footnote">
+<a name="footnote_2"><sup><a class="link" href="#footnote_origin_2">2</a></sup></a>See
+        exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')" href="#ex:multi-coercion">2.85</a> for generalizations.</div><div class="footnote">
+<a name="footnote_3"><sup><a class="link" href="#footnote_origin_3">3</a></sup></a>If we are
+        clever, we can usually get by with fewer than <span style="vertical-align:-2.0pt"><img src="img_javascript/latex_inline_footnote_897.png"></span> coercion
+        functions.  For instance, if we know how to convert from type 1 to
+        type 2 and from type 2 to type 3, then we can use this knowledge to
+        convert from type 1 to type 3.  This can greatly decrease the number
+        of coercion
+        functions
+        we need to supply explicitly when we add a new
+        type to the system.  If we are willing to build the required amount of
+        sophistication into our system, we can have it search the &#147;graph&#148; of
+        relations among types and automatically generate those coercion
+        functions
+        that can be inferred from the ones that are supplied
+        explicitly.</div><div class="footnote">
+<a name="footnote_4"><sup><a class="link" href="#footnote_origin_4">4</a></sup></a>This statement, which also appears in the first edition of this book,
+        is just as true now as it was when we wrote it twelve years ago.
+        Developing a useful, general framework for expressing the relations
+        among different types of entities (what philosophers call
+        &#147;ontology&#148;) seems intractably difficult.  The main difference
+        between the confusion that existed ten years ago and the confusion
+        that exists now is that now a variety of inadequate ontological
+        theories have been embodied in a plethora of correspondingly
+        inadequate programming languages.  For example, much of the complexity
+        of 
+        
+        
+        object-oriented programming languages—and the subtle and
+        confusing differences among contemporary object-oriented
+        languages—centers on the treatment of generic operations on
+        interrelated types.  Our own discussion of computational objects in
+        chapter&nbsp;3 avoids these issues entirely.  Readers familiar with
+        object-oriented programming will notice that we have much to say in
+        chapter&nbsp;3 about local state, but we do not even mention &#147;classes&#148; or
+        &#147;inheritance.&#148;  In fact, we suspect that these problems cannot be
+        adequately addressed in terms of computer-language design alone,
+        without also drawing on work in knowledge representation and automated
+        reasoning.</div><div class="footnote">
+<a name="footnote_5"><sup><a class="link" href="#footnote_origin_5">5</a></sup></a>A real number can be projected to an integer
+          using the 
+          
+          
+          <span class="javascriptinline">round</span> primitive, which returns the closest integer
+          to its argument.</div>

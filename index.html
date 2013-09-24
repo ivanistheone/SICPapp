@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]>    <html class="no-js iem7"> <![endif]-->
+<!--[if (gt IEMobile 7)|!(IEMobile)]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="Basic coding tutorial using JavaScript, based on SICP">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="cleartype" content="on">
+
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/touch/apple-touch-icon-144x144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/touch/apple-touch-icon-114x114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/touch/apple-touch-icon-72x72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="img/touch/apple-touch-icon-57x57-precomposed.png">
+        <link rel="shortcut icon" href="img/touch/apple-touch-icon.png">
+
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta name="msapplication-TileImage" content="img/touch/apple-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#222222">
+
+
+        <!-- For iOS web apps. Delete if not needed. https://github.com/h5bp/mobile-boilerplate/issues/94 -->
+        <!--
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="">
+        -->
+
+        <!-- This script prevents links from opening in Mobile Safari. https://gist.github.com/1042026 -->
+        <!--
+        <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
+        -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+
+<body>
+
+
+<div class="content" style="margin:1em">
+
+    <p>
+    These pages contain selected sections of
+    <a href="http://mitpress.mit.edu/sicp/full-text/book/book.html">
+    Structure and Interpretation of Computer Programs</a> by Harold Abelson and Gerald Sussman with Julie Sussman.
+    The mobile version was cotributed by Ivan Savov.
+    </p>
+
+    <p>
+      The programs are given in JavaScript, translated from Scheme by Martin Henz.
+      If you are interested, here is <a class="link" href="http://www.comp.nus.edu.sg/~cs1101s/sicp/">some information</a>.
+    </p>
+  
+  <div class="subtoc">
+<strong>Contents</strong><p></p>
+<p></p>
+<a class="link" href="chapter_1.html">1&nbsp;
+      Building Abstractions with 
+      Functions
+    </a><br><p></p>
+<a class="link" href="section_1_1.html">1.1&nbsp;The Elements of Programming</a><br><a class="link" href="section_1_1.html#subsection_1_1_1">1.1.1&nbsp;Expressions</a><br><a class="link" href="section_1_1.html#subsection_1_1_2">1.1.2&nbsp;Naming and the Environment</a><br><a class="link" href="section_1_1.html#subsection_1_1_3">1.1.3&nbsp;
+          Evaluating 
+          Operator Combinations
+          <a name="sec:evaluating-combinations"></a>
+        </a><br><a class="link" href="section_1_1.html#subsection_1_1_4">1.1.4&nbsp;
+          Functions
+        </a><br><a class="link" href="section_1_1.html#subsection_1_1_5">1.1.5&nbsp;
+          The Substitution Model for 
+          
+              Function
+            
+          Application
+        </a><br><a class="link" href="section_1_1.html#subsection_1_1_6">1.1.6&nbsp;
+          Conditional 
+          
+            Statements
+          
+          and Predicates
+        </a><br><a class="link" href="section_1_1.html#subsection_1_1_7">1.1.7&nbsp;Example: Square Roots by Newton&#146;s Method</a><br><a class="link" href="section_1_1.html#subsection_1_1_8">1.1.8&nbsp;
+          
+              Functions 
+            
+          as Black-Box Abstractions
+        </a><br><p></p>
+<a class="link" href="section_1_2.html">1.2&nbsp;
+            Functions
+            and the Processes They Generate
+      </a><br><a class="link" href="section_1_2.html#subsection_1_2_1">1.2.1&nbsp;Linear Recursion and Iteration</a><br><a class="link" href="section_1_2.html#subsection_1_2_2">1.2.2&nbsp;Tree Recursion</a><br><a class="link" href="section_1_2.html#subsection_1_2_3">1.2.3&nbsp;Orders of Growth</a><br><a class="link" href="section_1_2.html#subsection_1_2_4">1.2.4&nbsp;Exponentiation</a><br><a class="link" href="section_1_2.html#subsection_1_2_5">1.2.5&nbsp;Greatest Common Divisors</a><br><a class="link" href="section_1_2.html#subsection_1_2_6">1.2.6&nbsp;Example: Testing for Primality</a><br><p></p>
+<a class="link" href="section_1_3.html">1.3&nbsp;
+        Formulating Abstractions with Higher-Order 
+        Functions
+      </a><br><a class="link" href="section_1_3.html#subsection_1_3_1">1.3.1&nbsp;
+          Functions
+          as Arguments
+        </a><br><a class="link" href="section_1_3.html#subsection_1_3_2">1.3.2&nbsp;
+          Function Definition Expressions
+          </a><br><a class="link" href="section_1_3.html#subsection_1_3_3">1.3.3&nbsp;
+            Functions
+            as General Methods
+          </a><br><a class="link" href="section_1_3.html#subsection_1_3_4">1.3.4&nbsp;
+              Functions
+              as Returned Values
+            </a><br><p></p>
+<a class="link" href="chapter_2.html">2&nbsp;Building Abstractions with Data</a><br><p></p>
+<a class="link" href="section_2_1.html">2.1&nbsp;Introduction to Data Abstraction</a><br><a class="link" href="section_2_1.html#subsection_2_1_1">2.1.1&nbsp;
+        Example: Arithmetic Operations for Rational Numbers
+      </a><br><a class="link" href="section_2_1.html#subsection_2_1_2">2.1.2&nbsp;
+        Abstraction Barriers
+      </a><br><a class="link" href="section_2_1.html#subsection_2_1_3">2.1.3&nbsp;
+        What Is Meant by Data?
+      </a><br><a class="link" href="section_2_1.html#subsection_2_1_4">2.1.4&nbsp;
+        Extended Exercise: Interval Arithmetic
+      </a><br><p></p>
+<a class="link" href="section_2_2.html">2.2&nbsp;Hierarchical Data and the Closure Property</a><br><a class="link" href="section_2_2.html#subsection_2_2_1">2.2.1&nbsp;
+        Representing Sequences
+      </a><br><a class="link" href="section_2_2.html#subsection_2_2_2">2.2.2&nbsp;
+        Hierarchical Structures
+      </a><br><a class="link" href="section_2_2.html#subsection_2_2_3">2.2.3&nbsp;
+        Sequences as Conventional Interfaces
+      </a><br><a class="link" href="section_2_2.html#subsection_2_2_4">2.2.4&nbsp;
+        Example: A Picture Language
+      </a><br><p></p>
+<a class="link" href="section_2_3.html">2.3&nbsp;Symbolic Data</a><br><a class="link" href="section_2_3.html#subsection_2_3_1">2.3.1&nbsp;
+        Strings
+      </a><br><a class="link" href="section_2_3.html#subsection_2_3_2">2.3.2&nbsp;
+        Example: Symbolic Differentiation
+      </a><br><a class="link" href="section_2_3.html#subsection_2_3_3">2.3.3&nbsp;
+        Example: Representing Sets
+      </a><br><a class="link" href="section_2_3.html#subsection_2_3_4">2.3.4&nbsp;
+        Example: Huffman Encoding Trees
+      </a><br><p></p>
+<a class="link" href="section_2_4.html">2.4&nbsp;Multiple Representations for Abstract Data</a><br><a class="link" href="section_2_4.html#subsection_2_4_1">2.4.1&nbsp;
+        Representations for Complex Numbers
+      </a><br><a class="link" href="section_2_4.html#subsection_2_4_2">2.4.2&nbsp;
+        Tagged data
+      </a><br><a class="link" href="section_2_4.html#subsection_2_4_3">2.4.3&nbsp;
+        Data-Directed Programming and Additivity
+      </a><br><p></p>
+<a class="link" href="section_2_5.html">2.5&nbsp;Systems with Generic Operations</a><br><a class="link" href="section_2_5.html#subsection_2_5_1">2.5.1&nbsp;
+        Generic Arithmetic Operations
+      </a><br><a class="link" href="section_2_5.html#subsection_2_5_2">2.5.2&nbsp;
+        Combining Data of Different Types
+      </a><br>
+</div>
+
+
+</div>
+
+<script src="js/vendor/zepto.min.js"></script>
+<script src="js/helper.js"></script>
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+    var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+    g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+    s.parentNode.insertBefore(g,s)}(document,"script"));
+</script>
+
+
+
+</body>
+
+</html>

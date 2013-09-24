@@ -1,0 +1,2416 @@
+<div class="navbar" align="center">&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('chapter_1.html')">this chapter</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('section_1_2.html')">next section</a><hr>
+</div><h2><a name="section_1_1">1.1&nbsp;The Elements of Programming</a></h2>
+      
+      <a name="sec:elements-of-programming"></a>
+      
+
+      <div class="subtoc">
+<strong>In this section</strong><p></p>
+<a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#subsection_1_1_1">1.1.1&nbsp;Expressions</a><br><a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#subsection_1_1_2">1.1.2&nbsp;Naming and the Environment</a><br><a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#subsection_1_1_3">1.1.3&nbsp;
+          Evaluating 
+          Operator Combinations
+          
+        </a><br><a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#subsection_1_1_4">1.1.4&nbsp;
+          Functions
+        </a><br><a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#subsection_1_1_5">1.1.5&nbsp;
+          The Substitution Model for 
+          
+              Function
+            
+          Application
+        </a><br><a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#subsection_1_1_6">1.1.6&nbsp;
+          Conditional 
+          
+            Statements
+          
+          and Predicates
+        </a><br><a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#subsection_1_1_7">1.1.7&nbsp;Example: Square Roots by Newton&#146;s Method</a><br><a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#subsection_1_1_8">1.1.8&nbsp;
+          
+              Functions 
+            
+          as Black-Box Abstractions
+        </a><br>
+</div>
+
+      <div class="normaltext">
+        A powerful programming language is more than just a means for
+        instructing a computer to perform tasks.  The language also serves as
+        a framework within which we organize our ideas about processes.  Thus,
+        when we describe a language, we should pay particular attention to the
+        means that the language provides for combining simple ideas to form
+        more complex ideas.  Every powerful language has three mechanisms for
+        accomplishing this:
+        <ul>
+          <li>
+            <b>primitive expressions</b>, which represent the simplest
+            entities the language is concerned with,
+            
+          </li>
+          <li>
+            <b>means of combination</b>, by which compound
+            elements are built from simpler ones, and
+            
+            
+          </li>
+          <li>
+            <b>means of abstraction</b>, by
+            which compound elements can be named and manipulated as units.
+            
+          </li>
+        </ul>
+      </div>
+      <div class="normaltext">
+            In programming, we deal with two kinds of elements: 
+            
+            functions
+            and
+            
+            data. (Later we will discover that they are really not so distinct.)
+            Informally, data is &#147;stuff&#148; that we want to manipulate, and
+            functions
+            are descriptions of the rules for manipulating the data.
+            Thus, any powerful programming language should be able to describe
+            primitive data and primitive 
+            functions
+            and should have methods for
+            combining and abstracting 
+            functions
+            and data.
+            
+      </div>
+
+      <div class="normaltext">
+            In this chapter we will deal only with simple
+            
+            numerical data so that
+            we can focus on the rules for building
+            functions.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_1"><a class="link" href="#footnote_1">1</a></a></span>
+            In later chapters we will see that
+            these same rules allow us to build 
+            functions
+            to manipulate compound data as well.
+      </div>
+
+      <h3><a name="subsection_1_1_1">1.1.1&nbsp;Expressions</a></h3>
+        
+        <a name="sec:expressions"></a>
+
+        
+            <div class="normaltext">
+              One easy way to get started at programming in JavaScript is 
+              to interact with the JavaScript interpreter that is built into
+              the browser you are using to view this page.
+              <span style="color:black" title="JavaScript is statement-oriented. This leads to many 
+                  changes in this section.">JavaScript programs are called <em>statements</em>.
+                
+              </span>
+              We have set up the statements shown in blue such that
+              you can click on them.
+              The mouse click on JavaScript statements is 
+              programmed in such
+              a way that the JavaScript interpreter <em>evaluates</em> the
+              statement and displays the resulting value in a box that then
+              appears below the statement.
+              The program that makes the mouse click
+              on a JavaScript statement evaluate the statement is itself
+              written in JavaScript; we call it the <em>script</em> for
+              the mouse click.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              One kind of statement is an 
+              <span style="color:black" title="terminology following ECMAScript definition">expression statement, which consists of an
+                <em>expression</em>, followed by a semicolon.
+                
+              </span>
+              A simple kind of an expression is a number.
+              (More precisely, the expression consists of the numerals that
+              represent the number in base 10.)  If you ask our script to 
+              evaluate the expression statement
+              <div style="position:absolute;display:none;" id="javascript_3_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n486;','javascript_3','',event,1.0);">486;</pre>
+              by clicking it, it will respond by printing the result of the 
+              evaluation
+              in a box that appears below the expression statement.
+              Click on the primitive expression statement, and see what happens!
+            </div>
+          
+
+        
+            <div class="normaltext">
+              
+              
+              Expressions representing numbers may be combined with operators
+              (such as 
+              <span class="javascriptinline">+</span> or 
+              <span class="javascriptinline">*</span>) to form a
+              compound expression that represents the
+              application of a corresponding primitive
+              function to those numbers.  For example, evaluate
+              any of the following expression statements<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_2"><a class="link" href="#footnote_2">2</a></a></span>
+              by clicking on it:
+              <div style="position:absolute;display:none;" id="javascript_9_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n137 + 349;','javascript_9','',event,1.0);">137 + 349;</pre>
+              <div style="position:absolute;display:none;" id="javascript_10_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n1000 - 334;','javascript_10','',event,1.0);">1000 - 334;</pre>
+              <div style="position:absolute;display:none;" id="javascript_11_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n5 * 99;','javascript_11','',event,1.0);">5 * 99;</pre>
+              <div style="position:absolute;display:none;" id="javascript_12_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n10 / 5;','javascript_12','',event,1.0);">10 / 5;</pre>
+              <div style="position:absolute;display:none;" id="javascript_13_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n2.7 + 10;','javascript_13','',event,1.0);">2.7 + 10;</pre>
+            </div>
+          
+
+        
+            <div class="normaltext">
+              Expressions such as these, which contain other expressions
+              as components, are called <em>combinations</em>.
+              
+              Combinations that are formed by an 
+              
+              <em>operator</em> symbol in the middle, and
+              
+              <em>operand</em> expressions to the left and right of it, 
+              are called 
+              <span style="color:black" title="operator combinations are treated differently from
+                  application combinations in JavaScript, 
+                  leading to many changes in this section.
+                "><em>operator combinations</em>.
+                
+              </span>
+              The value of an operator combination is
+              obtained by applying the function specified by the operator to the
+              
+              <em>arguments</em> that are the values of the operands.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              The convention of placing the operator between the operands is
+              known as 
+              
+              <span style="color:black" title="Of course, infix notation rules in JavaScript!"><em>infix notation</em>. 
+                
+              </span>
+              It follows 
+              the mathematical notation that the reader is most
+              likely familiar with from school and everyday life.  
+              As in mathematics, operator combinations can
+              be <em>nested</em>, that is, they
+              can take arguments that themselves are operator combinations:
+              <div style="position:absolute;display:none;" id="javascript_17_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n(3 * 5) + (10 - 6);','javascript_17','',event,1.0);">(3 * 5) + (10 - 6);</pre>
+              As usual, parentheses are used to group the operations together
+              in order to avoid ambiguities. JavaScript also follows the usual
+              conventions when parentheses are left out; 
+              multiplication and division
+              bind stronger than 
+              addition and subtraction.
+              For example,
+              <div style="position:absolute;display:none;" id="javascript_18_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n3 * 5 + 10 / 2;','javascript_18','',event,1.0);">3 * 5 + 10 / 2;</pre>
+              stands for 
+              <div style="position:absolute;display:none;" id="javascript_19_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n(3 * 5) + (10 / 2);','javascript_19','',event,1.0);">(3 * 5) + (10 / 2);</pre>
+              We say that <span class="javascriptinline">*</span>
+              and <span class="javascriptinline">/</span>
+              have <em>higher precedence</em> than
+              <span class="javascriptinline">+</span>
+              and <span class="javascriptinline">-</span>.
+              Sequences of 
+              additions and subtractions are read from left to right, as are
+              sequences of multiplications and divisions. Thus,
+              <div style="position:absolute;display:none;" id="javascript_20_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n3 / 5 * 2 - 4 + 3;','javascript_20','',event,1.0);">3 / 5 * 2 - 4 + 3;</pre>
+              stands for 
+              <div style="position:absolute;display:none;" id="javascript_21_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n(((3 / 5) * 2) - 4) + 3;','javascript_21','',event,1.0);">(((3 / 5) * 2) - 4) + 3;</pre>
+              We say that the operators
+              <span class="javascriptinline">+</span>,
+              <span class="javascriptinline">-</span>,
+              <span class="javascriptinline">*</span> and
+              <span class="javascriptinline">/</span> are 
+              left-associative.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              <span style="color:black" title="This section is not as important as the original; infix
+                  notation known from school.
+                ">There is no limit (in principle) to the depth of such nesting and to
+              the overall complexity of the expressions that the JavaScript interpreter
+              can evaluate.
+                
+              </span>
+              It is we humans who get confused by still relatively
+              simple expressions such as
+
+              <div style="position:absolute;display:none;" id="javascript_24_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n3 * (2 * (4 + (3 - 5))) + (10 * (27 / 6))','javascript_24','',event,1.0);">3 * (2 * (4 + (3 - 5))) + (10 * (27 / 6))</pre>
+
+              which the interpreter would readily evaluate to be 57.  We can help
+              ourselves by writing such an expression in the form
+
+              <div style="position:absolute;display:none;" id="javascript_25_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n3 * (2 * (4 + (3 - 5))) \n+ \n(10 * (27 / 6))','javascript_25','',event,1.0);">3 * (2 * (4 + (3 - 5))) 
++ 
+(10 * (27 / 6))</pre>
+              to visually separate the major components of the expression.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              The interpreter always operates in the
+              same basic cycle: It reads a statement from the browser, 
+              evaluates the statement, and prints the result.
+              This mode of operation is often expressed by saying that the
+              interpreter runs in a 
+              
+              
+              <em>read-eval-print loop</em>.
+              Observe in particular that it is not necessary to explicitly
+              instruct the interpreter to print the value of the 
+              statement.
+            </div>
+          
+
+
+      
+
+      <h3><a name="subsection_1_1_2">1.1.2&nbsp;Naming and the Environment</a></h3>
+        
+        <a name="sec:naming"></a>
+
+        
+            <div class="normaltext">
+              A critical aspect of a programming language is the means it provides
+              for using 
+              
+              names to refer to computational objects.  We say that the
+              
+              name identifies a 
+              
+              <em>variable</em> whose 
+              
+              <em>value</em> is the object.
+            </div>
+            <div class="normaltext">
+              In JavaScript, we name things with 
+              
+              <span class="javascriptinline">var</span>.  Evaluating
+              <div style="position:absolute;display:none;" id="javascript_29_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar size = 2;','javascript_29','',event,1.0);">var size = 2;</pre>
+              causes the interpreter to associate the value 2 with the
+              name <nobr><span class="javascriptinline">size</span>.</nobr> 
+              As we have seen, evaluating an 
+              expression statement by clicking on it leads to the display of its
+              value. The purpose of evaluating the variable statement
+              <div style="position:absolute;display:none;" id="javascript_30_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar size = 2;','javascript_30','',event,1.0);">var size = 2;</pre>
+              is to associate the 
+              name <span class="javascriptinline">size</span> 
+              with the number 2, and not to compute a value as for
+              expression statements. Thus, the JavaScript interpreter returns the
+              special JavaScript 
+              value <tt>undefined</tt> as the value of the variable statement.
+            </div>
+            <div class="normaltext">
+              Once the name <span class="javascriptinline">size</span> 
+              has been associated with the number 2, we can 
+              refer to the value 2 by name:
+              <div style="position:absolute;display:none;" id="javascript_31_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar size = 2;\n                \nsize;','javascript_31','',event,1.0);">size;</pre>
+            </div>
+          
+
+        
+            <div class="normaltext">
+              Of course, the JavaScript interpreter needs to execute the variable
+              statement for <span class="javascriptinline">size</span> 
+              before the name <span class="javascriptinline">size</span> can be used
+              in an expression. In this online book, the statements that need to be
+              evaluated before a new statement are omitted, in order to keep the
+              the text concise. However, in order to see and play with the 
+              program, you can click on the blue boxes that contain statements.
+	      The entire program then
+              appears in editable form in a pop-up window. 
+              Thus, as a result of clicking on
+              <div style="position:absolute;display:none;" id="javascript_34_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar size = 2;\n                \n5 * size;','javascript_34','',event,1.0);">5 * size;</pre>
+              a window appears that contains the statement
+              <div style="position:absolute;display:none;" id="javascript_35_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar size = 2;\n5 * size;','javascript_35','',event,1.0);">var size = 2;
+5 * size;</pre>
+              Note that JavaScript statements can be placed in a sequence.
+              The interpreter evaluates the statements of the sequence in the given order,
+              and returns the value of the last statement as the value of the sequence.
+            </div>
+          
+        
+        
+            <div class="normaltext">
+              Here are further examples of the use of <span class="javascriptinline">var</span>:
+              <div style="position:absolute;display:none;" id="javascript_41_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar pi = 3.14159;','javascript_41','',event,1.0);">var pi = 3.14159;</pre>
+
+              <div style="position:absolute;display:none;" id="javascript_42_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar radius = 10;','javascript_42','',event,1.0);">var radius = 10;</pre>
+
+              <div style="position:absolute;display:none;" id="javascript_43_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar pi = 3.14159;\n                \nvar radius = 10;\n                \npi * radius * radius;','javascript_43','',event,1.0);">pi * radius * radius;</pre>
+
+              <div style="position:absolute;display:none;" id="javascript_44_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar pi = 3.14159;\n                \nvar radius = 10;\n                \nvar circumference = 2 * pi * radius;','javascript_44','',event,1.0);">var circumference = 2 * pi * radius;</pre>
+              <div style="position:absolute;display:none;" id="javascript_45_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar pi = 3.14159;\n                \nvar radius = 10;\n                \nvar circumference = 2 * pi * radius;\n                \ncircumference;','javascript_45','',event,1.0);">circumference;</pre>
+
+              
+              Variable statements are our language&#146;s
+              simplest means of abstraction, for they allow us to use simple names to
+              refer to the results of compound operations, such as the
+              <span class="javascriptinline">circumference</span>
+              computed above.  In general, computational objects may have very
+              complex structures, and it would be extremely inconvenient to 
+              have to remember and repeat their details each time we want to use
+              them. Indeed, complex programs are constructed by building, step 
+              by step, computational objects of increasing complexity. 
+              <span style="color:black" title="deemphasized the interactive nature of development; this
+                is not the usual way to develop JavaScript programs.
+              ">
+              Our interpreter facilitates this step-by-step program construction 
+              because name-object associations can be created incrementally in
+              successive interactions. 
+              
+              </span>
+            </div>
+          
+
+        <div class="normaltext">
+              It should be clear that the possibility of associating values with
+              symbols and later retrieving them means that the interpreter must
+              maintain some sort of memory that keeps track of the name-object
+              pairs.  This memory is called the 
+              
+              <em>environment</em> 
+              (more precisely the 
+              
+              <em>global environment</em>, since we will see later that a
+              computation may involve a number of different
+              environments).<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_6"><a class="link" href="#footnote_6">6</a></a></span>
+            </div>
+
+      
+
+      <h3><a name="subsection_1_1_3">1.1.3&nbsp;
+          Evaluating 
+          Operator Combinations
+          <a name="sec:evaluating-combinations"></a>
+        </a></h3>
+        
+        
+        
+
+        
+            <div class="normaltext">
+              One of our goals in this chapter is to isolate issues about process
+              descriptions.  As a case in point, let us consider that, in evaluating
+              operator combinations, the interpreter proceeds as follows.
+              <ul>
+                <li>To evaluate an operator combination, do the following:
+                  <ol class="">
+                    <li>Evaluate the subexpressions of the expression.</li>
+                    <li>Apply the function that is denoted by 
+                      the operator to the arguments that are the values of
+                      the operands.
+                    </li>
+                  </ol>
+                </li>
+              </ul>
+              Even this simple rule illustrates some important points about
+              processes in general. First, observe that the first step dictates
+              that in order to accomplish the evaluation process for an operator
+              expression
+              we must first perform the evaluation process on each argument of the
+              operator combination.  Thus, the evaluation rule is 
+              
+              <em>recursive</em> in nature;
+              that is, it includes, as one of its steps, the need to invoke the rule
+              itself.
+            </div>
+            <div class="normaltext">
+              
+              Notice how succinctly the idea of recursion can be used to express
+              what, in the case of a deeply nested expressions, would otherwise be
+              viewed as a rather complicated process.  For example, evaluating
+              <div style="position:absolute;display:none;" id="javascript_47_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n(2 + 4 * 6) * (3 + 12);','javascript_47','',event,1.0);">(2 + 4 * 6) * (3 + 12);</pre>
+              requires that the evaluation rule be applied to four different
+              expressions.  We can obtain a picture of this process by 
+              
+              representing
+              the expression in the form of a
+              
+              tree, as shown in
+              Figure <a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#fig:tree-comb-javascript">1.1</a>.
+              Each expression is represented by a
+              
+              node with 
+              
+              branches corresponding to the operator and the
+              operands of the operator combination stemming from it.
+              The 
+              
+              terminal nodes (that is, nodes with
+              no branches stemming from them) represent either operators or numbers.
+              Viewing evaluation in terms of the tree, we can imagine that the
+              values of the operands percolate upward, starting from the terminal
+              nodes and then combining at higher and higher levels.  In general, we
+              shall see that recursion is a very powerful technique for dealing with
+              hierarchical, treelike objects.  In fact, the &#147;percolate values
+                upward&#148; form of the evaluation rule is an example of a general kind
+              of process known as 
+              
+              <em>tree accumulation</em>.
+
+              <p><div align="center"><table width="100%">
+<tr><td align="center">
+                <a name="fig:tree-comb-javascript"></a>
+                
+                <P><img src="img_javascript/latex_1.png"></P>
+              </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 1.
+                  1</b>&nbsp;&nbsp;&nbsp;Tree representation, showing the value of each subexpression.
+                </div></caption>
+<tr><td></td></tr>
+</table></div></p>
+            </div>
+          
+
+        
+            <div class="normaltext">
+              Next, observe that the repeated application of the first step brings
+              us to the point where we need to evaluate, not operator combinations, but
+              primitive expressions such as numerals or 
+              names.  We take care of the primitive cases by stipulating that
+              
+              
+              <span style="color:black" title="Operators are hard-wired in JavaScript; no need to evaluate
+                  the corresponding symbol. This leads to many changes in this section.
+                ">
+                
+              <ul>
+                <li>
+                  the values of numerals are the numbers that they name,
+                </li>
+                <li>
+                  the values of names are the objects associated 
+                  with those names in the environment.
+                </li>
+              </ul>
+              </span>
+            </div>
+          
+
+        
+            <div class="normaltext">
+              Notice the role of the 
+              
+              environment in determining the meaning of
+              the symbols in expressions.  In 
+              JavaScript, it is meaningless to speak of the value of an expression such as
+              <span class="javascriptinline">x + 1</span>
+              without specifying any information about the environment
+              that would provide a meaning for the 
+              symbol <span class="javascriptinline">x</span>.
+              As we shall see in chapter 3, the general notion of
+              the environment as providing a context in which evaluation takes place
+              will play an important role in our understanding of program execution.
+              
+              
+            </div>
+          
+
+        
+            <div class="normaltext">
+              Notice that the
+              evaluation rule given above does not handle definitions.
+              For instance, evaluating
+              <span class="javascriptinline">var x = 3;</span>
+              does not apply the <span class="javascriptinline">=</span> 
+              operator to two arguments, one
+              of which is the value of the symbol 
+              <span class="javascriptinline">x</span> and the other of which is
+              3, since the purpose of the variable statement
+              is precisely to associate
+              <span class="javascriptinline">x</span> with a value.
+              (That is, the part <span class="javascriptinline">x = 3</span> 
+              in the assignment statement 
+              <span class="javascriptinline">var x = 3;</span> 
+              is not an operator combination.)
+            </div>
+          
+
+        
+            <div class="normaltext">
+              The string &#147;<span class="javascriptinline">var</span>&#148; 
+              in variable statements is rendered in bold letters to indicate that it
+              is a <em>keyword</em> in JavaScript. Keywords are reserved words that
+              carry a particular meaning, and thus cannot be used as variables.
+              A keyword or a combination of keywords instructs the
+              JavaScript interpreter to treat the respective statement in a special
+              way.
+              Each such syntactic form
+              has its own evaluation rule. The various kinds of statements (each
+              with its associated evaluation rule) constitute the 
+              
+              syntax of the
+              programming language.  
+            </div>
+          
+
+      
+
+      <h3><a name="subsection_1_1_4">1.1.4&nbsp;
+          Functions
+        </a></h3>
+        <a name="sec:compound-procedures"></a>
+        
+
+            <div class="normaltext">
+              We have identified in 
+              JavaScript
+              some of the elements that must appear in
+              any powerful programming language:
+              <ul>
+                <li>
+                  Numbers and arithmetic operations are 
+                  primitive data and 
+              functions.
+                </li>
+                <li>
+                  Nesting of combinations provides a means of 
+                  combining operations.
+                </li>
+                <li>
+                  Definitions that associate names with values provide a
+                  limited means of abstraction.
+                </li>
+              </ul>
+            </div>
+
+        
+            <div class="normaltext">
+              Now we will learn about
+              
+              <em>function definitions</em>, a much more powerful abstraction
+              technique by which a compound operation can be given a name and then
+              referred to as a unit.
+            </div>
+            <div class="normaltext">
+              We begin by examining how to express the idea of &#147;squaring.&#148;  We
+              might say, &#147;To square something, multiply it by itself.&#148;  This is
+              expressed in our language with the expression
+              
+              <form name="form_51" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_51.png"></form>
+              
+
+
+              
+              
+              The keyword 
+              <span class="javascriptinline">function</span>
+              indicates that a <em>function</em> is being defined.
+              Here, we use the word &#147;function&#148; in a pragmatic 
+              sense—as
+              instructions how to compute a new value from given 
+              values— and not in the mathematical sense as a mapping from
+              a domain to a co-domain.
+              The function above represents the operation of multiplying
+              something by itself. The thing to be multiplied is given a local
+              name, <span class="javascriptinline">x</span>, 
+              which plays the same role that a pronoun plays in
+              natural language.
+              
+              
+              
+              Evaluating the <em>function expression</em> creates this
+              function.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              The general form of a function expression is
+              <form name="form_59" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_59.png"></form>
+              The 
+              
+              
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_14.png"></span> are
+              the names used within the body of the function to refer to the
+              corresponding arguments of the function.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_12"><a class="link" href="#footnote_12">12</a></a></span>
+ If there are more than one
+              formal parameter, they are separated by commas. The
+              
+              
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_16.png"></span> 
+              is a statement that will return the value of
+              the function application. In the function definition above,
+              the keyword
+              <span class="javascriptinline">return</span>
+              precedes the expression <span class="javascriptinline">x * x</span>,
+              indicating that the function returns the result of evaluating the
+              expression. In other words, the body of this function is a 
+              <span class="javascriptinline">return</span> statement of the 
+              form<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_13"><a class="link" href="#footnote_13">13</a></a></span>
+              <form name="form_60" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_60.png"></form>
+              In order to evaluate the statement that forms the body of the function,
+              the formal parameters are replaced by
+              the actual arguments to which the function is applied.
+              The <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_17.png"></span> follow
+              the keyword <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_18.png"></span> and are enclosed
+              in
+              
+              parentheses.
+              
+            </div>
+            <div class="normaltext">
+              Having defined the function,
+              we can now use it in a function application expression.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_14"><a class="link" href="#footnote_14">14</a></a></span>
+              <div style="position:absolute;display:none;" id="javascript_61_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n(function (x) { return x * x; }) (21);','javascript_61','',event,1.0);">(function (x) { return x * x; }) (21);</pre>
+              The first pair of parentheses encloses the function expression. Just like with
+              arithmetic expressions, the interpreter evaluates it, resulting in a function value.
+              The second pair of parentheses indicate that the function value is to be applied
+              to an argument, here 21.
+            </div>
+            <div class="normaltext">
+              Just as with arithmetic expressions, it is useful to refer to a function by a name,
+              using a variable statement.
+              <div style="position:absolute;display:none;" id="javascript_62_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar square = function (x) { return x * x; };','javascript_62','',event,1.0);">var square = function (x) { return x * x; };</pre>
+              Now, we can simply write
+              <div style="position:absolute;display:none;" id="javascript_63_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nsquare(21);','javascript_63','',event,1.0);">square(21);</pre>
+              in order to apply the function. Other examples of using the 
+              <span class="javascriptinline">square</span>
+              function are
+              <div style="position:absolute;display:none;" id="javascript_64_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) { return x * x; }\n                \nsquare(2 + 5);','javascript_64','',event,1.0);">square(2 + 5);</pre>
+              and
+              <div style="position:absolute;display:none;" id="javascript_65_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) { return x * x; }\n                \nsquare(square(3));','javascript_65','',event,1.0);">square(square(3));</pre>
+          Statements of the form 
+          <form name="form_66" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_66.png"></form>
+          perform two tasks. Firstly, they create a function, and secondly they are given
+          it a name. Naming functions is obviously very useful, and therefore these two
+          steps are supported in JavaScript with a slightly more convenient notation:
+              <form name="form_67" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_67.png"></form>
+          which we call a <em>function definition statement</em> and which 
+          has essentially the same meaning as the variable statement above.
+          Thus, the variable statement above that defines the variable 
+          <span class="javascriptinline">square</span> can be equivalently written as
+              <div style="position:absolute;display:none;" id="javascript_68_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) { return x * x; };','javascript_68','',event,1.0);">function square(x) { return x * x; };</pre>
+            </div>
+          
+
+        
+            <div class="normaltext">
+              We can also use <span class="javascriptinline">square</span> 
+              as a building block in defining other
+              functions.  For example, <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_20.png"></span> 
+              can be expressed as 
+              <form name="form_70" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_70.png"></form>
+            </div>
+          
+
+        
+            <div class="normaltext">
+              We can easily define a function
+              <span class="javascriptinline">sum_of_squares</span>
+              that, given any two numbers as arguments, produces the
+              sum of their squares:
+              <div style="position:absolute;display:none;" id="javascript_73_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) { return x * x; }\n                \nfunction sum_of_squares(x,y) {\n   return square(x) + square(y);\n}\n\n// example\n\nsum_of_squares(3,4);','javascript_73','',event,1.0);">function sum_of_squares(x,y) {
+   return square(x) + square(y);
+}</pre>
+              
+              Now we can use <span class="javascriptinline">sum_of_squares</span>
+              as a building block in constructing further functions:
+              <div style="position:absolute;display:none;" id="javascript_75_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) { return x * x; }\n                \nfunction sum_of_squares(x,y) {\n   return square(x) + square(y);\n}\n                \nfunction f(a) {\n   return sum_of_squares(a + 1, a * 2);\n}\n\n// example\n\nf(5);','javascript_75','',event,1.0);">function f(a) {
+   return sum_of_squares(a + 1, a * 2);
+}</pre>
+              
+              
+              The application of functions such as
+              <span class="javascriptinline">sum_of_squares(3,4)</span>
+              are—after operator combinations and function expressions—the third 
+              kind of combination
+              of expressions into larger expressions that we encounter. 
+            </div>
+          
+      
+
+      <h3><a name="subsection_1_1_5">1.1.5&nbsp;
+          The Substitution Model for 
+          
+              Function
+            
+          Application
+        </a></h3>
+        <a name="sec:substitution-model"></a>
+        
+        
+
+        
+            <div class="normaltext">
+              An application combination has the general form
+              <form name="form_77" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_77.png"></form>
+              To evaluate an application combination,
+              the interpreter follows a similar process as for operator combinations,
+              which we described in
+              section <a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#sec:evaluating-combinations">1.1.3</a>.
+              Here, the interpreter
+              evaluates all component expressions 
+              of the application and applies the function
+              (which is the value of 
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_21.png"></span>) to the
+              arguments (which are the values 
+              of 
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_22.png"></span>).
+            </div>
+          
+
+        
+            <div class="normaltext">
+              The substitution model for function application can handle
+              functions whose body consists of a single 
+              <span class="schemeinline">return</span> statement. All functions
+              encountered so far follow this format, and most functions in
+              this chapter can be easily converted into this format.
+              For functions with this property,
+              the process of function application proceeds as follows:
+              <ul>
+                <li>
+                  To apply a function to arguments, evaluate the 
+                  <span class="schemeinline">return</span> 
+                  expression of the body of the
+                  function with each formal parameter replaced by the 
+                  corresponding
+                  argument.
+                </li>
+              </ul>
+              To illustrate this process, 
+              let&#146;s evaluate the function application
+              <div style="position:absolute;display:none;" id="javascript_81_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) { return x * x; }\n                \nfunction sum_of_squares(x,y) {\n   return square(x) + square(y);\n}\n                \nfunction f(a) {\n   return sum_of_squares(a + 1, a * 2);\n}\n                \nf(5)','javascript_81','',event,1.0);">f(5)</pre>
+              where <span class="javascriptinline">f</span> is the function defined in
+              section <a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#sec:compound-procedures">1.1.4</a>.
+              We begin by retrieving the 
+              <span class="schemeinline">return</span> 
+              expression of the body of
+              of <span class="javascriptinline">f</span>:
+              <form name="form_82" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_82.png"></form>
+              Then we replace the formal parameter <span class="javascriptinline">a</span>
+              by the argument 5:
+              <form name="form_83" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_83.png"></form>
+              The value of the function application is obtained by evaluating 
+              this expression.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              Thus the problem reduces to the evaluation of an application combination with two
+              operands and an operator <span class="javascriptinline">sum_of_squares</span>.  
+              Evaluating this combination involves three subproblems.  We must evaluate the
+              operator to get the function to be applied, and we must evaluate the
+              operands to get the arguments.  
+              Now <span class="javascriptinline">5 + 1</span> produces 6 and
+              <span class="javascriptinline">5 * 2</span> produces 10, 
+              so we must apply the
+              <span class="javascriptinline">sum_of_squares</span> function 
+              to 6 and 10.  
+              These values are substituted
+              for the formal parameters <span class="javascriptinline">x</span> and 
+              <span class="javascriptinline">y</span> in the body of 
+              <span class="javascriptinline">sum_of_squares</span>,
+              reducing the expression to
+              <form name="form_88" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_88.png"></form>
+              If we use the definition of <span class="javascriptinline">square</span>, 
+              this reduces to
+              <form name="form_89" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_89.png"></form>
+              which reduces by multiplication to
+              <form name="form_90" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_90.png"></form>
+              and finally to
+              <form name="form_91" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_91.png"></form>
+            </div>
+          
+
+        <div class="normaltext">
+              The process we have just described is called the <em>substitution
+                model</em> for 
+              function 
+              application.  It can be taken as a model that
+              determines the &#147;meaning&#148; of 
+              function 
+              application, insofar as the
+              functions 
+              in this chapter are concerned.  However, there are two
+              points that should be stressed:
+              <ul>
+                <li>
+                  The purpose of the substitution is to help us think about
+                  function 
+                  application, not to provide a description of how
+                  the interpreter really works.  Typical interpreters do not evaluate
+                  function  
+                  applications by manipulating the text of a 
+                  function 
+                  to substitute values for the formal parameters.  In practice, the
+                  &#147;substitution&#148; is accomplished by using a local environment for the
+                  formal parameters.  We will discuss this more fully in chapters 3 and
+                  4 when we examine the implementation of an interpreter in detail.
+                </li>
+                <li>
+                  Over the course of this book, we will present a sequence of
+                  increasingly elaborate models of how interpreters work, culminating
+                  with a complete implementation of an interpreter and compiler in
+                  chapter&nbsp;5.  The substitution model is only the first of these
+                  models—a way to get started thinking formally about the evaluation
+                  process.  In general, when 
+                  
+                  modeling phenomena in science and
+                  engineering, we begin with simplified, incomplete models.  As we
+                  examine things in greater detail, these simple models become
+                  inadequate and must be replaced by more refined models.  The
+                  substitution model is no exception.  In particular, when we address in
+                  chapter&nbsp;3 the use of 
+                  functions 
+                  with &#147;mutable data,&#148; we will see that
+                  the substitution model breaks down and must be replaced by a more
+                  complicated model of 
+                  function 
+                  application.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_15"><a class="link" href="#footnote_15">15</a></a></span>
+                </li>
+              </ul>
+            </div>
+
+        <H4>Applicative order versus normal order</H4> 
+          
+        
+
+        
+            <div class="normaltext">
+              According to the description of evaluation given in
+              section <a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#sec:evaluating-combinations">1.1.3</a>, the interpreter first
+              evaluates the operator and operands and then applies the resulting 
+              <span style="color:black" title="">function</span>
+              to the resulting arguments.  This is not the only way to perform
+              evaluation.  An alternative evaluation model would not evaluate the
+              operands until their values were needed.  Instead it would first substitute
+              operand expressions for parameters until
+              it obtained an expression involving only primitive operators, and
+              would then perform the evaluation.  If we used this method, the
+              evaluation of
+              <form name="form_96" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_96.png"></form>
+              would proceed according to the sequence of expansions
+              <form name="form_97" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_97.png"></form>
+              followed by the reductions
+              <form name="form_98" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_98.png"></form>
+              This gives the same answer as our previous evaluation model, but the
+              process is different.  In particular, the evaluations
+              of <span class="javascriptinline">5 + 1</span> and 
+              <span class="javascriptinline">5 * 2</span> are each performed twice here,
+              corresponding to the reduction of the expression
+              <form name="form_99" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_99.png"></form>
+              with <span class="javascriptinline">x</span> replaced respectively 
+              by <span class="javascriptinline">5 + 1</span> 
+              and <span class="javascriptinline">5 * 2</span>.
+            </div>
+          
+
+        <div class="normaltext">
+              This alternative &#147;fully expand and then reduce&#148; evaluation method is
+              known as 
+              
+              <em>normal-order evaluation</em>, in contrast to the &#147;evaluate
+                the arguments and then apply&#148; method that the interpreter actually
+              uses, which is called 
+              
+              <em>applicative-order evaluation</em>.  It can be
+              shown that, for 
+              function
+              applications that can be modeled using
+              substitution (including all the 
+              functions
+              in the first two chapters
+              of this book) and that yield legitimate values, normal-order and
+              applicative-order evaluation produce the same value.  (See
+              exercise <a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#ex:normal-order-vs-appl-order-test">1.5</a> for an instance of
+              an &#147;illegitimate&#148; value where normal-order and applicative-order
+              evaluation do not give the same result.)
+        </div>
+
+        
+            <div class="normaltext">
+              
+              
+              <span style="color:black" title="">JavaScript</span> uses applicative-order evaluation, partly because of the
+              additional efficiency obtained from avoiding multiple evaluations of
+              expressions such as those illustrated with <span class="javascriptinline">5 + 1</span> 
+              and <span class="javascriptinline">5 * 2</span> above and, more significantly, 
+              because normal-order evaluation
+              becomes much more complicated to deal with when we leave the realm of
+              <span style="color:black" title="">functions</span> that can be modeled by substitution.  On the other hand,
+              normal-order evaluation can be an extremely valuable tool, and we will
+              investigate some of its implications in chapters 3 and 4.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_17"><a class="link" href="#footnote_17">17</a></a></span>
+              
+            </div>
+          
+      
+
+      <h3><a name="subsection_1_1_6">1.1.6&nbsp;
+          Conditional 
+          
+            Statements
+          
+          and Predicates
+        </a></h3>
+        
+        <a name="sec:conditionals"></a>
+
+        
+            <div class="normaltext">
+              The expressive power of the class of functions that we can define at
+              this point is very limited, because we have no way to make tests and
+              to perform different operations depending on the result of a test.
+              For instance, we cannot define a function that computes the 
+              
+              absolute
+              value of a number by testing whether the number is negative or not,
+              and taking different actions in each case according
+              to the rule
+              <P><img src="img_javascript/latex_3.png"></P>
+              <span style="color:black" title="conditional statements are the most common kind 
+                  of branching
+                  statements, so we introduce them first.">This construct is called a <em>conditional</em>,
+                
+              </span>
+              and there is a special statement in JavaScript for notating it.
+              It is called a
+              
+              
+              
+              <em>conditional statement</em>,
+              and it is used as follows:
+              <div style="position:absolute;display:none;" id="javascript_103_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n\n// example\n\nabs(-5);','javascript_103','',event,1.0);">function abs(x) {
+   if (x &gt;= 0) 
+      return x;
+   else 
+      return -x;
+}</pre>
+              
+              The general form of a conditional statement is
+              <form name="form_105" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_105.png"></form>
+              Conditional statements begin with the 
+              keyword <span class="javascriptinline">if</span> followed by
+              a parenthesized expression 
+              <nobr>
+              <span class="javascriptinline">(</span><span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_24.png"></span><span class="javascriptinline">)</span></nobr>—that is, 
+              an expression whose value is interpreted as
+              either true or false.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_19"><a class="link" href="#footnote_19">19</a></a></span>
+              The <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_25.png"></span> 
+              is followed by the statement
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_26.png"></span>, 
+              followed by the keyword
+              <span class="javascriptinline">else</span>, and finally the
+              statement
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_27.png"></span>.
+
+            </div>
+          
+
+        
+            <div class="normaltext">
+              To evaluate a conditional statement,
+              the interpreter starts by evaluating the 
+              
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_34.png"></span> 
+              part of the expression.  
+              If the <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_35.png"></span> 
+              evaluates to a true value, the interpreter then evaluates
+              
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_36.png"></span>.
+              Otherwise it evaluates 
+              
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_37.png"></span>.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              
+              The word <em>predicate</em> is used for functions that return true
+              or false, as well as for expressions that evaluate to true or false.
+              The absolute-value function <span class="javascriptinline">abs</span> 
+              makes use of the 
+              
+              
+              
+              
+              primitive
+              predicate <span class="javascriptinline">&gt;=</span>.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_21"><a class="link" href="#footnote_21">21</a></a></span> This predicate takes two
+              numbers as arguments and tests whether the first number is
+              greater than or equal to the second number,
+              returning true or false accordingly.
+            </div>
+          
+
+        
+            <span style="color:black" title=""></span>
+          
+
+        
+            <div class="normaltext">
+              <span style="color:black" title="Taking this opportunity to introduce conditional expression syntax.">Another way
+                
+              </span>
+                to write the absolute-value function is
+              
+              <div style="position:absolute;display:none;" id="javascript_109_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   return x &gt;= 0 ? x : -x;\n}\n\n// example\n\nabs(-5);','javascript_109','',event,1.0);">function abs(x) {
+   return x &gt;= 0 ? x : -x;
+}</pre>
+              
+              
+              This version uses a <em>conditional expression</em> rather than a
+              conditional statement; the body consists of a single
+              return statement, and the conditional
+              is contained in its expression.
+              The general form of a conditional expression is
+              <form name="form_110" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_110.png"></form>
+              To evaluate a conditional expression, 
+              the interpreter starts by evaluating the 
+              
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_53.png"></span> 
+              part of the expression.
+              If the <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_54.png"></span> 
+              evaluates to a true value, the interpreter then evaluates
+              
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_55.png"></span> 
+              and returns its value.  Otherwise it evaluates
+              <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_56.png"></span> 
+              and returns its value.
+              Notice that <span class="javascriptinline">&amp;&amp;</span> and 
+              <span class="javascriptinline">||</span> are not evaluated like arithmetic
+              operators such as 
+              <span class="javascriptinline">+</span>, because their right-hand
+              expression is not always evaluated. 
+            </div>
+          
+
+        
+            <div class="normaltext">
+              JavaScript
+              provides a number of primitive predicates that work similar to
+              <span class="javascriptinline">&gt;=</span>, including
+              <span class="javascriptinline">&gt;</span>, 
+              <span class="javascriptinline">&lt;</span>,
+              <span class="javascriptinline">&lt;=</span>, and
+              <span class="javascriptinline">===</span>.
+              In addition to these primitive
+              predicates, there are logical
+              composition operations, which enable us to construct compound
+              predicates.  
+              The three most frequently used are these:
+              <ul>
+                
+                
+                <li>
+<span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_69.png"></span> <span class="javascriptinline">&amp;&amp;</span> <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_70.png"></span><br>
+                  The interpreter
+                  evaluates the expression <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_71.png"></span>.
+                  If it evaluates to false, 
+                  the value of the whole 
+                  expression is false, and the expression <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_72.png"></span>
+                  is not evaluated.
+                  If <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_73.png"></span> evaluates to true,
+                  the value of the whole expression
+                  is the value of 
+                  <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_74.png"></span>.
+                  
+                </li>
+                <li>
+                  
+                  <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_75.png"></span> 
+                  <span class="javascriptinline">||</span> 
+                  <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_76.png"></span><br>
+                  The interpreter evaluates the expression
+                  <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_77.png"></span>. If
+                  it evaluates to true, 
+                  the value of the whole expresssion is true, and 
+                  the expression <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_78.png"></span> is not evaluated.
+                  If <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_79.png"></span> evaluates to false,
+                  the value of the whole expression is the value of 
+                  <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_80.png"></span>.
+                </li>
+                
+                <li>
+                  <span class="javascriptinline">!</span> <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_81.png"></span><br>
+                  The value of a <span class="javascriptinline">!</span> expression is true
+                  when the expression <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_82.png"></span> evaluates to false, 
+                  and false otherwise.
+                </li>
+              </ul>
+              
+              Notice that <span class="javascriptinline">&amp;&amp;</span> and 
+              <span class="javascriptinline">||</span> are not evaluated like arithmetic
+              operators such as 
+              <span class="javascriptinline">+</span>, because their right-hand
+              expression is not always evaluated. The operator
+              <span class="javascriptinline">!</span>, on the other hand, is an operator, which
+              follows the evaluation rule of section <a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#sec:evaluating-combinations">1.1.3</a>. 
+              It is a <em>unary</em> operator, which means that it takes only one argument, whereas the
+              arithmetic operators encountered so far are <em>binary</em>, 
+              taking two arguments. The operator
+              <span class="javascriptinline">!</span> precedes its argument; we call it a
+              <em>prefix operator</em>.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              As an example of how these are used, the condition that a 
+              number <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_85.png"></span>
+              be in the range <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_86.png"></span> may be expressed as
+              <form name="form_112" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_112.png"></form>
+              Note that the binary
+              operator <span class="javascriptinline">&amp;&amp;</span>
+              has lower precedence than the comparison operators
+              <span class="javascriptinline">&gt;</span> and
+              <span class="javascriptinline">&lt;</span>.
+            </div>
+          
+
+        
+            <div class="normaltext">
+              <span style="color:black" title="&gt;= already introduced above, so not_equal used here">
+                As another example, we can define a predicate to test whether one
+                number is not equal to another number.
+                
+              </span>
+              <div style="position:absolute;display:none;" id="javascript_116_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction not_equal(x,y) {\n   return x &gt; y || x &lt; y;\n}\n\n// example\n\nnot_equal(7,4)','javascript_116','',event,1.0);">function not_equal(x,y) {
+   return x &gt; y || x &lt; y;
+}</pre>
+              or alternatively as
+              <div style="position:absolute;display:none;" id="javascript_117_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction not_equal(x,y) {\n   return !(x &gt;= y &amp;&amp; x &lt;= y);\n}\n\n// example\n\nnot_equal(7,4)','javascript_117','',event,1.0);">function not_equal(x,y) {
+   return !(x &gt;= y &amp;&amp; x &lt;= y);
+}</pre>
+
+              
+
+
+              Note that the operator <span class="javascriptinline">!=</span> when applied 
+              to two numbers, behaves the same as 
+              <span class="javascriptinline">not_equal</span>.
+            </div>
+          
+
+        <div class="exercise">
+<b>Exercise 1.1.</b>
+        
+            <div class="normaltext">
+                Below is a sequence of statements. Before you click on a statement,
+                predict what the result of its evaluation will be.
+            </div>
+          
+
+                  <div style="position:absolute;display:none;" id="javascript_119_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n10;','javascript_119','',event,1.0);">10;</pre>
+                <div style="position:absolute;display:none;" id="javascript_120_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n5 + 3 + 4;','javascript_120','',event,1.0);">5 + 3 + 4;</pre>
+                <div style="position:absolute;display:none;" id="javascript_121_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n9 - 1;','javascript_121','',event,1.0);">9 - 1;</pre>
+                <div style="position:absolute;display:none;" id="javascript_122_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n6 / 2;','javascript_122','',event,1.0);">6 / 2;</pre>
+                <div style="position:absolute;display:none;" id="javascript_123_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\n2 * 4 + (4 - 6);','javascript_123','',event,1.0);">2 * 4 + (4 - 6);</pre>
+                <div style="position:absolute;display:none;" id="javascript_124_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;','javascript_124','',event,1.0);">var a = 3;</pre>
+                <div style="position:absolute;display:none;" id="javascript_125_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;','javascript_125','',event,1.0);">var b = a + 1;</pre>
+                <div style="position:absolute;display:none;" id="javascript_126_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;\n                  \na + b + a * b;','javascript_126','',event,1.0);">a + b + a * b;</pre>
+                <div style="position:absolute;display:none;" id="javascript_127_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;\n                  \na === b;','javascript_127','',event,1.0);">a === b;</pre>
+                <div style="position:absolute;display:none;" id="javascript_128_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;\n                  \nif (b &gt; a &amp;&amp; b &lt; a * b)\n  b;\nelse a;','javascript_128','',event,1.0);">if (b &gt; a &amp;&amp; b &lt; a * b)
+  b;
+else a;</pre>
+                <div style="position:absolute;display:none;" id="javascript_129_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;\n                  \nif (a === 4) \n  6;\nelse if (b === 4)\n  6 + 7 + a;\nelse 25;','javascript_129','',event,1.0);">if (a === 4) 
+  6;
+else if (b === 4)
+  6 + 7 + a;
+else 25;</pre>
+                <div style="position:absolute;display:none;" id="javascript_130_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;\n                  \n2 + (b &gt; a ? b : a);','javascript_130','',event,1.0);">2 + (b &gt; a ? b : a);</pre>
+                <div style="position:absolute;display:none;" id="javascript_131_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;\n                  \n(a &gt; b\n  ? a\n  : a &lt; b\n  ? b\n  : -1)\n*\n(a + 1);','javascript_131','',event,1.0);">(a &gt; b
+  ? a
+  : a &lt; b
+  ? b
+  : -1)
+*
+(a + 1);</pre>
+                
+                Note that the statement
+                <div style="position:absolute;display:none;" id="javascript_132_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;\n                  \nif (a === 4) \n  6;\nelse if (b === 4)\n  6 + 7 + a;\nelse 25;','javascript_132','',event,1.0);">if (a === 4) 
+  6;
+else if (b === 4)
+  6 + 7 + a;
+else 25;</pre>
+                consists of two conditional statements, where the second
+                one forms the alternative statement of the first one. If you want
+                to make that clear, you can indent the lines like this:
+                <div style="position:absolute;display:none;" id="javascript_133_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nvar a = 3;\n                  \nvar b = a + 1;\n                  \nif (a === 4) \n  6;\nelse \n  if (b === 4)\n    6 + 7 + a;\n  else 25;','javascript_133','',event,1.0);">if (a === 4) 
+  6;
+else 
+  if (b === 4)
+    6 + 7 + a;
+  else 25;</pre>
+                  
+        </div>
+
+        <div class="exercise">
+<b>Exercise 1.2.</b>
+                Translate the following expression into 
+          
+            JavaScript
+          
+          <P><img src="img_javascript/latex_4.png"></P>
+        
+    <div style="position:absolute;display:none;" id="javascript_134_div"></div>
+    </div>
+        <div class="exercise">
+<b>Exercise 1.3.</b>
+                Define a 
+                
+                    function
+                  
+                that takes three numbers as arguments and returns
+                the sum of the squares of the two larger numbers.
+                <div style="position:absolute;display:none;" id="javascript_135_div"></div>
+                
+        </div>
+
+              <div class="exercise">
+<b>Exercise 1.4.</b><a name="ex:a-plus-abs-b"></a>
+        
+                
+                
+                
+                Observe that our model of evaluation allows for application combinations whose
+                functions are compound expressions.  Use this observation to
+                describe the behavior of the following function:
+                <div style="position:absolute;display:none;" id="javascript_138_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction plus(a,b) { return a + b; }\nfunction minus(a,b) { return a - b; }\nfunction a_plus_abs_b(a,b) {\n   return (b &gt; 0 ? plus : minus)(a,b);\n}\n\n// example\n\na_plus_abs_b(5,-4);','javascript_138','',event,1.0);">function plus(a,b) { return a + b; }
+function minus(a,b) { return a - b; }
+function a_plus_abs_b(a,b) {
+   return (b &gt; 0 ? plus : minus)(a,b);
+}</pre>
+                
+                Note that in the conditional expression, we cannot directly use the operators
+                <span class="javascriptinline">+</span> and
+                <span class="javascriptinline">-</span> instead of the
+                variables
+                <span class="javascriptinline">plus</span> and
+                <span class="javascriptinline">minus</span> because in infix notation, only
+                operator symbols are allowed, not compound expressions.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_23"><a class="link" href="#footnote_23">23</a></a></span>
+          
+              </div>
+        <div class="exercise">
+<b>Exercise 1.5.</b>
+                <a name="ex:normal-order-vs-appl-order-test"></a>
+                
+                
+                Ben Bitdiddle has invented a test to determine whether the interpreter
+                he is faced with is using applicative-order evaluation or normal-order
+                evaluation.  He defines the following two 
+                
+                    functions
+                  :
+                <div style="position:absolute;display:none;" id="javascript_140_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction p() {\n   return p();\n}\n\nfunction test(x,y) {\n   return (x === 0) ? 0 : y;\n}','javascript_140','',event,1.0);">function p() {
+   return p();
+}
+
+function test(x,y) {
+   return (x === 0) ? 0 : y;
+}</pre>
+                Then he evaluates the 
+                statement
+                <div style="position:absolute;display:none;" id="javascript_141_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction p() {\n   return p();\n}\n\nfunction test(x,y) {\n   return (x === 0) ? 0 : y;\n}\n                  \ntest(0,p())','javascript_141','',event,1.0);">test(0,p())</pre>
+                What behavior will Ben observe with an interpreter that uses
+                applicative-order evaluation?  What behavior will he observe with an
+                interpreter that uses normal-order evaluation?  Explain your answer.
+                
+                
+                (Assume that the evaluation rule for 
+                
+                    conditional statements
+                  
+                is the
+                same whether the interpreter is using normal or applicative order:
+                The predicate expression is evaluated first, and the result
+                determines whether to evaluate
+                the consequent or the alternative 
+                statement.)
+
+    </div>
+
+      
+
+      <h3><a name="subsection_1_1_7">1.1.7&nbsp;Example: Square Roots by Newton&#146;s Method</a></h3>
+        
+        <a name="sec:sqrt"></a>
+
+        <div class="normaltext">
+              
+              
+                Functions,
+              as introduced above, are much like ordinary mathematical
+              functions.  They specify a value that is determined by one or more
+              parameters.  But there is an important difference between
+              mathematical functions and computer 
+                functions.
+                
+                    Computer functions
+                  
+                must be effective.
+        </div>
+
+            <div class="normaltext">
+              As a case in point, consider the problem of computing square
+              roots.  We can define the square-root function as
+              <P><img src="img_javascript/latex_5.png"></P>
+              This describes a perfectly legitimate mathematical function.  We could
+              use it to recognize whether one number is the square root of another, or
+              to derive facts about square roots in general.  On the other hand, the
+              definition does not describe a
+              computer function.
+                Indeed, it tells us almost
+              nothing about how to actually find the square root of a given number.  It
+              will not help matters to rephrase this definition in pseudo-JavaScript:
+                <form name="form_142" style="margin-bottom: 0"><img style="padding:3mm;border:none" src="img_javascript/javascript_noeval_142.png"></form>
+              This only begs the question.
+            </div>
+
+            <div class="normaltext">
+              The contrast between 
+                
+                    mathematical function and computer function
+                  
+              is a reflection of the
+              general distinction between describing properties of things and
+              describing how to do things, or, as it is sometimes referred to, the
+              distinction between 
+              
+              
+              declarative knowledge and imperative knowledge.
+              In 
+              
+              
+              mathematics we are usually concerned with declarative (what is)
+              descriptions, whereas in computer science we are usually concerned
+              with imperative (how to) descriptions.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_24"><a class="link" href="#footnote_24">24</a></a></span>
+              
+              
+            </div>
+
+        <div class="normaltext">
+          
+          
+          How does one compute square roots?  The most common way is to use
+          Newton&#146;s method of successive approximations, which says that whenever
+          we have a guess <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_87.png"></span> for the value of the square root of a 
+          number <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_88.png"></span>,
+          we can perform a simple manipulation to get a better guess (one closer
+          to the actual square root) by averaging <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_89.png"></span> with
+          <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_90.png"></span>.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_25"><a class="link" href="#footnote_25">25</a></a></span> 
+          For example, we can compute
+          the square root of 2 as follows.  Suppose our initial guess is&nbsp;1:
+          <P><img src="img_javascript/latex_6.png"></P>
+          Continuing this process, we obtain better and better
+          approximations to the square root. 
+        </div>
+
+        <div class="normaltext">
+              Now let&#146;s formalize the process in terms of functions.  We start with
+              a value for the 
+              
+              radicand (the number whose square root we are trying
+              to compute) and a value for the guess.  If the guess is good enough
+              for our purposes, we are done; if not, we must repeat the process with an
+              improved guess.  We write this basic strategy as a 
+                
+                   function:
+                  
+
+              <div style="position:absolute;display:none;" id="javascript_143_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction improve(guess,x) {\n   return average(guess,x / guess);\n}\n          \nfunction sqrt_iter(guess,x) {\n   if (good_enough(guess,x)) \n      return guess;\n   else \n      return sqrt_iter(improve(guess,x), x);\n}\n\n// example\n\nsqrt_iter(3,25);','javascript_143','',event,1.0);">function sqrt_iter(guess,x) {
+   if (good_enough(guess,x)) 
+      return guess;
+   else 
+      return sqrt_iter(improve(guess,x), x);
+}</pre>
+              
+        </div>
+
+        <div class="normaltext">
+          A guess is improved by averaging
+          it with the quotient of the radicand and the old guess:
+          <div style="position:absolute;display:none;" id="javascript_145_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction improve(guess,x) {\n   return average(guess,x / guess);\n}\n\n// example\n\nimprove(3,25);','javascript_145','',event,1.0);">function improve(guess,x) {
+   return average(guess,x / guess);
+}</pre>
+          
+            where
+            
+            <div style="position:absolute;display:none;" id="javascript_147_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction average(x,y) {\n   return (x + y) / 2;\n}\n\n// example\n\naverage(3,6);','javascript_147','',event,1.0);">function average(x,y) {
+   return (x + y) / 2;
+}</pre>
+            
+          </div>
+
+        
+            <div class="normaltext">
+              We also have to say what we mean by &#147;good enough.&#148;  The
+              following will do for illustration, but it is not really a very good
+              test.  (See exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#ex:ex-sqrt-end-test">1.7</a>.)
+              <span style="color:black" title="footnote removed; does not apply; unfortunately 
+                we cannot use ? in identifiers 
+                in JavaScript.">
+              The idea is to improve the answer until it is close enough so that its
+              square differs from the radicand by less than a predetermined
+              tolerance (here 0.001):
+              </span>
+              <div style="position:absolute;display:none;" id="javascript_151_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\n\n// example\n\ngood_enough(1.41,2);','javascript_151','',event,1.0);">function good_enough(guess,x) {
+   return abs(square(guess) - x) &lt; 0.001;
+}</pre>
+              
+            </div>
+          
+
+        
+            <div class="normaltext">
+              <span style="color:black" title="Footnote removed">Finally, we need a way to get started.  For instance, we can
+                always guess that the square root of any number is 1:
+              </span>
+              
+              <div style="position:absolute;display:none;" id="javascript_154_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction improve(guess,x) {\n   return average(guess,x / guess);\n}\n          \nfunction sqrt_iter(guess,x) {\n   if (good_enough(guess,x)) \n      return guess;\n   else \n      return sqrt_iter(improve(guess,x), x);\n}\n                \nfunction sqrt(x) {\n   return sqrt_iter(1.0,x);\n}\n\n// example\n\nsqrt(9);','javascript_154','',event,1.0);">function sqrt(x) {
+   return sqrt_iter(1.0,x);
+}</pre>
+            </div>
+          
+
+        <div class="normaltext">
+              If we type these definitions to the interpreter, we can use <span class="schemeinline">sqrt</span>
+              just as we can use any
+                
+                   function
+                  :
+
+                <div style="position:absolute;display:none;" id="javascript_155_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction improve(guess,x) {\n   return average(guess,x / guess);\n}\n          \nfunction sqrt_iter(guess,x) {\n   if (good_enough(guess,x)) \n      return guess;\n   else \n      return sqrt_iter(improve(guess,x), x);\n}\n                \nfunction sqrt(x) {\n   return sqrt_iter(1.0,x);\n}\n                \nsqrt(9);','javascript_155','',event,1.0);">sqrt(9);</pre>
+
+                
+
+              <div style="position:absolute;display:none;" id="javascript_157_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction improve(guess,x) {\n   return average(guess,x / guess);\n}\n          \nfunction sqrt_iter(guess,x) {\n   if (good_enough(guess,x)) \n      return guess;\n   else \n      return sqrt_iter(improve(guess,x), x);\n}\n                \nfunction sqrt(x) {\n   return sqrt_iter(1.0,x);\n}\n                \nsqrt(100 + 37);','javascript_157','',event,1.0);">sqrt(100 + 37);</pre>
+
+              <div style="position:absolute;display:none;" id="javascript_158_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction improve(guess,x) {\n   return average(guess,x / guess);\n}\n          \nfunction sqrt_iter(guess,x) {\n   if (good_enough(guess,x)) \n      return guess;\n   else \n      return sqrt_iter(improve(guess,x), x);\n}\n                \nfunction sqrt(x) {\n   return sqrt_iter(1.0,x);\n}\n                \nsqrt(sqrt(2) + sqrt(3));','javascript_158','',event,1.0);">sqrt(sqrt(2) + sqrt(3));</pre>
+
+              <div style="position:absolute;display:none;" id="javascript_159_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction improve(guess,x) {\n   return average(guess,x / guess);\n}\n          \nfunction sqrt_iter(guess,x) {\n   if (good_enough(guess,x)) \n      return guess;\n   else \n      return sqrt_iter(improve(guess,x), x);\n}\n                \nfunction sqrt(x) {\n   return sqrt_iter(1.0,x);\n}\n                \nsquare(sqrt(1000));','javascript_159','',event,1.0);">square(sqrt(1000));</pre>
+
+              
+              
+        </div>
+
+        
+            <div class="normaltext">
+              
+              The <span class="javascriptinline">sqrt</span> program also illustrates that the simple functional
+              language we have introduced so far is sufficient for writing any
+              purely numerical program that one could write in, say, C or
+              Pascal.  This might seem surprising, since we have not 
+              <span style="color:black" title='replaces "included in our language"; seems more appropriate, given
+                  that we not "defining" JavaScript, just using it.'>
+                yet introduced
+                
+              </span>
+              any iterative 
+              
+              (looping) constructs that direct the
+              computer to do something over and over again. The function 
+              <span class="javascriptinline">sqrt_iter</span>, on the
+              other hand, demonstrates how iteration can be accomplished using no
+              special construct other than the ordinary ability to call a
+              <span style="color:black" title="procedure replaced by function, 
+                  see Section 1.1.4. Removed footnote, because there is no tail recursion in
+                  JavaScript">function</span>.
+              
+            </div>
+          
+        <div class="exercise">
+<b>Exercise 1.6.</b>
+        
+            <span style="color:black" title=""></span>
+	    Original exercise in Scheme not relevant for JavaScript version
+          
+        </div>
+
+        <div class="exercise">
+<b>Exercise 1.7.</b>
+                <a name="ex:ex-sqrt-end-test"></a>
+                The 
+                
+                    <span class="javascriptinline">good_enough</span>
+                  
+                test used in computing square roots will not be
+                very effective for finding the square roots of very small numbers.
+                Also, in real computers, arithmetic operations are almost always
+                performed with limited precision.  This makes our test inadequate for
+                very large numbers.  Explain these statements, with examples showing
+                how the test fails for small and large numbers.  An alternative
+                strategy for implementing 
+                
+                    <span class="javascriptinline">good_enough</span>
+                  
+                  is to watch how 
+                <span class="schemeinline">guess</span> 
+                changes from one iteration to the next and to stop when the
+                change is a very small fraction of the guess.  Design a square-root
+                
+                    function
+                  
+                that uses this kind of end test.  Does this work better for
+                small and large numbers?
+      <div style="position:absolute;display:none;" id="javascript_164_div"></div>
+      
+        </div>
+
+        <div class="exercise">
+<b>Exercise 1.8.</b><a name="ex:cube-root-newton"></a>
+                
+                
+                Newton&#146;s method for cube roots is based on the fact that if 
+                <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_92.png"></span> is an
+                approximation to the cube root of <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_93.png"></span>, then a better approximation is
+                given by the value
+                <P><img src="img_javascript/latex_7.png"></P>
+                Use this formula to implement a cube-root 
+                
+                    function
+                  
+                analogous to the
+                square-root 
+                function.  
+                (In section&nbsp;<a class="link" onclick="window.displayManager.show('section_1_3.html')" href="#sec:proc-returned-values">1.3.4</a> we
+                will see how to implement Newton&#146;s method in general as an abstraction
+                of these square-root and cube-root 
+                functions.)
+<div style="position:absolute;display:none;" id="javascript_166_div"></div>
+
+</div>
+
+      
+
+      <h3><a name="subsection_1_1_8">1.1.8&nbsp;
+          
+              Functions 
+            
+          as Black-Box Abstractions
+        </a></h3>
+        <a name="sec:black-box"></a>
+        
+
+        <div class="normaltext">
+              <span class="schemeinline">Sqrt</span> is our first example of a process defined by a set of
+              mutually defined 
+          functions.
+          Notice that the definition of 
+              <span class="schemeinline">sqrt-iter</span> is 
+              
+              <em>recursive</em>; that is, the 
+          
+              function
+            
+          is defined in
+              terms of itself.  The idea of being able to define a 
+          
+              function
+            
+          in
+              terms of itself may be disturbing; it may seem unclear how such a
+              &#147;circular&#148; definition could make sense at all, much less specify a
+              well-defined process to be carried out by a computer.  This will be
+              addressed more carefully in
+              section&nbsp;<a class="link" onclick="window.displayManager.show('section_1_2.html')">1.2</a>.  But first let&#146;s consider
+              some other important points illustrated by the 
+              <span class="schemeinline">sqrt</span> example.
+        </div>
+
+        <div class="normaltext">
+              
+              Observe that the problem of computing square roots breaks up naturally
+              into a number of subproblems: how to tell whether a guess is good
+              enough, how to improve a guess, and so on.  Each of these tasks is
+              accomplished by a separate 
+          function.
+              The entire <span class="schemeinline">sqrt</span> program
+              can be viewed as a cluster of 
+          
+              functions
+            
+          (shown in
+          figure&nbsp;<a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#fig:sqrt-decomposition">1.2</a>) that mirrors the 
+          decomposition of the problem into subproblems.
+        </div>
+
+        
+            <p><div align="center"><table width="100%">
+<tr><td align="center">
+              <a name="fig:sqrt-decomposition"></a>
+              
+              <P><img src="img_javascript/latex_8.png"></P>
+            </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 1.
+                  2</b>&nbsp;&nbsp;&nbsp;Functional decomposition of the 
+                <span class="javascriptinline">sqrt</span> program.
+              </div></caption>
+<tr><td></td></tr>
+</table></div></p>
+          
+
+        <div class="normaltext">
+          
+          The importance of this decomposition strategy is not simply that one
+          is dividing the program into parts.  After all, we could take any
+          large program and divide it into parts—the first ten lines, the next
+          ten lines, the next ten lines, and so on.  Rather, it is crucial that
+          each 
+          
+              function
+            
+          accomplishes an identifiable task that can be used as a
+          module in defining other 
+          functions.  
+          
+          For example, when we define the
+          
+              <span class="javascriptinline">good_enough</span> function
+            
+          in terms of <span class="schemeinline">square</span>, we are able to
+          regard the <span class="schemeinline">square</span> 
+          
+              function
+            
+          as a 
+          
+          &#147;black box.&#148;  We are not at
+          that moment concerned with <em>how</em> the 
+          
+              function
+            
+          computes its
+          result, only with the fact that it computes the square.  The details
+          of how the square is computed can be suppressed, to be considered at a
+          later time.  Indeed, as far as the 
+          
+              <span class="javascriptinline">good_enough</span> function
+            
+          is
+          concerned, <span class="schemeinline">square</span> is not quite a 
+          
+              function
+            
+          but rather an
+          abstraction of a  
+          function,
+          a so-called 
+          
+          
+          
+          <em>functional abstraction</em>.
+            
+          At this level of abstraction, any 
+          
+              function
+            
+          that computes the square
+          is equally good.
+        </div>
+
+        <div class="normaltext">
+          Thus, considering only the values they return, the following two 
+          
+              functions
+            
+          squaring a number should be indistinguishable.  
+          Each takes a numerical
+          argument and produces the square of that number as the
+          value.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_29"><a class="link" href="#footnote_29">29</a></a></span>
+          <div style="position:absolute;display:none;" id="javascript_168_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) {\n   return x * x;\n}\n\n// example\n\nsquare(14);','javascript_168','',event,1.0);">function square(x) {
+   return x * x;
+}</pre>
+          <div style="position:absolute;display:none;" id="javascript_169_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) {\n   return Math.exp(double(Math.log(x)));\n}\nfunction double(x) {\n   return x + x;\n}\n\n// example\n\nsquare(14);','javascript_169','',event,1.0);">function square(x) {
+   return Math.exp(double(Math.log(x)));
+}
+function double(x) {
+   return x + x;
+}</pre>
+        </div>
+
+        <div class="normaltext">
+          So a 
+          
+              function
+            
+          should be able to suppress detail.  The
+          users of the 
+          
+              function
+            
+          may not have written the 
+          
+              function
+            
+          themselves, but may have obtained it from another programmer as a 
+          black box. A user should not need to know how the
+          
+              function
+            
+          is implemented in order
+          to use it.
+          
+        </div>
+
+        <H4>Local names</H4>
+          
+        
+        
+
+        <div class="normaltext">
+              One detail of a 
+          function&#146;s implementation that should not matter to
+              the user of the
+          
+              function
+            
+          is the implementer&#146;s choice of names for the
+          function&#146;s formal parameters.  Thus, the following  
+          
+              functions
+            
+          should
+              not be distinguishable:
+              <div style="position:absolute;display:none;" id="javascript_170_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) {\n   return x * x;\n}\n\n// example\n\nsquare(14);','javascript_170','',event,1.0);">function square(x) {
+   return x * x;
+}</pre>
+              <div style="position:absolute;display:none;" id="javascript_171_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(y) {\n   return y * y;\n}\n\n// example\n\nsquare(14);','javascript_171','',event,1.0);">function square(y) {
+   return y * y;
+}</pre>
+          </div>
+
+        <div class="normaltext">
+          This principle—that the meaning of a 
+          
+              function
+            
+          should be independent
+          of the parameter names used by its author—seems on the 
+          surface to be
+          self-evident, but its consequences are profound.  The simplest
+          consequence is that the parameter names of a 
+          
+              function
+            
+          must be local
+          to the body of the 
+          
+              function.
+            
+          For example, we used 
+          <span class="schemeinline">square</span> in
+          the definition of 
+          
+              <span class="javascriptinline">good_enough</span>
+            
+          in our square-root 
+          
+              function
+            :
+
+          <div style="position:absolute;display:none;" id="javascript_172_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\n\n// example\n\ngood_enough(1.41,2);','javascript_172','',event,1.0);">function good_enough(guess,x) {
+   return abs(square(guess) - x) &lt; 0.001;
+}</pre>
+        </div>
+
+        <div class="normaltext">
+          The intention of the author of 
+          
+              <span class="javascriptinline">good_enough</span> 
+            
+          is to determine if
+          the square of the first argument is within a given tolerance of 
+          the second argument.  We see that the author of 
+          
+              <span class="javascriptinline">good_enough</span> 
+            
+          used
+          the name <span class="schemeinline">guess</span> to refer to the 
+          first argument and <span class="schemeinline">x</span> to
+          refer to the second argument.  The argument of 
+          <span class="schemeinline">square</span> is 
+          <span class="schemeinline">guess</span>.  If the author of 
+          <span class="schemeinline">square</span> used 
+          <span class="schemeinline">x</span> (as above)
+          to refer to that argument, we see that the 
+          <span class="schemeinline">x</span> in 
+          
+              <span class="javascriptinline">good_enough</span> 
+            
+          must be a different <span class="schemeinline">x</span> than the one 
+          in  <span class="schemeinline">square</span>.  
+          Running the 
+          
+              function
+            
+	  <span class="schemeinline">square</span> must 
+          not affect the value
+          of <span class="schemeinline">x</span> that is used by 
+          <span class="javascriptinline">good_enough</span>,
+          because that value of
+          <span class="schemeinline">x</span> may be needed by 
+          
+              <span class="javascriptinline">good_enough</span> 
+            
+          after <span class="schemeinline">square</span> is done
+          computing.
+        </div>
+
+        <div class="normaltext">
+              If the parameters were not local to the bodies of their respective
+              functions,
+              then the parameter <span class="schemeinline">x</span> in 
+              <span class="schemeinline">square</span> could be
+              confused with the parameter <span class="schemeinline">x</span> in 
+              <span class="javascriptinline">good_enough</span>,
+              and the
+              behavior of 
+              
+                  <span class="javascriptinline">good_enough</span> 
+                
+              would depend upon which version of
+              <span class="schemeinline">square</span> we used.  Thus, 
+              <span class="schemeinline">square</span> would not be the black box
+              we desired.
+        </div>
+
+        <div class="normaltext">
+              
+              
+              A formal parameter of a 
+              
+                  function
+                
+              has a very special role in the
+              
+                  function
+                
+              definition, in that it doesn&#146;t matter what name the formal
+              parameter has.  Such a name is called a 
+              
+              <em>bound variable</em>, and we
+              say that the 
+              
+                  function
+                
+              definition 
+              
+              <em>binds</em> its formal parameters.
+              The meaning of a 
+              
+                  function
+                
+              definition is unchanged if a bound variable
+              is consistently renamed throughout the definition.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_30"><a class="link" href="#footnote_30">30</a></a></span>  If a variable is not bound, we say that it is 
+              
+              <em>free</em>.  The
+              set of expressions for which a binding defines a name is called the
+              
+              <em>scope</em> of that name.
+              In a 
+              
+                  function
+                
+              definition, the bound variables
+              declared as the 
+              
+              
+              
+              formal parameters of the 
+              
+                  function
+                
+              have the body of
+              the 
+              
+                  function
+                
+              as their scope.
+        </div>
+
+        
+            <div class="normaltext">
+              In the definition of <span class="javascriptinline">good_enough</span> above, 
+              <span class="javascriptinline">guess</span> and <span class="javascriptinline">x</span> are
+              bound variables but <span class="javascriptinline">abs</span>, and 
+              <span class="javascriptinline">square</span> are free.
+              The meaning of <span class="javascriptinline">good_enough</span> 
+              should be independent of the names we
+              choose for <span class="javascriptinline">guess</span> and <span class="javascriptinline">x</span> 
+              so long as they are distinct and
+              different from <span class="javascriptinline">abs</span>, and 
+              <span class="javascriptinline">square</span>.  (If we renamed
+              <span class="javascriptinline">guess</span> to 
+              <span class="javascriptinline">abs</span> we would have introduced a bug by 
+              
+              
+              
+              <em>capturing</em>
+              the variable <span class="javascriptinline">abs</span>.  
+              It would have changed from free to bound.)  The
+              meaning of <span class="javascriptinline">good_enough</span> is 
+              not independent of the names of its
+              free variables, however.  It surely depends upon the fact (external to
+              this definition) that the symbol <span class="javascriptinline">abs</span> names a 
+              <span style="color:black" title="procedure becomes function, 
+                  see Section 1.1.4">function</span> 
+              for computing the absolute value of a number.  
+              The JavaScript function <span class="javascriptinline">good_enough</span> will
+              compute a different mathematical function if we substitute 
+              <span class="javascriptinline">Math.cos</span> (JavaScript&#146;s cosine function)
+              for <span class="javascriptinline">abs</span> in its definition.
+              
+            </div>
+          
+
+        <H4>Internal definitions and block structure</H4>
+          
+        
+        <a name="sec:block-structure"></a>
+
+        <div class="normaltext">
+              We have one kind of name isolation available to us so far: The formal
+              parameters of a 
+              
+                  function
+                
+              are local to the body of the
+              function.  The
+              square-root program illustrates another way in which we would like to
+              control the use of names.  
+              
+              The existing program consists of
+              separate 
+              
+                  functions
+                :
+              <div style="position:absolute;display:none;" id="javascript_173_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) { return x * x; }\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction sqrt(x) {\n   return sqrt_iter(1.0,x);\n}\nfunction sqrt_iter(guess,x) {\n   if (good_enough(guess,x)) \n      return guess;\n   else \n      return sqrt_iter(improve(guess,x), x);\n}\nfunction good_enough(guess,x) {\n   return abs(square(guess) - x) &lt; 0.001;\n}\nfunction improve(guess,x) {\n   return average(guess,x / guess);\n}\n\n// example\n\nsqrt(5);','javascript_173','',event,1.0);">function sqrt(x) {
+   return sqrt_iter(1.0,x);
+}
+function sqrt_iter(guess,x) {
+   if (good_enough(guess,x)) 
+      return guess;
+   else 
+      return sqrt_iter(improve(guess,x), x);
+}
+function good_enough(guess,x) {
+   return abs(square(guess) - x) &lt; 0.001;
+}
+function improve(guess,x) {
+   return average(guess,x / guess);
+}</pre>
+        </div>
+
+        <div class="normaltext">
+              The problem with this program is that the only 
+              
+                  function
+                
+              that is
+              important to users of <span class="schemeinline">sqrt</span> is 
+              <span class="schemeinline">sqrt</span>.  The other
+              
+                  functions
+                
+              (<span class="javascriptinline">sqrt_iter</span>, 
+                  <span class="javascriptinline">good_enough</span>, 
+              and <nobr><span class="schemeinline">improve</span>)</nobr>
+              only clutter up their minds.  They may not define any other 
+              
+                  function
+                
+              called 
+              
+                  <span class="javascriptinline">good_enough</span>
+                
+              as part of 
+              another program to work together
+              with the square-root program, 
+              because <span class="schemeinline">sqrt</span> needs it.  The
+              problem is especially severe in the construction of large systems by
+              many separate programmers.  For example, in the construction of a
+              large library of numerical 
+              functions, 
+              many numerical functions are
+              computed as successive approximations and thus might have 
+              
+                  functions
+                
+              named 
+              
+                  <span class="javascriptinline">good_enough</span>
+                
+              and 
+              <span class="schemeinline">improve</span> as auxiliary
+              functions.
+              We would like to localize the 
+              subfunctions,
+              hiding them inside 
+              <span class="schemeinline">sqrt</span> so that 
+              <span class="schemeinline">sqrt</span> could coexist with other 
+              successive approximations, each having its own private
+              <span class="javascriptinline">good_enough</span> function.
+              To make this possible, we allow a 
+              
+                  function
+                
+              to have
+              
+              
+              internal definitions that are local to that 
+              function.
+              For example, in the square-root problem we can write
+
+              <div style="position:absolute;display:none;" id="javascript_174_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction square(x) { return x * x; }\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction sqrt(x) {\n   function good_enough(guess,x) {\n      return abs(square(guess) - x) &lt; 0.001;\n   }\n   function improve(guess,x) {\n      return average(guess,x / guess);\n   }\n   function sqrt_iter(guess,x) {\n      if (good_enough(guess,x)) \n           return guess;\n      else return sqrt_iter(improve(guess,x),x);\n   }\n   return sqrt_iter(1.0,x);\n}\n\n// example\n\nsqrt(5);','javascript_174','',event,1.0);">function sqrt(x) {
+   function good_enough(guess,x) {
+      return abs(square(guess) - x) &lt; 0.001;
+   }
+   function improve(guess,x) {
+      return average(guess,x / guess);
+   }
+   function sqrt_iter(guess,x) {
+      if (good_enough(guess,x)) 
+           return guess;
+      else return sqrt_iter(improve(guess,x),x);
+   }
+   return sqrt_iter(1.0,x);
+}</pre>
+        </div>
+
+        <div class="normaltext">
+              Such nesting of definitions, called <em>block structure</em>,
+              is basically the right solution to the simplest 
+              name-packaging problem.  But there is a better idea lurking here.  In
+              addition to internalizing the definitions of the auxiliary
+              functions,
+              we can simplify them.  Since <span class="schemeinline">x</span> is bound in the definition of
+              <span class="schemeinline">sqrt</span>, the 
+              
+                  functions
+                
+              <span class="javascriptinline">good_enough</span>,
+              <span class="schemeinline">improve</span>, and
+              <span class="javascriptinline">sqrt_iter</span>,
+              which are defined internally to 
+              <span class="schemeinline">sqrt</span>, are in the
+              scope of <span class="schemeinline">x</span>.  Thus, it is not necessary to pass 
+              <span class="schemeinline">x</span> explicitly to
+              each of these 
+              functions.  
+              Instead, we allow <span class="schemeinline">x</span> to be a 
+              
+              
+              free variable in the internal definitions, as shown below. Then <span class="schemeinline">x</span>
+              gets its value from the argument with which the enclosing
+              
+                  function
+                
+              <span class="schemeinline">sqrt</span> is called.  This discipline is called 
+              
+              <em>lexical
+                scoping</em>.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_31"><a class="link" href="#footnote_31">31</a></a></span>
+
+              
+              <div style="position:absolute;display:none;" id="javascript_175_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction abs(x) {\n   if (x &gt;= 0) \n      return x;\n   else \n      return -x;\n}\n                \nfunction square(x) { return x * x; }\n                \nfunction average(x,y) {\n   return (x + y) / 2;\n}\n              \nfunction sqrt(x) {\n   function good_enough(guess) {\n      return abs(square(guess) - x) &lt; 0.001;\n   }\n   function improve(guess) {\n      return average(guess,x / guess);\n   }\n   function sqrt_iter(guess) {\n      if (good_enough(guess)) \n           return guess;\n      else return sqrt_iter(improve(guess),x);\n   }\n   return sqrt_iter(1.0);\n}\n\n// example\n\nsqrt(5);','javascript_175','',event,1.0);">function sqrt(x) {
+   function good_enough(guess) {
+      return abs(square(guess) - x) &lt; 0.001;
+   }
+   function improve(guess) {
+      return average(guess,x / guess);
+   }
+   function sqrt_iter(guess) {
+      if (good_enough(guess)) 
+           return guess;
+      else return sqrt_iter(improve(guess),x);
+   }
+   return sqrt_iter(1.0);
+}</pre>
+        </div>
+
+        <div class="normaltext">
+              We will use block structure extensively to help us break
+              up large programs into tractable pieces.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_32"><a class="link" href="#footnote_32">32</a></a></span>
+              The idea of block structure originated with the
+              programming language 
+              
+              Algol 60.  It appears in most advanced
+              programming languages and is an important tool for helping to organize
+              the construction of large programs.
+              
+              
+              
+        </div>
+
+      
+    <div class="navbar" align="center">
+<hr>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('chapter_1.html')">this chapter</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('section_1_2.html')">next section</a><hr>
+</div><strong class="footnote">Footnotes</strong><div class="footnote">
+<a name="footnote_1"><sup><a class="link" href="#footnote_origin_1">1</a></sup></a>The
+              characterization of numbers as &#147;simple data&#148; 
+              is a barefaced bluff.
+              In fact, the treatment of numbers is one of the trickiest and most
+              confusing aspects of any programming language.  Some typical issues
+              involved are these:
+              
+              
+              
+              
+              Some computer systems distinguish <em>integers</em>, such as 2, from
+              <em>real numbers</em>, such as 2.71.  Is the real number 2.00 different
+              from the integer 2?
+              Are the arithmetic operations used
+              for integers the same as the operations used for real numbers?  Does 6
+              divided by 2 produce 3, or 3.0?  How large a number can we represent?
+              How many decimal places of accuracy can we represent?  Is the range of
+              integers the same as the range of real numbers?  
+              
+              
+              
+              Above and beyond
+              these questions, of course, lies a collection of issues concerning
+              roundoff and truncation errors—the entire science of numerical
+              analysis.  Since our focus in this book is on large-scale program
+              design rather than on numerical techniques, we are going to ignore
+              these problems.  The numerical examples in this chapter will exhibit
+              the usual roundoff behavior that one observes when using arithmetic
+              operations that preserve a limited number of decimal places of
+              accuracy in noninteger operations.
+              <a name="foot:number-representation"></a>
+            </div><div class="footnote">
+<a name="footnote_2"><sup><a class="link" href="#footnote_origin_2">2</a></sup></a>
+              Note that the semicolon indicates to the JavaScript interpreter
+              that the expression should be taken as a statement, and thus as
+              a complete program. However, JavaScript systems are not strict
+              about these semicolons; they can often be left out. In this book,
+              we will never leave out these optional semicolons, and point out
+              which statements come with semicolons and which ones don&#146;t.
+              </div><div class="footnote">
+<a name="footnote_6"><sup><a class="link" href="#footnote_origin_6">6</a></sup></a>Chapter&nbsp;3 will show that this notion of
+                environment is crucial, both for understanding how the interpreter
+                works and for implementing interpreters.</div><div class="footnote">
+<a name="footnote_12"><sup><a class="link" href="#footnote_origin_12">12</a></sup></a>Throughout this book, we will
+                
+                
+                describe the general syntax of statements by using italic symbols
+                delimited by angle brackets—e.g., 
+                <span style="vertical-align:-2.0pt"><img src="img_javascript/latex_inline_footnote_15.png"></span>—
+                to denote the
+                &#147;slots&#148; in the statement to be filled in 
+                when such a statement is actually used.</div><div class="footnote">
+<a name="footnote_13"><sup><a class="link" href="#footnote_origin_13">13</a></sup></a>More
+                
+                generally, the body of the function can consist of statements other
+                than such <span class="javascriptinline">return</span>
+                statements, which allows the programmer to control exactly when the result 
+                is returned. For example, the <span class="javascriptinline">return</span>
+                statement could be the last statement in a sequence of statements.
+                In this case, the interpreter evaluates each expression in the
+                sequence in turn and returns the value of the final return expression as the
+                value of the function application.
+              </div><div class="footnote">
+<a name="footnote_14"><sup><a class="link" href="#footnote_origin_14">14</a></sup></a>
+              Just like with previous expressions, the semicolon indicates
+              that the expression is to be taken as a statement.</div><div class="footnote">
+<a name="footnote_15"><sup><a class="link" href="#footnote_origin_15">15</a></sup></a>Despite the
+                    simplicity of the substitution idea, it turns out to be surprisingly
+                    complicated to give a rigorous mathematical definition of the
+                    substitution process.  The problem arises from the possibility of
+                    confusion between the names used for the formal parameters of a
+                    function 
+                    and the (possibly identical) names used in the expressions
+                    to which the 
+                    function 
+                    may be applied.  Indeed, there is a long
+                    history of erroneous definitions of <em>substitution</em> in the
+                    literature of logic and programming semantics.  
+                    
+                    See Stoy 1977 for a
+                    careful discussion of substitution.
+                  </div><div class="footnote">
+<a name="footnote_17"><sup><a class="link" href="#footnote_origin_17">17</a></sup></a>In
+              chapter 3 we will introduce <em>stream processing</em>, which is a way of
+              handling apparently &#147;infinite&#148; data structures by incorporating a
+              limited form of normal-order evaluation.  In
+              section  we will modify the 
+                <span style="color:black" title="">JavaScript</span>
+                interpreter to produce a normal-order variant of JavaScript.</div><div class="footnote">
+<a name="footnote_19"><sup><a class="link" href="#footnote_origin_19">19</a></sup></a>
+                
+                
+                
+                &#147;Interpreted as either true or false&#148;
+                means this: In JavaScript, there are two distinguished values that are
+                denoted by the constants 
+                <span class="javascriptinline">true</span> and <span class="javascriptinline">false</span>.
+                Other values are automcatically converted into 
+                <span class="javascriptinline">true</span> and <span class="javascriptinline">false</span>
+                according to <em>conversion rules</em>, but we choose not to make use of these
+                conversion rules in this book.
+              </div><div class="footnote">
+<a name="footnote_21"><sup><a class="link" href="#footnote_origin_21">21</a></sup></a>The 
+                function <span class="javascriptinline">abs</span> also uses
+                
+                the unary &#147;minus&#148; operator <span class="javascriptinline">-</span>, 
+                which is placed in front of an expression as in 
+                <span class="javascriptinline">-x</span> and
+                indicates negation.</div><div class="footnote">
+<a name="footnote_23"><sup><a class="link" href="#footnote_origin_23">23</a></sup></a>
+                  For an expression of the form
+                  <span class="javascriptinline">a (b &gt; 0 ? + : -) b</span>
+                  the JavaScript interpreter would not know the precedence of the operator
+                  between <span class="javascriptinline">a</span> and 
+                  <span class="javascriptinline">b</span>, and therefore such expressions
+                  are not allowed.</div><div class="footnote">
+<a name="footnote_24"><sup><a class="link" href="#footnote_origin_24">24</a></sup></a>Declarative and
+                imperative descriptions are intimately related, as indeed are
+                mathematics and computer science.  For instance, to say that the
+                answer produced by a program is 
+                
+                &#147;correct&#148; is to make a declarative
+                statement about the program.  There is a large amount of research
+                aimed at establishing techniques for 
+                
+                proving that programs are
+                correct, and much of the technical difficulty of this subject has to
+                do with negotiating the transition between imperative statements (from
+                which programs are constructed) and declarative statements (which can
+                be used to deduce things).  In a related vein, an important current
+                area in programming-language design is the exploration of so-called
+                
+                
+                very high-level languages, in which one actually programs in terms of
+                declarative statements.  The idea is to make interpreters
+                sophisticated enough so that, given &#147;what is&#148; knowledge 
+                specified by
+                the programmer, they can generate &#147;how to&#148; knowledge automatically.
+                This cannot be done in general, but there are important areas where
+                progress has been made.  We shall revisit this idea in chapter&nbsp;4.</div><div class="footnote">
+<a name="footnote_25"><sup><a class="link" href="#footnote_origin_25">25</a></sup></a>This square-root algorithm is actually 
+            a special case
+            of Newton&#146;s method, which is a general technique for finding roots of
+            equations.  The square-root algorithm itself was developed by Heron of
+            
+            Alexandria in the first century <span style="font-variant: small-caps">a.d</span>.  We will see how to express
+            the general Newton&#146;s method as a 
+                
+                    JavaScript function
+                  
+                in
+            section&nbsp;<a class="link" onclick="window.displayManager.show('section_1_3.html')" href="#sec:proc-returned-values">1.3.4</a>.</div><div class="footnote">
+<a name="footnote_29"><sup><a class="link" href="#footnote_origin_29">29</a></sup></a>It is not even clear which of these 
+            
+                functions
+              
+            is a
+            more efficient implementation.  This depends upon the hardware
+            available.  There are machines for which the &#147;obvious&#148;
+            implementation is the less efficient one.  Consider a machine that has
+            extensive tables of logarithms and antilogarithms stored in a very
+            efficient manner.</div><div class="footnote">
+<a name="footnote_30"><sup><a class="link" href="#footnote_origin_30">30</a></sup></a>The
+                concept of consistent renaming is actually subtle and difficult to
+                define formally.  Famous logicians have made embarrassing errors
+                here.</div><div class="footnote">
+<a name="footnote_31"><sup><a class="link" href="#footnote_origin_31">31</a></sup></a>Lexical
+                scoping dictates that free variables in a 
+                
+                  function
+                
+                are taken to refer to
+                bindings made by enclosing 
+              
+                  function
+                
+              definitions;
+                that is, they are looked up in
+                
+                the environment in which the 
+              
+                  function
+                
+              was defined.  We will see how
+                this works in detail in chapter&nbsp;3 when we study environments and the
+                detailed behavior of the interpreter.</div><div class="footnote">
+<a name="footnote_32"><sup><a class="link" href="#footnote_origin_32">32</a></sup></a>Embedded definitions
+                
+                must come first in a 
+              
+                  function
+                
+              body.  The management is not responsible
+              for the consequences of running programs that intertwine definition
+              and use.<a name="foot:management"></a>
+</div>

@@ -1,0 +1,1253 @@
+<div class="navbar" align="center">
+<a class="link" onclick="window.displayManager.show('section_2_3.html')">previous section</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('chapter_2.html')">this chapter</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')">next section</a><hr>
+</div><h2><a name="section_2_4">2.4&nbsp;Multiple Representations for Abstract Data</a></h2>
+    
+
+    <div class="subtoc">
+<strong>In this section</strong><p></p>
+<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#subsection_2_4_1">2.4.1&nbsp;
+        Representations for Complex Numbers
+      </a><br><a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#subsection_2_4_2">2.4.2&nbsp;
+        Tagged data
+      </a><br><a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#subsection_2_4_3">2.4.3&nbsp;
+        Data-Directed Programming and Additivity
+      </a><br>
+</div>
+
+    <a name="sec:multiple-reps"></a>
+    
+    
+
+    <div class="normaltext">
+    We have introduced data abstraction, a methodology for structuring
+    systems in such a way that much of a program can be specified
+    independent of the choices involved in implementing the data objects
+    that the program manipulates.  For example, we saw in
+    section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#sec:rationals">2.1.1</a> how to separate the task of designing a
+    program that uses rational numbers from the task of implementing
+    rational numbers in terms of the computer language&#146;s primitive
+    mechanisms for constructing compound data.  The key idea was to erect
+    an abstraction barrier—in this case, the selectors and constructors
+    for rational numbers (<span class="javascriptinline">make_rat</span>, <span class="javascriptinline">numer</span>, <span class="javascriptinline">denom</span>)—that
+    isolates the way rational numbers are used from their underlying
+    representation in terms of list structure.  A similar abstraction
+    barrier isolates the details of the
+    functions
+    that perform rational
+    arithmetic (<span class="javascriptinline">add_rat</span>, <span class="javascriptinline">sub_rat</span>, <span class="javascriptinline">mul_rat</span>, and <span class="javascriptinline">div_rat</span>) from the &#147;higher-level&#148;
+    functions
+    that use rational
+    numbers.  The resulting program has the structure shown in
+    figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#fig:abstraction-barriers">2.1</a>.
+    </div>
+    <div class="normaltext">
+    These data-abstraction barriers are powerful tools for controlling
+    complexity.  By isolating the underlying representations of data
+    objects, we can divide the task of designing a large program into
+    smaller tasks that can be performed separately.  But this kind of data
+    abstraction is not yet powerful enough, because it may not always make
+    sense to speak of &#147;the underlying representation&#148; for a data object.
+    </div>
+    <div class="normaltext">
+    For one thing, there might be more than one useful representation for
+    a data object, and we might like to design systems that can deal with
+    multiple representations.  To take a simple example, complex numbers
+    may be represented in two almost equivalent ways: in rectangular form
+    (real and imaginary parts) and in polar form (magnitude and angle).
+    Sometimes rectangular form is more appropriate and sometimes polar
+    form is more appropriate.  Indeed, it is perfectly plausible to
+    imagine a system in which complex numbers are represented in both
+    ways, and in which the
+    functions
+    for manipulating complex numbers work
+    with either representation.
+    </div>
+    <div class="normaltext">
+    More importantly, programming systems are often designed by many
+    people working over extended periods of time, subject to requirements
+    that change over time.  In such an environment, it is simply not
+    possible for everyone to agree in advance on choices of data
+    representation.  So in addition to the data-abstraction barriers that
+    isolate representation from use, we need abstraction barriers that
+    isolate different design choices from each other and permit different
+    choices to coexist in a single program.  Furthermore, since large
+    programs are often created by combining pre-existing modules that were
+    designed in isolation, we need conventions that permit programmers to
+    incorporate modules into larger systems 
+    
+    <em>additively</em>, that is,
+    without having to redesign or reimplement these modules.
+    </div>
+    <div class="normaltext">
+    In this section, we will learn how to cope with data that may be
+    represented in different ways by different parts of a program.  This
+    requires constructing 
+    
+    
+    <em>generic
+      functions</em>—functions
+    that can
+    operate on data that may be represented in more than one way.  Our
+    main technique for building generic
+    functions
+    will be to work in terms
+    of data objects that have 
+    
+    <em>type tags</em>, that is, data objects
+    that include explicit information about how they are to be processed.
+    We will also discuss 
+    
+    <em>data-directed</em> programming, a powerful and
+    convenient implementation strategy for additively assembling systems
+    with generic operations.
+    </div>
+    <div class="normaltext">
+    We begin with the simple complex-number example. We will see how
+    type tags and data-directed style enable us to design separate
+    rectangular and polar representations for complex numbers while
+    maintaining the notion of an abstract &#147;complex-number&#148; data object.
+    
+    
+    We will accomplish this by defining arithmetic
+    functions
+    for complex
+    numbers (<span class="javascriptinline">add_complex</span>, <span class="javascriptinline">sub_complex</span>, <span class="javascriptinline">mul_complex</span>, and
+    <span class="javascriptinline">div_complex</span>) in terms of generic selectors that access parts of
+    a complex number independent of how the number is represented.  The
+    resulting complex-number system, as shown in
+    figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#fig:complex-system">2.19</a>, contains two different kinds of
+    
+    abstraction barriers.  The &#147;horizontal&#148; abstraction barriers play
+    the same role as the ones in
+    figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#fig:abstraction-barriers">2.1</a>.  They isolate &#147;higher-level&#148;
+    operations from &#147;lower-level&#148; representations.  In addition, there
+    is a &#147;vertical&#148; barrier that gives us the ability to separately
+    design and install alternative representations.
+    <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-54.gif" border="0">
+      
+      <a name="fig:complex-system"></a>
+    </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  19</b>&nbsp;&nbsp;&nbsp;Data-abstraction barriers in the complex-number system.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+    </div>
+    <div class="normaltext">
+    In section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')">2.5</a> we will show how to use
+    type tags and data-directed style to develop a generic arithmetic
+    package.  This provides
+    functions
+    (<span class="javascriptinline">add</span>, <span class="javascriptinline">mul</span>, and so on)
+    that can be used to manipulate all sorts of &#147;numbers&#148; and can be
+    easily extended when a new kind of number is needed.
+    In section&nbsp;, we&#146;ll show how to use generic
+    arithmetic in a system that performs symbolic algebra.
+    </div>
+
+    <h3><a name="subsection_2_4_1">2.4.1&nbsp;
+        Representations for Complex Numbers
+      </a></h3>
+      
+
+      <a name="sec:representations-complex-numbers"></a>
+
+      <div class="normaltext">
+      
+      We will develop a system that performs arithmetic operations on
+      complex numbers as a simple but unrealistic example of a program that
+      uses generic operations.  We begin by discussing two plausible
+      representations for complex numbers as ordered pairs: rectangular form
+      (real part and imaginary part) and polar form (magnitude and
+      angle).<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_1"><a class="link" href="#footnote_1">1</a></a></span>  Section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:manifest-types">2.4.2</a>
+      will show how both representations can be made to coexist in a single
+      system through the use of type tags and generic operations.
+      </div>
+      <div class="normaltext">
+      Like rational numbers, complex numbers are naturally represented as
+      ordered pairs.  The set of complex numbers can be thought of as a
+      two-dimensional space with two orthogonal axes, the &#147;real&#148; axis and
+      the &#147;imaginary&#148; axis. (See figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#fig:complex-plane">2.20</a>.)  From
+      this point of view, the complex number <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_869.png"></span> (where <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_870.png"></span>)
+      can be thought of as the point in the plane whose real coordinate is <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_871.png"></span> and whose imaginary coordinate is <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_872.png"></span>.  Addition of complex numbers reduces in
+      this representation to addition of coordinates:
+
+      <P><img src="img_javascript/latex_67.png"></P>
+
+      <P><img src="img_javascript/latex_68.png"></P>
+      </div>
+      <div class="normaltext">
+      When multiplying complex numbers, it is more natural to think in terms
+      of representing a complex number in polar form, as a magnitude and an
+      angle (<span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_873.png"></span> and <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_874.png"></span> in figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#fig:complex-plane">2.20</a>).
+      The product of two complex numbers is the vector obtained by
+      stretching one complex number by the length of the other and then
+      rotating it through the angle of the other:
+
+
+      <P><img src="img_javascript/latex_69.png"></P>
+
+      <P><img src="img_javascript/latex_70.png"></P>
+      
+      </div>
+      <div class="normaltext">
+      Thus, there are two different representations for complex numbers,
+      which are appropriate for different operations.  Yet, from the
+      viewpoint of someone writing a program that uses complex numbers, the
+      principle of data abstraction suggests that all the operations for
+      manipulating complex numbers should be available regardless of which
+      representation is used by the computer.  For example, it is often
+      useful to be able to find the magnitude of a complex number that is
+      specified by rectangular coordinates.  Similarly, it is often useful
+      to be able to determine the real part of a complex number that is
+      specified by polar coordinates.
+      <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-59.gif" border="0">
+        
+        <a name="fig:complex-plane"></a>
+      </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  20</b>&nbsp;&nbsp;&nbsp;Complex numbers as points in the plane.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+      </div>
+      <div class="normaltext">
+      To design such a system, we can follow the same 
+      
+      data-abstraction
+      strategy we followed in designing the rational-number package in
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#sec:rationals">2.1.1</a>.  Assume that the operations on complex numbers are
+      implemented in terms of four selectors: <span class="javascriptinline">real_part</span>,
+      <span class="javascriptinline">imag_part</span>, <span class="javascriptinline">magnitude</span>, and <span class="javascriptinline">angle</span>.  Also assume that
+      we have two
+      functions
+      for constructing complex numbers: <span class="javascriptinline">make_from_real_imag</span> returns a complex number with specified real and
+      imaginary parts, and <span class="javascriptinline">make_from_mag_ang</span> returns a complex number with
+      specified magnitude and angle.  These
+      functions
+      have the property that,
+      for any complex number <span class="javascriptinline">z</span>, both
+      <div style="position:absolute;display:none;" id="javascript_760_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nmake_from_real_imag(real_part(z),imag_part(z))','javascript_760','',event,1.0);">make_from_real_imag(real_part(z),imag_part(z))</pre>
+      and
+      <div style="position:absolute;display:none;" id="javascript_761_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nmake_from_mag_ang(magnitude(z),angle(z))','javascript_761','',event,1.0);">make_from_mag_ang(magnitude(z),angle(z))</pre>
+      produce complex numbers that are equal to <span class="javascriptinline">z</span>.
+      </div>
+      <div class="normaltext">
+      Using these constructors and selectors, we can implement
+      arithmetic on complex numbers using the &#147;abstract data&#148; specified by
+      the constructors and selectors, just as we did for rational numbers in
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#sec:rationals">2.1.1</a>.  As shown in the formulas above, we can add and
+      subtract complex numbers in terms of real and imaginary parts while
+      multiplying and dividing complex numbers in terms of magnitudes and
+      angles:
+
+      <div style="position:absolute;display:none;" id="javascript_762_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction add_complex(z1,z2) {\n   return make_from_real_imag(real_part(z1) + real-part(z2),\n                              imag_part(z1) + imag_part(z2));\n}\nfunction sub_complex(z1,z2) {\n   return make_from_real_imag(real_part(z1) - real_part(z2),\n                              imag_part(z1) - imag_part(z2));\n}\nfunction mul_complex(z1,z2) {\n   return make_from_mag_ang(magnitude(z1) * magnitude(z2),\n                            angle(z1) + angle(z2));\n}\nfunction div_complex(z1,z2) {\n   return make_from_mag_ang(magnitude(z1) / magnitude(z2),\n                            angle(z1) - angle(z2));\n}','javascript_762','',event,1.0);">function add_complex(z1,z2) {
+   return make_from_real_imag(real_part(z1) + real-part(z2),
+                              imag_part(z1) + imag_part(z2));
+}
+function sub_complex(z1,z2) {
+   return make_from_real_imag(real_part(z1) - real_part(z2),
+                              imag_part(z1) - imag_part(z2));
+}
+function mul_complex(z1,z2) {
+   return make_from_mag_ang(magnitude(z1) * magnitude(z2),
+                            angle(z1) + angle(z2));
+}
+function div_complex(z1,z2) {
+   return make_from_mag_ang(magnitude(z1) / magnitude(z2),
+                            angle(z1) - angle(z2));
+}</pre>
+      </div>
+      <div class="normaltext">
+      To complete the complex-number package, we must choose a
+      representation and we must implement the constructors and selectors in
+      terms of primitive numbers and primitive list structure.
+      There are two obvious ways to do this: We can represent a complex
+      number in &#147;rectangular form&#148; as a pair (real part, imaginary part)
+      or in &#147;polar form&#148; as a pair (magnitude, angle).  Which shall we
+      choose?
+      </div>
+      <div class="normaltext">
+      In order to make the different choices concrete, imagine that there
+      are two programmers, Ben Bitdiddle and Alyssa P. Hacker, who are
+      independently designing representations for the complex-number system.
+      
+      Ben chooses to represent complex numbers in rectangular form.  With
+      this choice, selecting the real and imaginary parts of a complex
+      number is straightforward, as is constructing a complex number with
+      given real and imaginary parts.  To find the magnitude and the angle,
+      or to construct a complex number with a given magnitude and angle, he
+      uses the trigonometric relations
+
+      <P><img src="img_javascript/latex_71.png"></P>
+      <P><img src="img_javascript/latex_72.png"></P>
+
+      which relate the real and imaginary parts (<span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_875.png"></span>, <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_876.png"></span>) to the magnitude
+      and the angle <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_877.png"></span>.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_2"><a class="link" href="#footnote_2">2</a></a></span> Ben&#146;s representation is
+      therefore given by the following selectors and constructors:
+
+      <div style="position:absolute;display:none;" id="javascript_763_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction real_part(z) {\n   return head(z);\n}\nfunction imag_part(z) {\n   return tail(z);\n}\nfunction magnitude(z) {\n   return sqrt(square(real_part(z)) + square(imag_part(z)));\n}\nfunction angle(z) {\n   return atan(imag_part(z),real_part(z));\n}\nfunction make_from_mag_ang(r,a) {\n   return pair(r * cos(a), r * sin(a));\n}','javascript_763','',event,1.0);">function real_part(z) {
+   return head(z);
+}
+function imag_part(z) {
+   return tail(z);
+}
+function magnitude(z) {
+   return sqrt(square(real_part(z)) + square(imag_part(z)));
+}
+function angle(z) {
+   return atan(imag_part(z),real_part(z));
+}
+function make_from_mag_ang(r,a) {
+   return pair(r * cos(a), r * sin(a));
+}</pre>
+      </div>
+      <div class="normaltext">
+      
+      Alyssa, in contrast, chooses to represent complex numbers in polar
+      form.  For her, selecting the magnitude and angle is straightforward,
+      but she has to use the 
+      
+      trigonometric relations to obtain the real and
+      imaginary parts.  Alyssa&#146;s representation is:
+
+      <div style="position:absolute;display:none;" id="javascript_764_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction real_part(z) {\n   return magnitude(z) * cos(angle(z));\n}\nfunction imag_part(z) {\n   return magnitude(z) * sin(angle(z));\n}\nfunction magnitude(z) {\n   return head(z);\n}\nfunction angle(z) {\n   return tail(z);\n}\nfunction make_from_real_imag(x,y) {\n   return pair(sqrt(square(x) + square(y)),\n               atan(y,x));\n}\nfunction make_from_mag_ang(r,a) {\n   return pair(r,a);\n}','javascript_764','',event,1.0);">function real_part(z) {
+   return magnitude(z) * cos(angle(z));
+}
+function imag_part(z) {
+   return magnitude(z) * sin(angle(z));
+}
+function magnitude(z) {
+   return head(z);
+}
+function angle(z) {
+   return tail(z);
+}
+function make_from_real_imag(x,y) {
+   return pair(sqrt(square(x) + square(y)),
+               atan(y,x));
+}
+function make_from_mag_ang(r,a) {
+   return pair(r,a);
+}</pre>
+
+      The discipline of data abstraction ensures that the same implementation of
+      <span class="javascriptinline">add_complex</span>, <span class="javascriptinline">sub_complex</span>, <span class="javascriptinline">mul_complex</span>, and <span class="javascriptinline">div_complex</span> will work with either Ben&#146;s representation or Alyssa&#146;s
+      representation. 
+      </div>
+    
+
+    <h3><a name="subsection_2_4_2">2.4.2&nbsp;
+        Tagged data
+      </a></h3>
+      
+
+      <a name="sec:manifest-types"></a>
+      
+      
+      
+
+      <div class="normaltext">
+      One way to view data abstraction is as an application of the
+      
+      
+      &#147;principle of least commitment.&#148;  In implementing the complex-number
+      system in section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:representations-complex-numbers">2.4.1</a>, we can
+      use either Ben&#146;s rectangular representation or Alyssa&#146;s polar
+      representation.  The abstraction barrier formed by the selectors and
+      constructors permits us to defer to the last possible moment the
+      choice of a concrete representation for our data objects and thus
+      retain maximum flexibility in our system design.
+      </div>
+      <div class="normaltext">
+      The principle of least commitment can be carried to even further
+      extremes.  If we desire, we can maintain the ambiguity of
+      representation even <em>after</em> we have designed the selectors and
+      constructors, and elect to use both Ben&#146;s representation <em>and</em>
+      Alyssa&#146;s representation.  If both representations are included in a
+      single system, however, we will need some way to distinguish data in
+      polar form from data in rectangular form.  Otherwise, if we were
+      asked, for instance, to find the <span class="javascriptinline">magnitude</span> of the pair <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_881.png"></span>,
+      we wouldn&#146;t know whether to answer 5 (interpreting the number in
+      rectangular form) or 3&nbsp;(interpreting the number in polar form).  A
+      straightforward way to accomplish this distinction is to include a
+      
+      <em>type tag</em>—the symbol <span class="javascriptinline">rectangular</span> or <span class="javascriptinline">polar</span>—as
+      part of each complex number.  Then when we need to manipulate a
+      complex number we can use the tag to decide which selector to apply.
+      </div>
+      <div class="normaltext">
+      In order to manipulate tagged data,
+      we will assume that we have
+      functions
+      <span class="javascriptinline">type_tag</span> and <span class="javascriptinline">contents</span> that extract from a data object the tag and the actual
+      contents (the polar or rectangular coordinates, in the case of a
+      complex number).  We will also postulate a
+      function
+      <span class="javascriptinline">attach_tag</span> that takes a tag and contents and produces a tagged data
+      object.  A straightforward way to implement this is to use ordinary
+      list structure:
+
+      <div style="position:absolute;display:none;" id="javascript_765_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction attach_tag(type_tag,contents) {\n   return pair(type_tag,contents);\n}\nfunction type_tag(datum) {\n   if (is_pair(datum))\n      return head(datum);\n   else return error(&quot;bad tagged datum -- type_tag&quot;,datum);\n}\nfunction contents(datum) {\n   if (is_pair(datum))\n      return tail(datum);\n   else return error(&quot;bad tagged datum -- contents&quot;,datum);\n}','javascript_765','',event,1.0);">function attach_tag(type_tag,contents) {
+   return pair(type_tag,contents);
+}
+function type_tag(datum) {
+   if (is_pair(datum))
+      return head(datum);
+   else return error("bad tagged datum -- type_tag",datum);
+}
+function contents(datum) {
+   if (is_pair(datum))
+      return tail(datum);
+   else return error("bad tagged datum -- contents",datum);
+}</pre>
+      </div>
+      <div class="normaltext">
+      Using these
+      functions, we can define predicates <span class="javascriptinline">is_rectangular</span>
+      and <span class="javascriptinline">is_polar</span>, which recognize polar and rectangular numbers,
+      respectively:
+
+      <div style="position:absolute;display:none;" id="javascript_766_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction is_rectangular(z) {\n   return type_tag(z) === &quot;rectangular&quot;;\n}\nfunction is_polar(z) {\n   return type_tag(z) === &quot;polar&quot;;','javascript_766','',event,1.0);">function is_rectangular(z) {
+   return type_tag(z) === "rectangular";
+}
+function is_polar(z) {
+   return type_tag(z) === "polar";</pre>
+      </div>
+      <div class="normaltext">
+      With type tags, Ben and Alyssa can now modify their code so that
+      their two different representations can coexist in the same system.
+      Whenever Ben constructs a complex number, he tags it as rectangular.
+      Whenever Alyssa constructs a complex number, she tags it as polar.
+      In addition, Ben and Alyssa must make sure that the names of their
+      functions
+      do not conflict.  One way to do this is for Ben to append
+      the suffix <span class="javascriptinline">rectangular</span> to the name of each of his representation
+      functions
+      and for Alyssa to append <span class="javascriptinline">polar</span> to the names of hers.
+      Here is Ben&#146;s revised rectangular representation from
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:representations-complex-numbers">2.4.1</a>:
+
+      <div style="position:absolute;display:none;" id="javascript_767_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction real_part_rectangular(z) {\n    return head(z);\n}\nfunction imag_part_rectangular(z) {\n    return tail(z);\n}\nfunction magnitude_rectangular(z) {\n    return sqrt(square(real_part_rectangular(z))\n                +\n                square(imag_part_rectangular(z)));\n}\nfunction angle_rectangular(z) {\n    return atan(imag_part_rectangular(z),\n                real_part_rectangular(z));\n}\nfunction make_from_real_imag_rectangular(x, y) {\n    return attach_tag(&quot;rectangular&quot;,\n                      pair(x, y));\n}\nfunction make_from_mag_ang_rectangular(r, a) {\n    return attach_tag(&quot;rectangular&quot;,\n                      pair(r * cos(a), r * sin(a)));\n}','javascript_767','',event,1.0);">function real_part_rectangular(z) {
+    return head(z);
+}
+function imag_part_rectangular(z) {
+    return tail(z);
+}
+function magnitude_rectangular(z) {
+    return sqrt(square(real_part_rectangular(z))
+                +
+                square(imag_part_rectangular(z)));
+}
+function angle_rectangular(z) {
+    return atan(imag_part_rectangular(z),
+                real_part_rectangular(z));
+}
+function make_from_real_imag_rectangular(x, y) {
+    return attach_tag("rectangular",
+                      pair(x, y));
+}
+function make_from_mag_ang_rectangular(r, a) {
+    return attach_tag("rectangular",
+                      pair(r * cos(a), r * sin(a)));
+}</pre>
+
+      and here is Alyssa&#146;s revised polar representation:
+
+      <div style="position:absolute;display:none;" id="javascript_768_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction real_part_polar(z) {\n   return magnitude_polar(z) * cos(angle_polar(z));\n}\nfunction imag_part_polar(z) {\n   return magnitude_polar(z) * sin(angle_polar(z));\n}\nfunction magnitude_polar(z) {\n   return head(z);\n}\nfunction angle_polar(z) {\n   return tail(z);\n}\nfunction make_from_real_imag_polar(x,y) {\n   return attach_tag(&quot;polar&quot;,\n                     pair(sqrt(square(x) + square(y)),\n                          atan(y,z)));\n}\nfunction make_from_mag_ang_polar(r,a) {\n  return attach_tag(&quot;polar&quot;,\n                    pair(r,a));\n}','javascript_768','',event,1.0);">function real_part_polar(z) {
+   return magnitude_polar(z) * cos(angle_polar(z));
+}
+function imag_part_polar(z) {
+   return magnitude_polar(z) * sin(angle_polar(z));
+}
+function magnitude_polar(z) {
+   return head(z);
+}
+function angle_polar(z) {
+   return tail(z);
+}
+function make_from_real_imag_polar(x,y) {
+   return attach_tag("polar",
+                     pair(sqrt(square(x) + square(y)),
+                          atan(y,z)));
+}
+function make_from_mag_ang_polar(r,a) {
+  return attach_tag("polar",
+                    pair(r,a));
+}</pre>
+
+      
+      
+      Each generic selector is implemented as a
+      function
+      that checks the
+      tag of its argument and calls the appropriate
+      function
+      for handling
+      data of that type.  For example, to obtain the real part of a complex
+      number, <span class="javascriptinline">real_part</span> examines the tag to determine whether to use
+      Ben&#146;s <span class="javascriptinline">real_part_rectangular</span> or Alyssa&#146;s <span class="javascriptinline">real_part_polar</span>.
+      In either case, we use <span class="javascriptinline">contents</span> to extract the bare, untagged
+      datum and send this to the rectangular or polar
+      function
+      as required:
+
+      <div style="position:absolute;display:none;" id="javascript_769_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction real_part(z) {\n   if (is_rectangular(z)) \n      return real_part_rectangular(contents(z));\n   else if (is_polar(z))\n      return real_part_polar(contents(z));\n   else\n      return error(&quot;Unknown type -- real_part&quot;,z);\n}\nfunction imag_part(z) {\n   if (is_rectangular(z)) \n      return imag_part_rectangular(contents(z));\n   else if (is_polar(z))\n      return imag_part_polar(contents(z));\n   else\n      return error(&quot;Unknown type -- imag_part&quot;,z);\n}\nfunction magnitude(z) {\n   if (is_rectangular(z)) \n      return magnitude_rectangular(contents(z));\n   else if (is_polar(z))\n      return magnitude_polar(contents(z));\n   else\n      return error(&quot;Unknown type -- magnitude&quot;,z);\n}\nfunction angle(z) {\n   if (is_rectangular(z)) \n      return angle_rectangular(contents(z));\n   else if (is_polar(z))\n      return angle_polar(contents(z));\n   else\n      return error(&quot;Unknown type -- angle&quot;,z);\n}','javascript_769','',event,1.0);">function real_part(z) {
+   if (is_rectangular(z)) 
+      return real_part_rectangular(contents(z));
+   else if (is_polar(z))
+      return real_part_polar(contents(z));
+   else
+      return error("Unknown type -- real_part",z);
+}
+function imag_part(z) {
+   if (is_rectangular(z)) 
+      return imag_part_rectangular(contents(z));
+   else if (is_polar(z))
+      return imag_part_polar(contents(z));
+   else
+      return error("Unknown type -- imag_part",z);
+}
+function magnitude(z) {
+   if (is_rectangular(z)) 
+      return magnitude_rectangular(contents(z));
+   else if (is_polar(z))
+      return magnitude_polar(contents(z));
+   else
+      return error("Unknown type -- magnitude",z);
+}
+function angle(z) {
+   if (is_rectangular(z)) 
+      return angle_rectangular(contents(z));
+   else if (is_polar(z))
+      return angle_polar(contents(z));
+   else
+      return error("Unknown type -- angle",z);
+}</pre>
+      </div>
+      <div class="normaltext">
+      To implement the complex-number arithmetic operations, we can use the
+      same
+      functions
+      <span class="javascriptinline">add_complex</span>, <span class="javascriptinline">sub_complex</span>, <span class="javascriptinline">mul_complex</span>, and <span class="javascriptinline">div_complex</span> from
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:representations-complex-numbers">2.4.1</a>, because the
+      selectors they call are generic, and so will work with either
+      representation.  For example, the
+      function
+      <span class="javascriptinline">add_complex</span> is still
+
+      <div style="position:absolute;display:none;" id="javascript_770_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction add_complex(z1,z2) {\n   return make_from_real_imag(real_part(z1) + real-part(z2),\n                              imag_part(z1) + imag_part(z2));\n}','javascript_770','',event,1.0);">function add_complex(z1,z2) {
+   return make_from_real_imag(real_part(z1) + real-part(z2),
+                              imag_part(z1) + imag_part(z2));
+}</pre>
+
+      Finally, we must choose whether to construct complex numbers using
+      Ben&#146;s representation or Alyssa&#146;s representation.  One reasonable
+      choice is to construct rectangular numbers whenever we have real and
+      imaginary parts and to construct polar numbers whenever we have
+      magnitudes and angles:
+
+      <div style="position:absolute;display:none;" id="javascript_771_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_from_real_imag(x,y) {\n   return make_from_real_imag_rectangular(x,y);\n}\nfunction make_from_mag_ang(r,a) {\n   return make_from_mag_ang_polar(r,a);\n}','javascript_771','',event,1.0);">function make_from_real_imag(x,y) {
+   return make_from_real_imag_rectangular(x,y);
+}
+function make_from_mag_ang(r,a) {
+   return make_from_mag_ang_polar(r,a);
+}</pre>
+      </div>
+      <div class="normaltext">
+
+      <p><div align="center"><table width="100%">
+<tr><td align="center">
+<img src="img_original/ch2-Z-G-62.gif" border="0">
+        
+      <a name="fig:generic-complex-system"></a>
+      </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  21</b>&nbsp;&nbsp;&nbsp;Structure of the generic complex-arithmetic system.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+
+      The resulting complex-number system has the structure shown in
+      figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#fig:generic-complex-system">2.21</a>.  The system has been
+      decomposed into three relatively independent parts: the
+      complex-number-arithmetic operations, Alyssa&#146;s polar
+      implementation, and Ben&#146;s rectangular implementation.  The polar and
+      rectangular implementations could have been written by Ben and Alyssa
+      working separately, and both of these can be used as underlying
+      representations by a third programmer implementing the
+      complex-arithmetic
+      functions
+      in terms of the abstract
+      constructor/selector interface.
+      </div>
+      <div class="normaltext">
+      
+      
+      Since each data object is tagged with its type, the selectors operate
+      on the data in a generic manner.  That is, each selector is defined to
+      have a behavior that depends upon the particular type of data it is
+      applied to.  Notice the general mechanism for interfacing the separate
+      representations: Within a given representation implementation (say,
+      Alyssa&#146;s polar package) a complex number is an untyped pair
+      (magnitude, angle).  When a generic selector operates on a number of
+      <span class="javascriptinline">polar</span> type, it strips off the tag and passes the contents on to
+      Alyssa&#146;s code.  Conversely, when Alyssa constructs a number for general
+      use, she tags it with a type so that it can be appropriately
+      recognized by the higher-level
+      functions.  This discipline of
+      stripping off and attaching tags as data objects are passed from level
+      to level can be an important organizational strategy, as we shall see
+      in section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')">2.5</a>.
+      
+      
+      
+      </div>
+    
+
+    <h3><a name="subsection_2_4_3">2.4.3&nbsp;
+        Data-Directed Programming and Additivity
+      </a></h3>
+      
+
+      <a name="sec:data-directed"></a>
+      
+      
+
+      <div class="normaltext">
+      
+      The general strategy of checking the type of a datum and calling an
+      appropriate
+      function
+      is called 
+      
+      
+      <em>dispatching on type</em>.  This is a
+      powerful strategy for obtaining modularity in system design.  On
+      the other hand, implementing the dispatch as in
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:manifest-types">2.4.2</a> has two significant weaknesses.  One
+      weakness is that the generic interface
+      functions
+      (<span class="javascriptinline">real_part</span>,
+      <span class="javascriptinline">imag_part</span>, <span class="javascriptinline">magnitude</span>, and <span class="javascriptinline">angle</span>) must know about all
+      the different representations.  For instance, suppose we wanted to
+      incorporate a new representation for complex numbers into our
+      complex-number system.  We would need to identify this new
+      representation with a type, and then add a clause to each of the
+      generic interface
+      functions
+      to check for the new type and apply the
+      appropriate selector for that representation.
+      </div>
+      <div class="normaltext">
+      Another weakness of the technique is that even though the individual
+      representations can be designed separately, we must guarantee that
+      no two
+      functions
+      in the entire system have the same name.  This is
+      why Ben and Alyssa had to change the names of their original
+      functions
+      from section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:representations-complex-numbers">2.4.1</a>.
+      </div>
+      <div class="normaltext">
+      The issue underlying both of these weaknesses is that the technique
+      for implementing generic interfaces is not <em>additive</em>.  The person
+      implementing the generic selector
+      functions
+      must modify those
+      functions
+      each time a new representation is installed, and the people
+      interfacing the individual representations must modify their
+      code to avoid name conflicts.  In each of these cases, the changes
+      that must be made to the code are straightforward, but they must be
+      made nonetheless, and this is a source of inconvenience and error.
+      This is not much of a problem for the complex-number system as it
+      stands, but suppose there were not two but hundreds of different
+      representations for complex numbers.  And suppose that there were many
+      generic selectors to be maintained in the abstract-data interface.
+      Suppose, in fact, that no one programmer knew all the interface
+      functions
+      or all the representations.  The problem is real and must
+      be addressed in such programs as large-scale data-base-management
+      systems.
+      </div>
+      <div class="normaltext">
+      What we need is a means for modularizing the system design even
+      further.  This is provided by the programming technique known as <em>
+        data-directed programming</em>.  To understand how data-directed
+      programming works, begin with the observation that whenever we deal
+      with a set of generic operations that are common to a set of
+      different types we are, in effect, dealing with a two-dimensional
+      table that contains the possible operations on one axis and the
+      possible types on the other axis.  The entries in the table are the
+      functions
+      that implement each operation for each type of argument
+      presented.  In the complex-number system developed in the previous
+      section, the correspondence between operation name, data type, and
+      actual
+      function
+      was spread out among the various conditional clauses
+      in the generic interface
+      functions.  But the same information could
+      have been organized in a table, as shown in
+      figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#fig:operator-table">2.22</a>.
+      </div>
+      <div class="normaltext">
+      
+      Data-directed programming is the technique of designing programs to
+      work with such a table directly.  Previously, we implemented the
+      mechanism that interfaces the complex-arithmetic code with the two
+      representation packages as a set of
+      functions
+      that each perform an
+      explicit dispatch on type.  Here we will implement the interface as a single
+      function
+      that looks up the combination of the operation name and
+      argument type in
+      the table to find the correct
+      function
+      to apply, and then applies it
+      to the contents of the argument.  If we do this, then to add a new
+      representation package to the system we need not change any existing
+      functions; we need only add new entries to the table.
+      </div>
+      <div class="normaltext">
+
+        <p><div align="center"><table width="100%">
+<tr><td align="center">
+        
+            <P><img src="img_javascript/latex_73.png"></P>
+          
+          
+          <a name="fig:operator-table"></a>
+        </td></tr>
+<caption align="bottom"><div align="center">
+<b>Figure 2.
+                  22</b>&nbsp;&nbsp;&nbsp;Table of operations for the complex-number system.</div></caption>
+<tr><td></td></tr>
+</table></div></p>
+
+      To implement this plan, assume that we have two
+      functions,
+      <span class="javascriptinline">put</span> and <span class="javascriptinline">get</span>, for manipulating the 
+      operation-and-type table:
+      
+
+      <ul>
+        
+        <li>
+<span class="javascriptinline">put(</span><span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_883.png"></span><span class="javascriptinline">)</span><br>
+        installs the <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_884.png"></span> in the table, indexed by the
+          <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_885.png"></span> and the 
+          <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_886.png"></span>.
+          
+        </li>
+        <li>
+<span class="javascriptinline">get(</span><span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_888.png"></span><span class="javascriptinline">)</span><br>
+          looks up the 
+          <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_889.png"></span>,
+          <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_890.png"></span>
+          entry in the table
+          and returns the item found there.  If no item is found, <span class="javascriptinline">get</span>
+          returns false.
+        </li>
+      </ul>
+
+      For now, we can assume that <span class="javascriptinline">put</span> and <span class="javascriptinline">get</span> are
+      included in our language.  In chapter&nbsp;3 (section&nbsp;)
+      we will see how to implement these and
+      other operations for manipulating tables.
+      </div>
+      <div class="normaltext">
+      Here is how data-directed programming can be used in the
+      complex-number system.  Ben, who developed the rectangular
+      representation, implements his code just as he did originally.  He defines a collection of
+      functions, or a 
+      
+      <em>package</em>, and interfaces
+      these to the rest of the system by adding entries to the table that
+      tell the system how to operate on rectangular numbers.
+      This is accomplished by calling the following
+      function:
+      
+      
+
+      <div style="position:absolute;display:none;" id="javascript_772_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction install_rectangular_package() {\n   function real_part(z) { return head(z); }\n   function imag_part(z) { return tail(z); }\n   function make_from_real_imag(x,y) { return pair(x,y); }\n   function magnitude(z) {\n      return sqrt(square(real_part(z)) +\n                  square(imag_part(z)));\n   }\n   function angle(z) {\n      return atan(imag_part(z),real_part(z));\n   }\n   function make_from_mag_ang(r,a) {\n      return pair(r * cos(a), r * sin(a));\n   }\n   // interface to the rest of the system\n   function tag(x) {\n      return attach_tag(&quot;rectangular&quot;,x);\n   }\n   put(&quot;real_part&quot;, list(&quot;rectangular&quot;), real_part);\n   put(&quot;imag_part&quot;, list(&quot;rectangular&quot;), imag_part);\n   put(&quot;magnitude&quot;, list(&quot;rectangular&quot;), magnitude);\n   put(&quot;angle&quot;, list(&quot;rectangular&quot;), angle);\n   put(&quot;make_from_real_imag&quot;, &quot;rectangular&quot;,\n       function(x,y) { return tag(make_from_real_imag(x,y)); });\n   put(&quot;make_from_mag_ang&quot;, &quot;rectangular&quot;,\n       function(r,a) { return tag(make_from_mag_ang(r,a)); });\n   return &quot;done&quot;;\n}','javascript_772','',event,1.0);">function install_rectangular_package() {
+   function real_part(z) { return head(z); }
+   function imag_part(z) { return tail(z); }
+   function make_from_real_imag(x,y) { return pair(x,y); }
+   function magnitude(z) {
+      return sqrt(square(real_part(z)) +
+                  square(imag_part(z)));
+   }
+   function angle(z) {
+      return atan(imag_part(z),real_part(z));
+   }
+   function make_from_mag_ang(r,a) {
+      return pair(r * cos(a), r * sin(a));
+   }
+   // interface to the rest of the system
+   function tag(x) {
+      return attach_tag("rectangular",x);
+   }
+   put("real_part", list("rectangular"), real_part);
+   put("imag_part", list("rectangular"), imag_part);
+   put("magnitude", list("rectangular"), magnitude);
+   put("angle", list("rectangular"), angle);
+   put("make_from_real_imag", "rectangular",
+       function(x,y) { return tag(make_from_real_imag(x,y)); });
+   put("make_from_mag_ang", "rectangular",
+       function(r,a) { return tag(make_from_mag_ang(r,a)); });
+   return "done";
+}</pre>
+
+      Notice that the internal
+      functions
+      here are the same
+      functions
+      from
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:representations-complex-numbers">2.4.1</a> that Ben wrote when
+      he was working in isolation.  No changes are necessary in order to
+      interface them to the rest of the system.  Moreover, since these
+      function
+      definitions are internal to the installation
+      function, Ben
+      needn&#146;t worry about name conflicts with other
+      functions
+      outside the
+      rectangular package.  To interface these to the rest of the system,
+      Ben installs his <span class="javascriptinline">real_part</span>
+      function
+      under the operation name
+      <span class="javascriptinline">real_part</span> and the type <span class="javascriptinline">list("rectangular")</span>, and similarly
+      for the other selectors.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_3"><a class="link" href="#footnote_3">3</a></a></span>  The interface also defines
+      the constructors to be used by the external system.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_4"><a class="link" href="#footnote_4">4</a></a></span>
+      These are
+      identical to Ben&#146;s internally defined constructors, except that they
+      attach the tag.
+
+      
+      
+      Alyssa&#146;s polar package is analogous:
+      <div style="position:absolute;display:none;" id="javascript_773_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction install_polar_package() {\n   // internal functions\n   function magnitude(z) { return head(z); }\n   function angle(z) { return tail(z); }\n   function make_from_mag_ang(r,a) { return pair(r,a); }\n   function real_part(z) {\n      return magnitude(z) * cos(angle(z));\n   }\n   function imag_part(z) {\n      return magnitude(z) * sin(angle(z));\n   }\n   function make_from_real_imag(x,y) {\n      return pair(sqrt(square(x) + square(y)),\n                  atan(y,x));\n   }\n\n   // interface to teh rest of the system\n   function tag(x) { return attach_tag(&quot;polar&quot;,x); }\n   put(&quot;real_part&quot;,list(&quot;polar&quot;),real_part);\n   put(&quot;imag_part&quot;,list(&quot;polar&quot;),imag_part);\n   put(&quot;magnitude&quot;,list(&quot;polar&quot;),magnitude);\n   put(&quot;angle&quot;,list(&quot;polar&quot;),angle);\n   put(&quot;make_from_real_imag&quot;, &quot;polar&quot;,\n       function(x,y) { return tag(make_from_real_imag(x,y)); });\n   put(&quot;make_from_mag_ang&quot;, &quot;polar&quot;,\n       function(r,a) { return tag(make_from_mag_ang(r,a)); });\n}','javascript_773','',event,1.0);">function install_polar_package() {
+   // internal functions
+   function magnitude(z) { return head(z); }
+   function angle(z) { return tail(z); }
+   function make_from_mag_ang(r,a) { return pair(r,a); }
+   function real_part(z) {
+      return magnitude(z) * cos(angle(z));
+   }
+   function imag_part(z) {
+      return magnitude(z) * sin(angle(z));
+   }
+   function make_from_real_imag(x,y) {
+      return pair(sqrt(square(x) + square(y)),
+                  atan(y,x));
+   }
+
+   // interface to teh rest of the system
+   function tag(x) { return attach_tag("polar",x); }
+   put("real_part",list("polar"),real_part);
+   put("imag_part",list("polar"),imag_part);
+   put("magnitude",list("polar"),magnitude);
+   put("angle",list("polar"),angle);
+   put("make_from_real_imag", "polar",
+       function(x,y) { return tag(make_from_real_imag(x,y)); });
+   put("make_from_mag_ang", "polar",
+       function(r,a) { return tag(make_from_mag_ang(r,a)); });
+}</pre>
+      </div>
+      <div class="normaltext">
+      Even though Ben and Alyssa both still use their original
+      functions
+      defined with the same names as each other&#146;s (e.g., <span class="javascriptinline">real_part</span>), these 
+      definitions are now internal to different
+      functions
+      (see
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_1_1.html')" href="#sec:block-structure">1.1.8</a>), so there is no name
+      conflict.
+      </div>
+      <div class="normaltext">
+      The complex-arithmetic selectors access the table by means of a
+      general &#147;operation&#148;
+      function
+      called <span class="javascriptinline">apply_generic</span>, which
+      applies a generic operation to some arguments.  The function <span class="javascriptinline">apply_generic</span>
+      looks in the table under the name of the operation and the types of the
+      arguments and applies the resulting
+      function
+      if one is present:<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_5"><a class="link" href="#footnote_5">5</a></a></span>
+
+      <div style="position:absolute;display:none;" id="javascript_775_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction apply_generic(op,args) {\n   var type_tags = map(type_tag,args);\n   var fun = get(op,type_tags);\n   if (fun != false)\n      return fun(map(contents,args));\n   else\n      return error(&quot;No method for these types -- apply_generic&quot;,\n                   list(op,type_tags));\n}','javascript_775','',event,1.0);">function apply_generic(op,args) {
+   var type_tags = map(type_tag,args);
+   var fun = get(op,type_tags);
+   if (fun != false)
+      return fun(map(contents,args));
+   else
+      return error("No method for these types -- apply_generic",
+                   list(op,type_tags));
+}</pre>
+      Using <span class="javascriptinline">apply_generic</span>, we can define our generic selectors as follows:
+
+      <div style="position:absolute;display:none;" id="javascript_776_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction real_part(z) {\n   return apply_generic(&quot;real_part&quot;,list(z));\n}\nfunction imag_part(z) {\n   return apply_generic(&quot;imag_part&quot;,list(z));\n}\nfunction magnitude(z) {\n   return apply_generic(&quot;magnitude&quot;,list(z));\n}\nfunction angle(z) {\n   return apply_generic(&quot;angle&quot;,list(z));\n}','javascript_776','',event,1.0);">function real_part(z) {
+   return apply_generic("real_part",list(z));
+}
+function imag_part(z) {
+   return apply_generic("imag_part",list(z));
+}
+function magnitude(z) {
+   return apply_generic("magnitude",list(z));
+}
+function angle(z) {
+   return apply_generic("angle",list(z));
+}</pre>
+
+      Observe that these do not change at all if a new representation is
+      added to the system.
+      </div>
+      <div class="normaltext">
+      We can also extract from the table the
+      constructors to be used by the programs external to the packages in
+      making complex numbers from real and imaginary parts and from
+      magnitudes and angles.
+      As in section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:manifest-types">2.4.2</a>, we
+      construct rectangular numbers whenever we have real and
+      imaginary parts, and polar numbers whenever we have magnitudes and angles:
+
+      <div style="position:absolute;display:none;" id="javascript_777_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_from_real_imag(x,y) {\n   return get(&quot;make_from_real_imag&quot;,&quot;rectangular&quot;)(x,y);\n}\nfunction make_from_mag_ang(r,a) {\n   return get(&quot;make_from_mag_ang&quot;,&quot;polar&quot;)(r,a);\n}','javascript_777','',event,1.0);">function make_from_real_imag(x,y) {
+   return get("make_from_real_imag","rectangular")(x,y);
+}
+function make_from_mag_ang(r,a) {
+   return get("make_from_mag_ang","polar")(r,a);
+}</pre>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.76.</b>
+        Section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#sec:symbolic-differentiation">2.3.2</a> described a program that
+        performs symbolic differentiation:
+        
+        
+        <div style="position:absolute;display:none;" id="javascript_778_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction deriv(exp,var) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,var)) ? 1 : 0;\n   else if (is_sum(exp))\n      return make_sum(deriv(addend(exp),var),\n                      deriv(augend(exp),var));\n   else if (is_product(exp)) \n      return make_sum(make_product(multiplier(exp),\n                                   deriv(multiplicand(exp),variable)),\n                      make_product(deriv(multiplier(exp),variable),\n                                   multiplicand(exp)));\n   // more rules can be added here\n   else\n      return error(&quot;unknown expression type -- deriv&quot;,exp);\n}','javascript_778','',event,1.0);">function deriv(exp,var) {
+   if (is_number(exp))
+      return 0;
+   else if (is_variable(exp))
+      return (is_same_variable(exp,var)) ? 1 : 0;
+   else if (is_sum(exp))
+      return make_sum(deriv(addend(exp),var),
+                      deriv(augend(exp),var));
+   else if (is_product(exp)) 
+      return make_sum(make_product(multiplier(exp),
+                                   deriv(multiplicand(exp),variable)),
+                      make_product(deriv(multiplier(exp),variable),
+                                   multiplicand(exp)));
+   // more rules can be added here
+   else
+      return error("unknown expression type -- deriv",exp);
+}</pre>
+
+        We can regard this program as performing a dispatch on the type of the
+        expression to be differentiated.  In this situation the &#147;type tag&#148; of the
+          datum is the algebraic operator symbol (such as <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_891.png"></span>) and the
+          operation being performed is <span class="javascriptinline">deriv</span>.  We can transform this
+        program into data-directed style by rewriting the basic derivative
+        function
+        as
+        <div style="position:absolute;display:none;" id="javascript_779_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction deriv(exp,var) {\n   if (is_number(exp))\n      return 0;\n   else if (is_variable(exp))\n      return (is_same_variable(exp,var)) ? 1 : 0;\n   else\n      return get(&quot;deriv&quot;,operator(exp))(operands(exp),var);\n}\nfunction operator(exp) {\n   return head(exp);\n}\nfunction operands(exp) {\n   return tail(exp);\n}','javascript_779','',event,1.0);">function deriv(exp,var) {
+   if (is_number(exp))
+      return 0;
+   else if (is_variable(exp))
+      return (is_same_variable(exp,var)) ? 1 : 0;
+   else
+      return get("deriv",operator(exp))(operands(exp),var);
+}
+function operator(exp) {
+   return head(exp);
+}
+function operands(exp) {
+   return tail(exp);
+}</pre>
+
+        <ol class="exercise">
+          <li>
+            Explain what was done above.
+            Why can&#146;t we assimilate the predicates <span class="javascriptinline">is_number</span> and <span class="javascriptinline">is_same_variable</span> into the data-directed dispatch?
+          </li>
+          <li>
+            Write the
+            functions
+            for derivatives of sums and products, and the
+            auxiliary code required to install them in the table used by the
+            program above.
+          </li>
+          <li>
+            Choose any additional differentiation rule that you like, such as
+            the one for exponents (exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_3.html')" href="#ex:deriv-exponentiation">2.59</a>),
+            and install it in this data-directed system.
+          </li>
+          <li>
+            In this simple algebraic manipulator the type of an expression is
+            the algebraic operator that binds it together.  Suppose, however, we
+            indexed the
+            functions
+            in the opposite way, so that the dispatch line
+            in <span class="javascriptinline">deriv</span> looked like
+
+            <div style="position:absolute;display:none;" id="javascript_780_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nget(operator(exp),&quot;deriv&quot;)(operands(exp),var)','javascript_780','',event,1.0);">get(operator(exp),"deriv")(operands(exp),var)</pre>
+
+            What corresponding changes to the derivative system are required?
+          </li>
+        </ol>
+        <a name="ex:data-directed-differentiation"></a>
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.77.</b> 
+        
+        
+        Insatiable Enterprises, Inc., is a highly decentralized conglomerate
+        company consisting of a large number of independent divisions located
+        all over the world.  The company&#146;s computer facilities have just been
+        interconnected by means of a clever network-interfacing scheme that
+        makes the entire network appear to any user to be a single computer.
+        Insatiable&#146;s president, in her first attempt to exploit the ability of
+        the network to extract administrative information from division files,
+        is dismayed to discover that, although all the division files have
+        been implemented as data structures in Scheme, the particular data
+        structure used varies from division to division.  A meeting of
+        division managers is hastily called to search for a strategy to
+        integrate the files that will satisfy headquarters&#146; needs while
+        preserving the existing autonomy of the divisions.
+
+        Show how such a strategy can be implemented with data-directed
+        programming.  As an example, suppose that each division&#146;s personnel
+        records consist of a single file, which contains a set of records
+        keyed on employees&#146; names.  The structure of the set varies from
+        division to division.  Furthermore, each employee&#146;s record is itself a
+        set (structured differently from division to division) that contains
+        information keyed under identifiers such as <span class="javascriptinline">address</span> and <span class="javascriptinline">salary</span>.  In particular:
+        <ol class="exercise">
+          <li>
+            Implement for headquarters a <span class="javascriptinline">get_record</span>
+            function
+            that
+            retrieves a specified employee&#146;s record from a specified personnel
+            file.  The
+            function
+            should be applicable to any division&#146;s file.
+            Explain how the individual divisions&#146; files should be structured.  In
+            particular, what type information must be supplied?
+          </li>
+          <li>
+            Implement for headquarters a <span class="javascriptinline">get_salary</span>
+            function
+            that
+            returns the salary information from a given employee&#146;s record from any
+            division&#146;s personnel file.  How should the record be structured in
+            order to make this operation work?
+          </li>
+          <li>
+            Implement for headquarters a <span class="javascriptinline">find_employee_record</span>
+            function.
+            This should search all the divisions&#146; files for the record of a given
+            employee and return the record.  Assume that this
+            function
+            takes as
+            arguments an employee&#146;s name and a list of all the divisions&#146; files.
+          </li>
+          <li>
+            When Insatiable takes over a new company, what changes must
+            be made in order to incorporate the new personnel information into the
+            central system?
+          </li>
+        </ol>
+      </div>
+      
+      
+
+
+      <H4>Message passing</H4>
+        
+      
+
+      
+
+      <div class="normaltext">
+      The key idea of data-directed programming is to handle generic
+      operations in programs by dealing explicitly with operation-and-type
+      tables, such as the table in figure&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#fig:operator-table">2.22</a>.  The
+      style of programming we used in section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_4.html')" href="#sec:manifest-types">2.4.2</a>
+      organized the required dispatching on type by having each operation
+      take care of its own dispatching.  In effect, this decomposes the
+      operation-and-type table into rows, with each generic operation
+      function
+      representing a row of the table.
+      </div>
+      <div class="normaltext">
+      An alternative implementation strategy is to decompose the table into
+      columns and, instead of using &#147;intelligent operations&#148; that dispatch
+      on data types, to work with &#147;intelligent data objects&#148; that dispatch
+      on operation names.  We can do this by arranging things so that a data
+      object, such as a rectangular number, is represented as a
+      function
+      that takes as input the required operation name and performs the
+      operation indicated.  In such a discipline, <span class="javascriptinline">make_from_real_imag</span>
+      could be written as
+
+      <div style="position:absolute;display:none;" id="javascript_781_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction make_from_real_imag(x,y) {\n   function dispatch(op) {\n      if (op === &quot;real_part&quot;)\n         return x;\n      else if (op === &quot;imag_part&quot;)\n         return y;\n      else if (op === &quot;magnitude&quot;)\n         return sqrt(square(x) + square(y));\n      else if (op === &quot;angle&quot;)\n         return atan(y,x);\n      else\n         return error(&quot;Unknown op -- make_from_real_imag&quot;,op);\n  }\n  return dispatch;\n}','javascript_781','',event,1.0);">function make_from_real_imag(x,y) {
+   function dispatch(op) {
+      if (op === "real_part")
+         return x;
+      else if (op === "imag_part")
+         return y;
+      else if (op === "magnitude")
+         return sqrt(square(x) + square(y));
+      else if (op === "angle")
+         return atan(y,x);
+      else
+         return error("Unknown op -- make_from_real_imag",op);
+  }
+  return dispatch;
+}</pre>
+
+      The corresponding <span class="javascriptinline">apply_generic</span>
+      function, which applies a
+      generic operation to an argument, now simply feeds the operation&#146;s
+      name to the data object and lets the object do the work:<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_6"><a class="link" href="#footnote_6">6</a></a></span>
+
+      <div style="position:absolute;display:none;" id="javascript_782_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction apply_generic(op,arg) {\n   return head(arg)(op);\n}','javascript_782','',event,1.0);">function apply_generic(op,arg) {
+   return head(arg)(op);
+}</pre>
+
+      Note that the value returned by <span class="javascriptinline">make_from_real_imag</span> is a
+      function—the internal <span class="javascriptinline">dispatch</span>
+      function.  This is the
+      function
+      that is invoked when <span class="javascriptinline">apply_generic</span> requests an operation to
+      be performed.
+      </div>
+      <div class="normaltext">
+      This style of programming is called <em>message passing</em>.  The name
+      comes from the image that a data object is an entity that receives the
+      requested operation name as a &#147;message.&#148;  We have already seen an
+      example of message passing in section&nbsp;<a class="link" onclick="window.displayManager.show('section_2_1.html')" href="#sec:data?">2.1.3</a>, where we saw
+      how <span class="javascriptinline">pair</span>, <span class="javascriptinline">head</span>, and <span class="javascriptinline">tail</span> could be defined with no data
+      objects but only
+      functions.  Here we see that message passing is not
+      a mathematical trick but a useful technique for organizing systems
+      with generic operations.  In the remainder of this chapter we will
+      continue to use data-directed programming, rather than message
+      passing, to discuss generic arithmetic operations.  In chapter&nbsp;3 we
+      will return to message passing, and we will see that it can be a
+      powerful tool for structuring simulation programs.
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.78.</b>
+        
+        Implement the constructor <span class="schemeinline">make-from-mag-ang</span> in message-passing style.
+        This
+        function
+        should be analogous to the <span class="javascriptinline">make_from_real_imag</span>
+        function
+        given above.
+      </div>
+
+      <div class="exercise">
+<b>Exercise 2.79.</b>
+        
+        As a large system with generic operations evolves, new types of data
+        objects or new operations may be needed.  For each of the three
+        strategies—generic operations with explicit dispatch, data-directed
+        style, and message-passing-style—describe the changes that must be
+        made to a system in order to add new types or new operations.  Which
+        organization would be most appropriate for a system in which new types
+        must often be added?  Which would be most appropriate for a system in
+        which new operations must often be added?
+        <a name="ex:extend-generic"></a>
+      </div>
+
+    
+
+  <div class="navbar" align="center">
+<hr>
+<a class="link" onclick="window.displayManager.show('section_2_3.html')">previous section</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('chapter_2.html')">this chapter</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('section_2_5.html')">next section</a><hr>
+</div><strong class="footnote">Footnotes</strong><div class="footnote">
+<a name="footnote_1"><sup><a class="link" href="#footnote_origin_1">1</a></sup></a>In actual computational systems, rectangular form is
+        preferable to polar form most of the time because of 
+        
+        roundoff errors
+        in conversion between rectangular and polar form.  This is why the
+        complex-number example is unrealistic.  Nevertheless, it provides a
+        clear illustration of the design of a system using generic operations
+        and a good introduction to the more substantial systems to be
+        developed later in this chapter.</div><div class="footnote">
+<a name="footnote_2"><sup><a class="link" href="#footnote_origin_2">2</a></sup></a>The arctangent function referred to
+        
+        
+        
+        here, computed by Scheme&#146;s <span class="javascriptinline">atan</span>
+        function,
+        is defined so as to take two arguments <span style="vertical-align:-2.0pt"><img src="img_javascript/latex_inline_footnote_878.png"></span>&nbsp;and <span style="vertical-align:-2.0pt"><img src="img_javascript/latex_inline_footnote_879.png"></span> and to return
+        the angle whose tangent is <span style="vertical-align:-2.0pt"><img src="img_javascript/latex_inline_footnote_880.png"></span>.  The signs of the arguments
+        determine the quadrant of the angle.</div><div class="footnote">
+<a name="footnote_3"><sup><a class="link" href="#footnote_origin_3">3</a></sup></a>We use the list <span class="javascriptinline">list("rectangular")</span>
+        rather than the string <span class="javascriptinline">"rectangular"</span> to allow for the possibility
+        of operations with multiple arguments, not all of the same
+        type.</div><div class="footnote">
+<a name="footnote_4"><sup><a class="link" href="#footnote_origin_4">4</a></sup></a>The
+        type the constructors are installed under needn&#146;t be a list because
+        a constructor is always used to make an object of one particular
+        type.</div><div class="footnote">
+<a name="footnote_5"><sup><a class="link" href="#footnote_origin_5">5</a></sup></a>The function <span class="javascriptinline">apply_generic</span> uses the 
+        
+        dotted-tail notation described in
+        exercise&nbsp;<a class="link" onclick="window.displayManager.show('section_2_2.html')" href="#ex:dotted-arglist">2.2021</a>, because different generic operations
+        may take different numbers of arguments.  In <span class="javascriptinline">apply_generic</span>, <span class="javascriptinline">op</span> has as its value the first argument to <span class="javascriptinline">apply_generic</span> and
+        <span class="javascriptinline">args</span> has as its value a list of the remaining arguments.
+        <br>
+        The function <span class="javascriptinline">apply_generic</span> also uses the primitive
+        function
+
+        
+        
+        <span class="javascriptinline">apply</span>,
+        which takes two arguments, a
+        function
+        and a list.  The function <span class="javascriptinline">apply</span>
+        applies the
+        function, using the elements in the list as arguments.
+        For example,
+        <div style="position:absolute;display:none;" id="javascript_774_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\napply(sum_of_squares,list(1,3))','javascript_774','',event,1.0);">apply(sum_of_squares,list(1,3))</pre>
+        returns 10.</div><div class="footnote">
+<a name="footnote_6"><sup><a class="link" href="#footnote_origin_6">6</a></sup></a>One
+        limitation of this organization is it permits only generic
+        functions
+        of one argument.</div>

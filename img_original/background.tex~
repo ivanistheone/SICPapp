@@ -1,0 +1,12 @@
+
+      \documentclass{article}
+      \usepackage{times}
+      \usepackage{listings}
+      \pagestyle{empty}
+      \begin{document}
+      % add rules in front and back to get uniform alignment
+      % these rules are "shaved" off by "convert"
+      \lstset{language=JavaScript}
+      \rule[-0.4ex]{0.95em}{0.5ex}\lstinline!until!\rule[-0.4ex]{0.95em}{0.5ex}
+      \end{document}
+    

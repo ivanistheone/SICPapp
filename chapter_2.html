@@ -1,0 +1,310 @@
+<div class="navbar" align="center">
+<a class="link" onclick="window.displayManager.show('chapter_1.html')">previous chapter</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('contents.html')">book contents</a>&nbsp;&nbsp;&nbsp;<hr>
+</div><h1 class="chapter">
+<div class="chapterheading">
+                  Chapter 
+		  2</div>
+<P></P>
+<a name="chapter_2">Building Abstractions with Data</a>
+</h1>
+  
+
+  
+
+  <table><tr>
+<td width="40%"></td>
+<td width="60%">
+<div class="epigraph">
+
+    We now come to the decisive step of mathematical abstraction: we
+    forget about what the symbols stand for. &#8230; [The mathematician]
+    need not be idle; there are many operations which he may carry out
+    with these symbols, without ever having to look at the things they
+    stand for.
+
+    
+    
+      
+    
+
+  </div>
+<div class="epigraph">Hermann Weyl,
+<em>The Mathematical Way of Thinking</em>
+</div>
+</td>
+</tr></table>
+
+  <div class="subtoc">
+<strong>Sections</strong><p></p>
+<a class="link" onclick="window.displayManager.show('section_2_1.html')">2.1&nbsp;Introduction to Data Abstraction</a><br><a class="link" onclick="window.displayManager.show('section_2_2.html')">2.2&nbsp;Hierarchical Data and the Closure Property</a><br><a class="link" onclick="window.displayManager.show('section_2_3.html')">2.3&nbsp;Symbolic Data</a><br><a class="link" onclick="window.displayManager.show('section_2_4.html')">2.4&nbsp;Multiple Representations for Abstract Data</a><br><a class="link" onclick="window.displayManager.show('section_2_5.html')">2.5&nbsp;Systems with Generic Operations</a><br>
+</div>
+
+  <div class="normaltext">
+    
+    
+    We concentrated in chapter&nbsp;1 on computational processes and on the
+    role of
+    functions
+    in program design.  We saw how to use primitive
+    data (numbers) and primitive operations (arithmetic operations), how to
+    combine
+    functions
+    to form compound
+    functions
+    through composition,
+    conditionals, and the use of parameters, and how to abstract
+    functions
+    by using <span class="javascriptinline">function</span>.  
+      We saw that a
+    function
+    can be
+    regarded as a pattern for the local evolution of a process, and we
+    classified, reasoned about, and performed simple algorithmic analyses
+    of some common patterns for processes as embodied in
+    functions.  We
+    also saw that higher-order
+    functions
+    enhance the power of our
+    language by enabling us to manipulate, and thereby to reason in terms
+    of, general methods of computation.  This is much of the essence of
+    programming.
+  </div>
+
+  <div class="normaltext">
+    In this chapter we are going to look at more complex data.  All the
+    functions
+    in chapter&nbsp;1 operate on simple numerical data, and simple
+    data are not sufficient for many of the problems we wish to address
+    using computation.  Programs are typically designed to model complex
+    phenomena, and more often than not one must construct computational
+    objects that have several parts in order to model real-world phenomena
+    that have several aspects.  Thus, whereas our focus in chapter&nbsp;1 was
+    on building abstractions by combining
+    functions
+    to form compound
+    functions, we turn in this chapter to another key aspect of any
+    programming language: the means it provides for building abstractions
+    by combining data objects to form <em>compound data</em>.
+  </div>
+
+  <div class="normaltext">
+    Why do we want compound data in a programming language?  For the same
+    reasons that we want compound
+    functions: to elevate the conceptual
+    level at which we can design our programs, to increase the modularity
+    of our designs, and to enhance the expressive power of our language.
+    Just as the ability to define
+    functions
+    enables us to deal with
+    processes at a higher conceptual level than that of the primitive
+    operations of the language, the ability to construct compound data
+    objects enables us to deal with data at a higher conceptual level than
+    that of the primitive data objects of the language.
+  </div>
+
+  <div class="normaltext">
+    
+    Consider the task of designing a system to perform arithmetic with
+    rational numbers.  We could imagine an operation <span class="javascriptinline">add_rat</span> that takes
+    two rational numbers and produces their sum.  In terms of
+    simple data, a rational number can be thought of as two integers: a
+    numerator and a denominator.  Thus, we could design a program in which
+    each rational number would be represented by two integers (a numerator
+    and a denominator) and where <span class="schemeinline">add-rat</span> would be implemented by two
+    functions
+    (one producing the numerator of the sum and one producing
+    the denominator).  But this would be awkward, because we would then
+    need to explicitly keep track of which numerators corresponded to
+    which denominators.  In a system intended to perform many operations
+    on many rational numbers, such bookkeeping details would clutter the
+    programs substantially, to say nothing of what they would do to our
+    minds.  It would be much better if we could &#147;glue together&#148; a
+    numerator and denominator to form a pair—a <em>compound data
+      object</em>—that our programs could manipulate in a way that would be
+    consistent with regarding a rational number as a single conceptual
+    unit.
+  </div>
+
+  <div class="normaltext">
+    The use of compound data also enables us to increase the modularity of
+    our programs.  If we can manipulate rational numbers directly as
+    objects in their own right, then we can separate the part of our
+    program that deals with rational numbers per se from the details of
+    how rational numbers may be represented as pairs of integers.  The
+    general technique of isolating the parts of a program that deal with
+    how data objects are represented from the parts of a program that deal
+    with how data objects are used is a powerful design methodology called
+    
+    <em>data abstraction</em>.  We will see how data abstraction makes
+    programs much easier to design, maintain, and modify.
+  </div>
+
+  <div class="normaltext">
+    The use of compound data leads to a real increase in the expressive
+    power of our programming language.  Consider the idea of forming a
+    &#147;linear combination&#148; <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_668.png"></span>.  We might like to write a
+    function
+    that would accept <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_669.png"></span>, <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_670.png"></span>, <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_671.png"></span>, and <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_672.png"></span> as arguments and return the
+    value of <span style="vertical-align:-3pt"><img src="img_javascript/latex_inline_673.png"></span>.  This presents no difficulty if the arguments are to
+    be numbers, because we can readily define the
+    function
+
+    <div style="position:absolute;display:none;" id="javascript_353_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction linear_combination(a,b,x,y) {\n   return a * x + b * y;\n}','javascript_353','',event,1.0);">function linear_combination(a,b,x,y) {
+   return a * x + b * y;
+}</pre>
+  </div>
+
+  <div class="normaltext">
+    But suppose we are not concerned only with numbers.  Suppose we would
+    like to describe a process that forms
+    linear combinations whenever addition and multiplication are
+    defined—for rational numbers, complex numbers, polynomials, or
+    whatever.  We could express this as a
+    function
+    of the form
+
+    <div style="position:absolute;display:none;" id="javascript_354_div"></div>
+<pre class="jush-js" title="evaluate JavaScript expression" onClick="new window.JavascriptConsole('\nfunction linear_combination(a,b,x,y) {\n   return add(mul(a,x),mul(b,y));\n}','javascript_354','',event,1.0);">function linear_combination(a,b,x,y) {
+   return add(mul(a,x),mul(b,y));
+}</pre>
+
+    where <span class="schemeinline">add</span> and <span class="schemeinline">mul</span> are not the primitive
+    functions
+    <span class="schemeinline">+</span>
+    and <span class="schemeinline">*</span> but rather more complex things that will perform the
+    appropriate operations for whatever kinds of data we pass in as the
+    arguments <span class="schemeinline">a</span>, <span class="schemeinline">b</span>, <span class="schemeinline">x</span>, and <span class="schemeinline">y</span>. The key point is
+    that the only thing <span class="javascriptinline">linear_combination</span> should need to know about
+    <span class="schemeinline">a</span>, <span class="schemeinline">b</span>, <span class="schemeinline">x</span>, and <span class="schemeinline">y</span> is that the
+    functions
+    <span class="schemeinline">add</span>
+    and <span class="schemeinline">mul</span> will perform the appropriate manipulations.  From the
+    perspective of the
+    function
+    <span class="javascriptinline">linear_combination</span>, it is
+    irrelevant what <span class="schemeinline">a</span>, <span class="schemeinline">b</span>, <span class="schemeinline">x</span>, and <span class="schemeinline">y</span> are and even
+    more irrelevant how they might happen to be represented in terms of
+    more primitive data.  This same example shows why it is important that
+    our programming language provide the ability to manipulate compound
+    objects directly: Without this, there is no way for a
+    function
+    such
+    as <span class="javascriptinline">linear_combination</span> to pass its arguments along to <span class="schemeinline">add</span>
+    and <span class="schemeinline">mul</span> without having to know their detailed
+    structure.<span style="vertical-align:3pt;font-size:0.75em"><a name="footnote_origin_21"><a class="link" href="#footnote_21">21</a></a></span>
+    
+    
+  </div>
+
+  <div class="normaltext">
+    We begin this chapter by implementing the rational-number arithmetic
+    system mentioned above.  This will form the background for our
+    discussion of compound data and data abstraction.  As with compound
+    functions, the main issue to be addressed is that of abstraction as a
+    technique for coping with complexity, and we will see how data
+    abstraction enables us to erect suitable 
+    
+    <em>abstraction barriers</em>
+    between different parts of a program.
+  </div>
+
+  <div class="normaltext">
+    We will see that the key to forming compound data is that a
+    programming language should provide some kind of &#147;glue&#148; so that data
+    objects can be combined to form more complex data objects.  There are
+    many possible kinds of glue.  Indeed, we will discover how to form
+    compound data using no special &#147;data&#148; operations at all, only
+    functions.  This will further blur the distinction between
+    &#147;function&#148; and &#147;data,&#148; which was already becoming tenuous toward
+    the end of chapter&nbsp;1.  We will also explore some conventional
+    techniques for representing sequences and trees.  One key idea in
+    dealing with compound data is the notion of 
+    
+    <em>closure</em>—that the
+    glue we use for combining data objects should allow us to combine not
+    only primitive data objects, but compound data objects as well.
+    Another key idea is that compound data objects can serve as 
+    
+    <em>
+      conventional interfaces</em> for combining program modules in
+    mix-and-match ways.  We illustrate some of these ideas by presenting a
+    simple graphics language that exploits closure.
+  </div>
+
+  <div class="normaltext">
+    We will then augment the representational power of our language by
+    introducing 
+    
+    <em>symbolic expressions</em>—data whose elementary parts
+    can be arbitrary symbols rather than only numbers.  We explore various
+    alternatives for representing sets of objects.  We will find that,
+    just as a given numerical function can be computed by many different
+    computational processes, there are many ways in which a given data
+    structure can be represented in terms of simpler objects, and the
+    choice of representation can have significant impact on the time and
+    space requirements of processes that manipulate the data.  We will
+    investigate these ideas in the context of symbolic differentiation,
+    the representation of sets, and the encoding of information.
+  </div>
+
+  <div class="normaltext">
+    Next we will take up the problem of working with data that may be
+    represented differently by different parts of a program.  This leads
+    to the need to implement 
+    
+    
+    <em>generic operations</em>, which must handle
+    many different types of data.  Maintaining modularity in the
+    presence of generic operations requires more powerful abstraction
+    barriers than can be erected with simple data abstraction alone.  In
+    particular, we introduce <em>data-directed programming</em> as a
+    technique that allows individual data representations to be designed
+    in isolation and then combined 
+    
+    <em>additively</em> (i.e., without
+    modification).  To illustrate the power of this approach to system
+    design, we close the chapter by applying what we have learned to the
+    implementation of a package for performing symbolic arithmetic on
+    polynomials, in which the coefficients of the polynomials can be
+    integers, rational numbers, complex numbers, and even other
+    polynomials.
+  </div>
+
+  <div class="subtoc">
+<strong>Sections</strong><p></p>
+<a class="link" onclick="window.displayManager.show('section_2_1.html')">2.1&nbsp;Introduction to Data Abstraction</a><br><a class="link" onclick="window.displayManager.show('section_2_2.html')">2.2&nbsp;Hierarchical Data and the Closure Property</a><br><a class="link" onclick="window.displayManager.show('section_2_3.html')">2.3&nbsp;Symbolic Data</a><br><a class="link" onclick="window.displayManager.show('section_2_4.html')">2.4&nbsp;Multiple Representations for Abstract Data</a><br><a class="link" onclick="window.displayManager.show('section_2_5.html')">2.5&nbsp;Systems with Generic Operations</a><br>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<div class="navbar" align="center">
+<a class="link" onclick="window.displayManager.show('chapter_1.html')">previous chapter</a>&nbsp;&nbsp;&nbsp;<a class="link" onclick="window.displayManager.show('contents.html')">book contents</a>&nbsp;&nbsp;&nbsp;</div><hr><strong class="footnote">Footnotes</strong><div class="footnote">
+<a name="footnote_1"><sup><a class="link" href="#footnote_origin_1">1</a></sup></a>The ability to directly manipulate
+      functions
+      provides an analogous increase in the expressive power of a
+      programming language.  For example, in
+      section&nbsp;<a class="link" onclick="window.displayManager.show('section_1_3.html')" href="#sec:procedures-as-parameters">1.3.1</a> we introduced the <span class="schemeinline">sum</span>
+      function, which takes a
+      function
+      <span class="schemeinline">term</span> as an argument and
+      computes the sum of the values of <span class="schemeinline">term</span> over some specified
+      interval.  In order to define <span class="schemeinline">sum</span>, it is crucial that we be able
+      to speak of a
+      function
+      such as <span class="schemeinline">term</span> as an entity in its own
+      right, without regard for how <span class="schemeinline">term</span> might be expressed with more
+      primitive operations.  Indeed, if we did not have the notion of &#147;a
+        function,&#148; it is doubtful that we would ever even think of the
+      possibility of defining an operation such as <span class="schemeinline">sum</span>.  Moreover,
+      insofar as performing the summation is concerned, the details of how
+      <span class="schemeinline">term</span> may be constructed from more primitive operations are
+      irrelevant.</div>
